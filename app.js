@@ -1025,6 +1025,31 @@ function checkContinuousAudioAlerts() {
   }
 }
 
+function playCustomerSuccessSound() {
+  try {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContext) return;
+    const ctx = new AudioContext();
+    const now = ctx.currentTime;
+
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(523.25, now);
+    osc.frequency.exponentialRampToValueAtTime(659.25, now + 0.15);
+    osc.frequency.exponentialRampToValueAtTime(783.99, now + 0.3);
+    osc.frequency.exponentialRampToValueAtTime(1046.50, now + 0.45);
+
+    gain.gain.setValueAtTime(0.15, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.6);
+  } catch (e) {}
+}
+
 function playAdminSoftChime() {
   try {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -1328,6 +1353,11 @@ function addToCart(productId) {
   const prod = appState.products.find(p => p.id === productId);
   if (!prod) return;
 
+  const ratePerLb = prod.pricePerLb || prod.price;
+  const pounds = prod.pounds || 1;
+  const layers = prod.layers || 2;
+  const floors = prod.floors || 1;
+
   const existing = appState.cart.find(item => item.id === productId && !item.isCustom);
   if (existing) {
     existing.quantity++;
@@ -1336,6 +1366,10 @@ function addToCart(productId) {
       id: prod.id,
       name: prod.name,
       price: prod.price,
+      ratePerLb: ratePerLb,
+      pounds: pounds,
+      layers: layers,
+      floors: floors,
       prepTimeMinutes: prod.prepTimeMinutes,
       image: prod.image,
       quantity: 1,
@@ -1344,7 +1378,7 @@ function addToCart(productId) {
   }
 
   updateCartUI();
-  showToast(`Added "${prod.name}" to basket!`, 'success');
+  showToast(`Added "${prod.name}" (${pounds} Lb) to basket!`, 'success');
 }
 
 function updateCartQuantity(index, delta) {
@@ -1492,18 +1526,29 @@ function calculateCustomPrice() {
   document.getElementById('custom-prep-time').textContent = `${prep} Minutes`;
 }
 
-function addCustomCakeToCart() {
-  const sizeSelect = document.getElementById('custom-size');
-  const sizeText = sizeSelect.options[sizeSelect.selectedIndex].text.split(' - ')[0];
+async function addCustomCakeToCart() {
   const flavor = document.getElementById('custom-flavor').value;
+  const sizeSelect = document.getElementById('custom-size');
+  const sizeText = sizeSelect.options[sizeSelect.selectedIndex].text;
   const frosting = document.getElementById('custom-frosting').value;
   const text = document.getElementById('custom-text').value;
   const notes = document.getElementById('custom-notes').value;
   const price = parseInt(document.getElementById('custom-total-price').textContent.replace(/[^\d]/g, '')) || 3200;
 
+  const imageFileInput = document.getElementById('custom-cake-image-file');
+  let uploadedCakeImg = null;
+  if (imageFileInput && imageFileInput.files && imageFileInput.files[0]) {
+    try {
+      uploadedCakeImg = await convertFileToBase64(imageFileInput.files[0]);
+    } catch (e) {}
+  }
+
   let prep = 40;
-  if (sizeSelect.value === '2-tier') prep = 55;
-  if (sizeSelect.value === '3-tier') prep = 75;
+  let pounds = 1;
+  let layers = 2;
+  let floors = 1;
+  if (sizeSelect.value === '2-tier') { prep = 55; pounds = 3; layers = 3; floors = 2; }
+  if (sizeSelect.value === '3-tier') { prep = 75; pounds = 5; layers = 4; floors = 3; }
 
   const daysSelect = document.getElementById('custom-delivery-day');
   const daysLead = daysSelect ? daysSelect.value : 2;
@@ -1513,8 +1558,12 @@ function addCustomCakeToCart() {
     id: 'custom-' + Date.now(),
     name: `Custom Cake (${sizeText})`,
     price: price,
+    pounds: pounds,
+    layers: layers,
+    floors: floors,
     prepTimeMinutes: prep,
-    image: 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&w=600&q=80',
+    image: uploadedCakeImg || 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&w=600&q=80',
+    orderImage: uploadedCakeImg,
     quantity: 1,
     isCustom: true,
     customText: text || 'Custom Message',
@@ -1523,7 +1572,6 @@ function addCustomCakeToCart() {
 
   closeCustomCakeModal();
   updateCartUI();
-  openCartDrawer();
   showToast('Custom cake added to basket!', 'success');
 }
 
@@ -1751,7 +1799,7 @@ function renderCustomerOrderTracker() {
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
           <div>
             <strong style="font-size:1.1rem; color:var(--primary-rose);">Order #${order.id}</strong>
-            <span class="badge badge-gold" style="margin-left:0.5rem;">${order.fulfillmentType === 'pickup' ? 'ðŸª Store Pickup' : 'ðŸšš Home Delivery'}</span>
+            <span class="badge badge-gold" style="margin-left:0.5rem;">${order.fulfillmentType === 'pickup' ? 'ðŸ ª Store Pickup' : 'ðŸšš Home Delivery'}</span>
           </div>
           <span class="badge ${getStatusBadgeClass(order.status)}">${order.status}</span>
         </div>
@@ -1883,7 +1931,7 @@ function renderAdminOrders() {
         <td>
           <div style="font-weight:700;">${order.customerName}</div>
           <div style="font-size:0.78rem; color:var(--text-muted);">${order.customerPhone}</div>
-          <span class="badge ${isPickup ? 'badge-primary' : 'badge-gold'}" style="font-size:0.7rem;">${isPickup ? 'ðŸª Store Pickup' : 'ðŸšš Home Delivery'}</span>
+          <span class="badge ${isPickup ? 'badge-primary' : 'badge-gold'}" style="font-size:0.7rem;">${isPickup ? 'ðŸ ª Store Pickup' : 'ðŸšš Home Delivery'}</span>
           <div style="font-size:0.8rem; margin-top:0.25rem;">Method: <strong>${order.paymentMethod || 'COD'}</strong></div>
           ${order.paymentReceipt ? `
             <div style="margin-top:0.25rem;">
@@ -1896,11 +1944,19 @@ function renderAdminOrders() {
         <td><div style="font-size:0.82rem;">${order.deliveryAddress}</div></td>
         <td>
           <div style="font-size:0.85rem;">${order.items.map(i => `
-            <div style="margin-bottom:0.4rem; padding-bottom:0.4rem; border-bottom:1px solid rgba(255,255,255,0.08);">
-              <strong>${i.quantity}x ${i.name}</strong><br>
-              ${i.pounds ? `<span style="color:var(--accent-gold);font-size:0.75rem;">⚖️ ${i.pounds} Lb • ${i.layers || 2} Layers • ${i.floors || 1} Floor(s)</span><br>` : ''}
-              ${i.customText ? `<span style="color:#f9a8c9;font-size:0.75rem;">✍️ "${i.customText}"</span><br>` : ''}
-              ${i.orderImage ? `<a href="${i.orderImage}" target="_blank" style="color:var(--primary-rose);font-size:0.75rem;"><i class="fa-solid fa-image"></i> View Customer Image</a>` : ''}
+            <div style="margin-bottom:0.5rem; padding-bottom:0.5rem; border-bottom:1px solid rgba(255,255,255,0.08);">
+              <div style="font-weight:700; color:var(--text-main); font-size:0.88rem;">${i.quantity}x ${i.name}</div>
+              ${i.pounds ? `<div style="color:var(--accent-gold); font-size:0.78rem; font-weight:600;">⚖️ ${i.pounds} Lb • ${i.layers || 2} Layers • ${i.floors || 1} Floor(s)</div>` : ''}
+              ${i.customText ? `<div style="color:#f9a8c9; font-size:0.78rem; font-weight:600;">✍️ "${i.customText}"</div>` : ''}
+              ${i.details ? `<div style="color:#60a5fa; font-size:0.76rem;">📋 ${i.details}</div>` : ''}
+              ${i.orderImage ? `
+                <div style="margin-top:0.3rem;">
+                  <a href="${i.orderImage}" target="_blank" style="color:var(--primary-rose); font-weight:700; font-size:0.78rem; display:inline-flex; align-items:center; gap:0.3rem;">
+                    <img src="${i.orderImage}" style="width:40px; height:40px; border-radius:6px; object-fit:cover; border:1px solid var(--primary-rose);">
+                    <span><i class="fa-solid fa-camera"></i> View Design Photo</span>
+                  </a>
+                </div>
+              ` : ''}
             </div>
           `).join('')}</div>
         </td>
@@ -2057,7 +2113,6 @@ function adminAcceptNewOrder(orderId) {
 }
 
 async function dispatchAdminConfirmationEmail(order) {
-  // Try the local Node.js server first (runs on port 3000 locally)
   const endpoints = [
     'http://localhost:3000/api/send-confirmation',
     '/api/send-confirmation'
@@ -2079,11 +2134,9 @@ async function dispatchAdminConfirmationEmail(order) {
         }
       }
     } catch (err) {
-      // Try next endpoint
       continue;
     }
   }
-  // If both fail (e.g. Vercel without server), show admin a warning
   showToast('⚠️ Order confirmed! To send email, make sure Node server is running: node server.js', 'info', 6000);
 }
 
@@ -2184,7 +2237,7 @@ function viewOrderInvoice(orderId) {
           Name: ${order.customerName}<br>
           Phone: ${order.customerPhone}<br>
           Email: <strong>${order.customerEmail || 'faheemkhan101992@gmail.com'}</strong><br>
-          Fulfillment: <strong>${order.fulfillmentType === 'pickup' ? 'ðŸª Bakery Store Self Pickup' : 'ðŸšš Express Home Delivery'}</strong><br>
+          Fulfillment: <strong>${order.fulfillmentType === 'pickup' ? 'ðŸ ª Bakery Store Self Pickup' : 'ðŸšš Express Home Delivery'}</strong><br>
           Address: ${order.deliveryAddress}
         </div>
         <div style="background:#f9ece6; padding:0.9rem; border-radius:8px;">
@@ -2850,7 +2903,7 @@ async function sendFollowupEmail(order) {
     });
     const data = await res.json();
     if (data.success) {
-      showToast(`âœ‰ï¸ Auto follow-up feedback email sent to ${order.customerEmail || 'customer'}!`, 'success');
+      showToast(`âœ‰ï¸  Auto follow-up feedback email sent to ${order.customerEmail || 'customer'}!`, 'success');
     }
   } catch (err) {
     console.log('Follow-up feedback email dispatch error:', err);
@@ -3093,6 +3146,14 @@ function openProductDetailsModal(productId) {
           <input type="text" id="modal-prod-instructions-${prod.id}" class="form-control" placeholder="e.g. Write 'Happy Birthday Sarah!', less sweet..." style="font-size:0.84rem;">
         </div>
 
+        <!-- Custom Image Upload -->
+        <div class="form-group mb-3">
+          <label style="font-weight:700; font-size:0.84rem; color:var(--text-main);">
+             <i class="fa-solid fa-camera-retro" style="color:var(--primary-rose);"></i> Custom Design Reference (Optional):
+          </label>
+          <input type="file" id="modal-prod-image-${prod.id}" class="form-control" accept="image/*">
+        </div>
+
         <!-- Calculated Total Price & Dual Action Buttons: Buy Now & Basket -->
         <div style="background:white; padding:0.85rem 1rem; border-radius:var(--radius-md); border:1px solid var(--border-subtle); display:flex; justify-content:space-between; align-items:center;">
           <div>
@@ -3184,7 +3245,7 @@ function recalculateProductModalPrice(productId, ratePerLb) {
   totalDisplay.textContent = `Rs. ${total.toLocaleString()}`;
 }
 
-function buyNowFromModal(productId, ratePerLb) {
+async function buyNowFromModal(productId, ratePerLb) {
   const prod = appState.products.find(p => p.id === productId);
   if (!prod) return;
 
@@ -3192,17 +3253,25 @@ function buyNowFromModal(productId, ratePerLb) {
   const layersSelect = document.getElementById(`modal-prod-layers-${productId}`);
   const floorsSelect = document.getElementById(`modal-prod-floors-${productId}`);
   const instructionsInput = document.getElementById(`modal-prod-instructions-${productId}`);
+  const imageInput = document.getElementById(`modal-prod-image-${productId}`);
 
   const pounds = poundsSelect ? parseInt(poundsSelect.value) || 1 : 1;
   const layers = layersSelect ? parseInt(layersSelect.value) || 2 : 2;
   const floors = floorsSelect ? parseInt(floorsSelect.value) || 1 : 1;
   const customText = instructionsInput ? instructionsInput.value.trim() : '';
 
+  let orderImg = null;
+  if (imageInput && imageInput.files && imageInput.files[0]) {
+    try {
+      orderImg = await convertFileToBase64(imageInput.files[0]);
+    } catch (e) {}
+  }
+
   const layerAddon = (layers - 1) * 200;
   const floorAddon = (floors - 1) * 800;
   const itemTotal = (ratePerLb * pounds) + layerAddon + floorAddon;
 
-  // Single-item express direct checkout
+  // Single-item express checkout
   appState.cart = [{
     id: prod.id + '-' + Date.now(),
     productId: prod.id,
@@ -3214,6 +3283,7 @@ function buyNowFromModal(productId, ratePerLb) {
     floors: floors,
     prepTimeMinutes: prod.prepTimeMinutes,
     image: prod.image,
+    orderImage: orderImg,
     quantity: 1,
     isCustom: false,
     customText: customText || undefined
@@ -3225,7 +3295,7 @@ function buyNowFromModal(productId, ratePerLb) {
   showToast(`Express Checkout for "${prod.name}" (${pounds} Lb)!`, 'success');
 }
 
-function addToCartWithOptions(productId, ratePerLb) {
+async function addToCartWithOptions(productId, ratePerLb) {
   const prod = appState.products.find(p => p.id === productId);
   if (!prod) return;
 
@@ -3233,11 +3303,19 @@ function addToCartWithOptions(productId, ratePerLb) {
   const layersSelect = document.getElementById(`modal-prod-layers-${productId}`);
   const floorsSelect = document.getElementById(`modal-prod-floors-${productId}`);
   const instructionsInput = document.getElementById(`modal-prod-instructions-${productId}`);
+  const imageInput = document.getElementById(`modal-prod-image-${productId}`);
 
   const pounds = poundsSelect ? parseInt(poundsSelect.value) || 1 : 1;
   const layers = layersSelect ? parseInt(layersSelect.value) || 2 : 2;
   const floors = floorsSelect ? parseInt(floorsSelect.value) || 1 : 1;
   const customText = instructionsInput ? instructionsInput.value.trim() : '';
+
+  let orderImg = null;
+  if (imageInput && imageInput.files && imageInput.files[0]) {
+    try {
+      orderImg = await convertFileToBase64(imageInput.files[0]);
+    } catch (e) {}
+  }
 
   const layerAddon = (layers - 1) * 200;
   const floorAddon = (floors - 1) * 800;
@@ -3254,6 +3332,7 @@ function addToCartWithOptions(productId, ratePerLb) {
     floors: floors,
     prepTimeMinutes: prod.prepTimeMinutes,
     image: prod.image,
+    orderImage: orderImg,
     quantity: 1,
     isCustom: false,
     customText: customText || undefined
@@ -3578,7 +3657,11 @@ async function adminApprovePayment(orderId) {
   renderAdminOrders();
   showToast(`Payment Approved for Order #${orderId}! Sent to Kitchen pipeline.`, 'success');
 
-  // Trigger automated SMTP receipt email dispatch
+  // Trigger automated SMTP confirmation email dispatch
+  dispatchAdminConfirmationEmail(order);
+}
+
+async function dispatchAdminReceiptEmail(order) {
   try {
     const res = await fetch('/api/send-receipt', {
       method: 'POST',
@@ -3587,7 +3670,7 @@ async function adminApprovePayment(orderId) {
     });
     const data = await res.json();
     if (data.success) {
-      showToast(`âœ‰ï¸ Receipt email dispatched to ${order.customerEmail}!`, 'success');
+      showToast(`âœ‰ï¸  Receipt email dispatched to ${order.customerEmail}!`, 'success');
     }
   } catch (err) {
     console.log('Receipt email dispatch error:', err);
