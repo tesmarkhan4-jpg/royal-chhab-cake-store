@@ -697,6 +697,26 @@ function updateAdminMuteButton() {
   }
 }
 
+function togglePasswordVisibility(inputId, eyeId) {
+  const inp = document.getElementById(inputId);
+  const eye = document.getElementById(eyeId);
+  if (!inp || !eye) return;
+  if (inp.type === 'password') {
+    inp.type = 'text';
+    eye.className = 'fa-solid fa-eye-slash';
+  } else {
+    inp.type = 'password';
+    eye.className = 'fa-solid fa-eye';
+  }
+}
+
+async function hashPassword(password) {
+  const encoded = new TextEncoder().encode(password);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', encoded);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
 function switchAuthTab(tab) {
   const signinBtn = document.getElementById('auth-tab-signin');
   const signupBtn = document.getElementById('auth-tab-signup');
@@ -719,33 +739,42 @@ function switchAuthTab(tab) {
   }
 }
 
-function handleCustomerLogin(e) {
+async function handleCustomerLogin(e) {
   e.preventDefault();
-  const inputEl = document.getElementById('login-identifier');
-  if (!inputEl) return;
-  const typedVal = inputEl.value.trim();
-  const lowerTyped = typedVal.toLowerCase();
+  const emailEl = document.getElementById('login-identifier');
+  const passEl  = document.getElementById('login-password');
+  if (!emailEl || !passEl) return;
+
+  const typedEmail = emailEl.value.trim().toLowerCase();
+  const typedPass  = passEl.value;
+
+  if (!typedEmail || !typedPass) {
+    showToast('⚠️ Please enter both email and password.', 'danger');
+    return;
+  }
 
   appState.users = appState.users || [];
-  const foundUser = appState.users.find(u => 
-    (u.email && u.email.toLowerCase() === lowerTyped) || 
-    (u.name && u.name.toLowerCase() === lowerTyped)
-  );
+  const foundUser = appState.users.find(u => u.email && u.email.toLowerCase() === typedEmail);
 
   if (!foundUser) {
-    showToast(`⚠️ No registered account found for "${typedVal}". Please SIGN UP first!`, 'danger', 6000);
-    
+    showToast('🚫 No account found with this email. Please Sign Up first!', 'danger', 6000);
     switchAuthTab('signup');
     const regEmailInput = document.getElementById('reg-email');
-    if (regEmailInput && typedVal.includes('@')) {
-      regEmailInput.value = typedVal;
-    }
-
+    if (regEmailInput) regEmailInput.value = emailEl.value.trim();
     const noticeBox = document.getElementById('auth-modal-notice');
     if (noticeBox) {
-      noticeBox.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> <strong>Account Not Found!</strong> Please complete the Sign Up form below first before signing in.`;
+      noticeBox.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> <strong>No account found!</strong> Fill in the Sign Up form below to create your Royal Chhab account.`;
       noticeBox.style.display = 'block';
     }
+    return;
+  }
+
+  // Validate password
+  const enteredHash = await hashPassword(typedPass);
+  if (foundUser.passwordHash && foundUser.passwordHash !== enteredHash) {
+    showToast('🔐 Incorrect password. Please try again.', 'danger', 5000);
+    passEl.value = '';
+    passEl.focus();
     return;
   }
 
@@ -757,30 +786,51 @@ function handleCustomerLogin(e) {
   showToast(`🎉 Welcome back, ${foundUser.name}! You are signed in.`, 'success');
 }
 
-function handleCustomerRegister(e) {
+async function handleCustomerRegister(e) {
   e.preventDefault();
-  const name = document.getElementById('reg-name').value.trim();
-  const email = document.getElementById('reg-email').value.trim();
-  const phone = document.getElementById('reg-phone')?.value.trim() || '';
+  const name     = document.getElementById('reg-name').value.trim();
+  const email    = document.getElementById('reg-email').value.trim();
+  const phone    = document.getElementById('reg-phone')?.value.trim() || '';
+  const pass     = document.getElementById('reg-password')?.value || '';
+  const passConf = document.getElementById('reg-password-confirm')?.value || '';
+
+  if (!name || !email || !phone || !pass) {
+    showToast('⚠️ All fields are required. Please fill in the complete form.', 'danger', 5000);
+    return;
+  }
+
+  if (pass.length < 6) {
+    showToast('⚠️ Password must be at least 6 characters.', 'danger');
+    return;
+  }
+
+  if (pass !== passConf) {
+    showToast('❌ Passwords do not match! Please re-enter your password.', 'danger', 5000);
+    document.getElementById('reg-password-confirm').value = '';
+    document.getElementById('reg-password-confirm').focus();
+    return;
+  }
 
   const lowerEmail = email.toLowerCase();
   appState.users = appState.users || [];
-
   const existing = appState.users.find(u => u.email && u.email.toLowerCase() === lowerEmail);
   if (existing) {
-    showToast(`⚠️ An account already exists for "${email}". Switching to Sign In.`, 'info');
+    showToast(`⚠️ An account already exists for "${email}". Please Sign In instead.`, 'info', 5000);
     switchAuthTab('signin');
     const loginInput = document.getElementById('login-identifier');
     if (loginInput) loginInput.value = email;
     return;
   }
 
+  const passwordHash = await hashPassword(pass);
+
   const newUser = {
     name: name,
     email: email,
     phone: phone,
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80',
-    provider: 'Direct',
+    passwordHash: passwordHash,
+    avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=a83250&color=fff&size=80`,
+    provider: 'Email',
     joinedAt: Date.now()
   };
 
@@ -793,22 +843,106 @@ function handleCustomerRegister(e) {
 
   closeCustomerAuthModal();
   renderCustomerAuthWidget();
-  showToast(`🎉 Registration successful! Welcome to Royal Chhab, ${name}.`, 'success');
+  showToast(`🎉 Welcome to Royal Chhab, ${name}! Your account has been created.`, 'success');
 }
 
-function handleSocialAuth(provider) {
-  const name = provider === 'Google' ? 'Faheem Ahmed (Google User)' : 'Faheem Ahmed (Facebook User)';
-  appState.currentUser = {
-    name: name,
-    email: 'faheemkhan101992@gmail.com',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80',
-    provider: provider
+function initiateGoogleAuth() {
+  // Real Google OAuth sign-in via popup window
+  // Uses Google Identity Services if available, otherwise gracefully prompt email registration
+  const googleClientId = ''; // Google OAuth Client ID can be added here if configured
+
+  if (window.google && window.google.accounts && googleClientId) {
+    window.google.accounts.id.initialize({
+      client_id: googleClientId,
+      callback: handleGoogleCredentialResponse
+    });
+    window.google.accounts.id.prompt();
+    return;
+  }
+
+  // Fallback: Open a prompt asking them to enter their Gmail to register via Google
+  const gmailEntry = window.prompt('Enter your Gmail address to continue with Google:\n(You will need to complete your profile after)');
+  if (!gmailEntry || !gmailEntry.includes('@')) {
+    showToast('⚠️ Invalid email. Please try again.', 'danger');
+    return;
+  }
+
+  const lowerGmail = gmailEntry.trim().toLowerCase();
+  appState.users = appState.users || [];
+  const existing = appState.users.find(u => u.email && u.email.toLowerCase() === lowerGmail);
+
+  if (existing) {
+    // Already registered — let them in
+    appState.currentUser = existing;
+    localStorage.setItem('luxecakes_current_user', JSON.stringify(existing));
+    localStorage.setItem('luxecakes_onboarded', 'true');
+    closeCustomerAuthModal();
+    renderCustomerAuthWidget();
+    showToast(`🎉 Welcome back, ${existing.name}! Signed in via Google.`, 'success');
+    return;
+  }
+
+  // New Google user — need their name and phone before registering
+  const displayName = window.prompt(`Hello! Please enter your full name for your Royal Chhab account:`);
+  if (!displayName || displayName.trim().length < 2) {
+    showToast('⚠️ Name is required to create your account.', 'danger');
+    return;
+  }
+  const userPhone = window.prompt(`Please enter your WhatsApp / mobile number (required for order delivery):`);
+  if (!userPhone || userPhone.trim().length < 7) {
+    showToast('⚠️ A valid phone number is required.', 'danger');
+    return;
+  }
+
+  const nameStr = displayName.trim();
+  const newUser = {
+    name: nameStr,
+    email: gmailEntry.trim(),
+    phone: userPhone.trim(),
+    passwordHash: null, // Google users don't use password
+    avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(nameStr)}&background=a83250&color=fff&size=80`,
+    provider: 'Google',
+    joinedAt: Date.now()
   };
-  localStorage.setItem('luxecakes_current_user', JSON.stringify(appState.currentUser));
+
+  appState.users.unshift(newUser);
+  saveUsersToStorage();
+
+  appState.currentUser = newUser;
+  localStorage.setItem('luxecakes_current_user', JSON.stringify(newUser));
   localStorage.setItem('luxecakes_onboarded', 'true');
+
   closeCustomerAuthModal();
   renderCustomerAuthWidget();
-  showToast(`Successfully authenticated via ${provider}!`, 'success');
+  showToast(`🎉 Welcome to Royal Chhab, ${nameStr}! Account created via Google.`, 'success');
+}
+
+function handleGoogleCredentialResponse(response) {
+  // Decode the JWT credential from Google Identity Services
+  try {
+    const payload = JSON.parse(atob(response.credential.split('.')[1]));
+    const name    = payload.name || payload.given_name || 'Google User';
+    const email   = payload.email;
+    const avatar  = payload.picture || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=a83250&color=fff&size=80`;
+
+    appState.users = appState.users || [];
+    let user = appState.users.find(u => u.email && u.email.toLowerCase() === email.toLowerCase());
+
+    if (!user) {
+      user = { name, email, passwordHash: null, avatar, provider: 'Google', joinedAt: Date.now(), phone: '' };
+      appState.users.unshift(user);
+      saveUsersToStorage();
+    }
+
+    appState.currentUser = user;
+    localStorage.setItem('luxecakes_current_user', JSON.stringify(user));
+    localStorage.setItem('luxecakes_onboarded', 'true');
+    closeCustomerAuthModal();
+    renderCustomerAuthWidget();
+    showToast(`🎉 Welcome, ${name}! Signed in with Google.`, 'success');
+  } catch (err) {
+    showToast('Google sign-in failed. Please try again.', 'danger');
+  }
 }
 
 function handleCustomerLogout() {

@@ -342,16 +342,12 @@
         <button class="btn btn-primary btn-block" id="cart-checkout-btn" onclick="openCheckoutModal()">
           Proceed to Checkout <i class="fa-solid fa-arrow-right"></i>
         </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- CUSTOMER SIGN-IN / SIGN-UP MODAL -->
+      <!-- CUSTOMER SIGN-IN / SIGN-UP MODAL -->
   <div id="customer-auth-modal" class="modal">
     <div class="modal-overlay" onclick="closeCustomerAuthModal()"></div>
-    <div class="modal-content medium" style="max-width:480px; border-radius:20px; overflow:hidden; border:none; box-shadow:var(--shadow-md);">
+    <div class="modal-content medium" style="max-width:500px; border-radius:22px; overflow:hidden; border:none; box-shadow:var(--shadow-md);">
       <div class="modal-header" style="background:linear-gradient(135deg, #a83250, #6b1d31); color:white; padding:1.4rem 1.8rem;">
-        <h3 style="color:white; font-size:1.25rem;"><i class="fa-solid fa-user-shield" style="color:#f59e0b;"></i> Royal Chhab Customer Access</h3>
+        <h3 style="color:white; font-size:1.25rem;"><i class="fa-solid fa-user-shield" style="color:#f59e0b;"></i> Royal Chhab — Customer Account</h3>
         <button class="close-btn" onclick="closeCustomerAuthModal()" style="color:white;">&times;</button>
       </div>
 
@@ -373,43 +369,76 @@
 
         <!-- FORM 1: SIGN IN -->
         <form id="form-auth-signin" onsubmit="handleCustomerLogin(event)">
-          <div class="form-group" style="text-align:left; margin-bottom:1.2rem;">
-            <label style="font-weight:700; font-size:0.88rem; color:var(--text-main);">Email Address or Username *</label>
-            <input type="text" id="login-identifier" class="form-control" placeholder="e.g. customer@gmail.com" required style="font-size:0.95rem; padding:0.8rem 1rem;">
+          <div class="form-group" style="text-align:left; margin-bottom:1.1rem;">
+            <label style="font-weight:700; font-size:0.88rem; color:var(--text-main);">Email Address *</label>
+            <input type="email" id="login-identifier" class="form-control" placeholder="e.g. customer@gmail.com" required style="font-size:0.95rem; padding:0.8rem 1rem;">
           </div>
-          <button type="submit" class="btn btn-primary w-100" style="padding:0.8rem; font-size:0.95rem; font-weight:700;">
+          <div class="form-group" style="text-align:left; margin-bottom:1.3rem; position:relative;">
+            <label style="font-weight:700; font-size:0.88rem; color:var(--text-main);">Password *</label>
+            <div style="position:relative;">
+              <input type="password" id="login-password" class="form-control" placeholder="Enter your password" required style="font-size:0.95rem; padding:0.8rem 1rem; padding-right:3rem;">
+              <button type="button" onclick="togglePasswordVisibility('login-password', 'eye-login')" style="position:absolute; right:0.8rem; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; color:var(--text-muted);">
+                <i id="eye-login" class="fa-solid fa-eye"></i>
+              </button>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary w-100" style="padding:0.85rem; font-size:0.95rem; font-weight:700;">
             <i class="fa-solid fa-right-to-bracket"></i> Sign In to Account
           </button>
           <div style="font-size:0.82rem; color:var(--text-muted); margin-top:1rem; text-align:center;">
-            Don't have an account yet? <a href="#" onclick="switchAuthTab('signup'); return false;" style="color:var(--primary-rose); font-weight:700;">Sign Up First</a>
+            Don't have an account yet? <a href="#" onclick="switchAuthTab('signup'); return false;" style="color:var(--primary-rose); font-weight:700;">Sign Up First &rarr;</a>
           </div>
         </form>
 
         <!-- FORM 2: SIGN UP -->
         <form id="form-auth-signup" onsubmit="handleCustomerRegister(event)" style="display:none;">
-          <div class="form-group" style="text-align:left; margin-bottom:1rem;">
+          <div class="form-group" style="text-align:left; margin-bottom:0.9rem;">
             <label style="font-weight:700; font-size:0.88rem; color:var(--text-main);">Full Name *</label>
             <input type="text" id="reg-name" class="form-control" placeholder="e.g. Faheem Ahmed" required style="font-size:0.95rem; padding:0.75rem 1rem;">
           </div>
-          <div class="form-group" style="text-align:left; margin-bottom:1rem;">
+          <div class="form-group" style="text-align:left; margin-bottom:0.9rem;">
             <label style="font-weight:700; font-size:0.88rem; color:var(--text-main);">Email Address *</label>
-            <input type="email" id="reg-email" class="form-control" placeholder="e.g. faheemkhan101992@gmail.com" required style="font-size:0.95rem; padding:0.75rem 1rem;">
+            <input type="email" id="reg-email" class="form-control" placeholder="e.g. faheemkhan@gmail.com" required style="font-size:0.95rem; padding:0.75rem 1rem;">
           </div>
-          <div class="form-group" style="text-align:left; margin-bottom:1.2rem;">
-            <label style="font-weight:700; font-size:0.88rem; color:var(--text-main);">Mobile / WhatsApp Number *</label>
+          <div class="form-group" style="text-align:left; margin-bottom:0.9rem;">
+            <label style="font-weight:700; font-size:0.88rem; color:var(--text-main);">Mobile / WhatsApp *</label>
             <input type="tel" id="reg-phone" class="form-control" placeholder="e.g. 03001234567" required style="font-size:0.95rem; padding:0.75rem 1rem;">
           </div>
-          <button type="submit" class="btn btn-gold w-100" style="padding:0.8rem; font-size:0.95rem; font-weight:700;">
-            <i class="fa-solid fa-user-plus"></i> Create Royal Account & Sign In
+          <div class="form-group" style="text-align:left; margin-bottom:0.9rem; position:relative;">
+            <label style="font-weight:700; font-size:0.88rem; color:var(--text-main);">Create Password * <span style="font-weight:400; color:var(--text-muted); font-size:0.78rem;">(min 6 characters)</span></label>
+            <div style="position:relative;">
+              <input type="password" id="reg-password" class="form-control" placeholder="Create a strong password" required minlength="6" style="font-size:0.95rem; padding:0.75rem 1rem; padding-right:3rem;">
+              <button type="button" onclick="togglePasswordVisibility('reg-password', 'eye-reg')" style="position:absolute; right:0.8rem; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; color:var(--text-muted);">
+                <i id="eye-reg" class="fa-solid fa-eye"></i>
+              </button>
+            </div>
+          </div>
+          <div class="form-group" style="text-align:left; margin-bottom:1.2rem; position:relative;">
+            <label style="font-weight:700; font-size:0.88rem; color:var(--text-main);">Confirm Password *</label>
+            <div style="position:relative;">
+              <input type="password" id="reg-password-confirm" class="form-control" placeholder="Re-enter your password" required minlength="6" style="font-size:0.95rem; padding:0.75rem 1rem; padding-right:3rem;">
+              <button type="button" onclick="togglePasswordVisibility('reg-password-confirm', 'eye-reg2')" style="position:absolute; right:0.8rem; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; color:var(--text-muted);">
+                <i id="eye-reg2" class="fa-solid fa-eye"></i>
+              </button>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-gold w-100" style="padding:0.85rem; font-size:0.95rem; font-weight:700;">
+            <i class="fa-solid fa-user-plus"></i> Create Account &amp; Sign In
           </button>
+          <div style="font-size:0.82rem; color:var(--text-muted); margin-top:1rem; text-align:center;">
+            Already have an account? <a href="#" onclick="switchAuthTab('signin'); return false;" style="color:var(--primary-rose); font-weight:700;">&larr; Sign In</a>
+          </div>
         </form>
 
-        <!-- Express Google Option -->
-        <div style="margin-top:1.5rem; padding-top:1.2rem; border-top:1px dashed var(--border-subtle);">
-          <span style="font-size:0.82rem; color:var(--text-muted); display:block; margin-bottom:0.6rem; text-align:center;">Or Express 1-Click Authentication:</span>
-          <button class="btn btn-outline btn-sm w-100" onclick="simulateGoogleLogin()" style="font-size:0.85rem; padding:0.6rem;">
-            <i class="fa-brands fa-google" style="color:#ea4335;"></i> Sign In / Sign Up with Google
+        <!-- Google Sign In / Sign Up -->
+        <div style="margin-top:1.4rem; padding-top:1.2rem; border-top:1px dashed var(--border-subtle);">
+          <span style="font-size:0.82rem; color:var(--text-muted); display:block; margin-bottom:0.6rem; text-align:center;">Or continue with:</span>
+          <button class="btn btn-outline w-100" id="btn-google-auth" onclick="initiateGoogleAuth()" style="font-size:0.9rem; padding:0.7rem; font-weight:700; display:flex; align-items:center; justify-content:center; gap:0.6rem;">
+            <i class="fa-brands fa-google" style="color:#ea4335; font-size:1.1rem;"></i> Continue with Google
           </button>
+          <p style="font-size:0.76rem; color:var(--text-muted); margin-top:0.5rem; text-align:center; line-height:1.5;">
+            <i class="fa-solid fa-shield-halved" style="color:#10b981;"></i> Your data stays private. No spam, no sharing.
+          </p>
         </div>
       </div>
     </div>
@@ -674,6 +703,6 @@
     </div>
   </div>
 
-  <script src="app.js?v=15"></script>
+  <script src="app.js?v=17"></script>
 </body>
 </html>
