@@ -851,7 +851,7 @@ async function handleCustomerRegister(e) {
 // Get it from: https://console.cloud.google.com/ → APIs & Services → Credentials
 // Authorized JS Origins: https://royal-chhab-cake-store.vercel.app
 // ============================================================
-const GOOGLE_CLIENT_ID = 'REPLACE_WITH_YOUR_GOOGLE_CLIENT_ID';
+const GOOGLE_CLIENT_ID = '58809129371-p9fo8c3u06qqsi8gcan86pqem930lnok.apps.googleusercontent.com';
 
 function initiateGoogleAuth() {
   if (!window.google || !window.google.accounts) {
