@@ -44,63 +44,63 @@ const DEFAULT_GENERAL_FEEDBACK = [
   {
     author: "Kamil",
     rating: 5,
-    comment: "Bhai Chhab me sachi itna zabardast cake pehle kabhi nahi khaya! Dark chocolate bilkul fresh aur taste next level tha.",
+    comment: "Bhai customized heart shape cake banwaya tha 'SORRY FOR EVERYTHING' piping k sath. Cream aur sponge bohot soft tha, mood bilkul sahi ho gaya!",
     image: "customer_reviews_images/review-2.jpg",
     date: Date.now() - 3 * 24 * 60 * 60 * 1000
   },
   {
     author: "Sania",
     rating: 5,
-    comment: "Strawberry & pistachio wala torte order kia tha, icing aur sponge bohot soft tha. Delivery bhi timing pe mili RHC hospital k pas.",
+    comment: "Customized pink floral cake banwaya tha family function k liye. Buttercream rosettes aur sponge bohot soft tha, delivery timing pe RHC hospital k pas mili.",
     image: "customer_reviews_images/review-3.jpg",
     date: Date.now() - 2 * 24 * 60 * 60 * 1000
   },
   {
     author: "Ahsan",
     rating: 5,
-    comment: "Raat ko 11 baje customized order place kiya tha, subah time pe ready mil gaya. Red velvet cream cheese packing amazing thi!",
+    comment: "Raat ko 11 baje customized order place kiya tha, subah time pe ready mil gaya. Cream cheese frosting aur fresh sponge packaging amazing thi!",
     image: "customer_reviews_images/review-4.jpg",
     date: Date.now() - 4 * 24 * 60 * 60 * 1000
   },
   {
     author: "Nadia",
     rating: 5,
-    comment: "Lemon drizzle cake ka taste buhat unique aur refreshing tha. Mitha bilkul balanced tha, sab ghar walon ko buhat pasand aya.",
+    comment: "Fresh berry & rose water cake ka taste buhat unique aur refreshing tha. Mitha bilkul balanced tha, sab ghar walon ko buhat pasand aya.",
     image: "customer_reviews_images/review-5.jpg",
     date: Date.now() - 5 * 24 * 60 * 60 * 1000
   },
   {
     author: "Usman",
     rating: 5,
-    comment: "Office event k liye 12 cupcakes box order kia tha. Mango passionfruit flavor outstanding tha, highly recommended bakery!",
+    comment: "Office party k liye custom celebration cake order kia tha. Presentation outstanding thi, sab ne bohot tareef ki!",
     image: "customer_reviews_images/review-6.jpg",
     date: Date.now() - 6 * 24 * 60 * 60 * 1000
   },
   {
     author: "Mariam",
     rating: 5,
-    comment: "Online live baking tracker feature bohat zabardast hai. Bachon ne timer dekh kar bohot enjoy kiya aur cake fresh warm deliver hua.",
+    comment: "Online live baking tracker feature bohat zabardast hai. Bachon ne timer dekh kar bohot enjoy kiya aur fresh cream cake deliver hua.",
     image: "customer_reviews_images/review-7.jpg",
     date: Date.now() - 7 * 24 * 60 * 60 * 1000
   },
   {
     author: "Zohaib",
     rating: 5,
-    comment: "Wedding tier cake order kiya tha, exact design jaisa picture me tha waisa hi tayyar kia. Shadi k guests bohot impress huye.",
+    comment: "Customized tier cake order kiya tha, exact design jaisa picture me tha waisa hi tayyar kia. Shadi k guests bohot impress huye.",
     image: "customer_reviews_images/review-8.jpg",
     date: Date.now() - 8 * 24 * 60 * 60 * 1000
   },
   {
     author: "Amna",
     rating: 5,
-    comment: "Pistachio opera cake ki presentation 10/10 thi. Taste rich aur gold glaze finish super luxury feel deta hai.",
+    comment: "Custom celebration cake ki presentation 10/10 thi. Taste rich aur icing finish super luxury feel deta hai.",
     image: "customer_reviews_images/review-9.jpg",
     date: Date.now() - 9 * 24 * 60 * 60 * 1000
   },
   {
     author: "Bilal",
     rating: 5,
-    comment: "Salted caramel macaron torte super delicious tha. Packaging secure thi aur parcel safe condition me receive hua.",
+    comment: "Salted caramel cake super delicious tha. Packaging secure thi aur parcel safe condition me receive hua.",
     image: "customer_reviews_images/review-10.jpg",
     date: Date.now() - 10 * 24 * 60 * 60 * 1000
   }
@@ -469,7 +469,7 @@ function loadStateFromStorage() {
     appState.currentRider = JSON.parse(savedRider);
   }
 
-  const REVIEWS_VERSION = 'v9-faheemcake';
+  const REVIEWS_VERSION = 'v10-matched';
   const savedReviewsVersion = localStorage.getItem('luxecakes_reviews_version');
   const savedReviews = localStorage.getItem('luxecakes_reviews');
   if (savedReviews && savedReviewsVersion === REVIEWS_VERSION) {
