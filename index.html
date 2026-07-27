@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Royal Chhab Custom Cakes | Boutique Bakery & Studio</title>
+  <meta name="description" content="Royal Chhab Custom Cakes - Premier custom cake studio near RHC Hospital, Chhab. Handcrafted luxury cakes, live baking countdown tracking, and express home delivery or store pickup.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Leaflet.js Free Interactive Map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <link rel="stylesheet" href="styles.css?v=7">
+  <!-- Google Identity Services for Real Gmail Authentication -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body data-page="customer">
+
+  <!-- MODERN 3-STEP ONBOARDING SPLASH SCREEN MODAL -->
+  <div id="onboarding-splash-modal" class="modal">
+    <div class="modal-overlay"></div>
+    <div class="modal-content splash-card">
+      <div class="splash-body">
+        
+        <!-- Step 1 -->
+        <div class="splash-step active" id="splash-step-1">
+          <div class="splash-graphic">
+            <i class="fa-solid fa-cake-candles splash-icon"></i>
+          </div>
+          <span class="hero-tag"><i class="fa-solid fa-crown"></i> Step 1 of 3 &bull; Royal Craftsmanship</span>
+          <h2>Artisanal Custom Cakes in Chhab</h2>
+          <p>Welcome to Royal Chhab Custom Cakes! Located near RHC Hospital, Chhab. Baked fresh daily with premium dark cocoa, pure butter, and organic fruits.</p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="splash-step" id="splash-step-2" style="display:none;">
+          <div class="splash-graphic">
+            <i class="fa-solid fa-truck-fast splash-icon" style="color:var(--accent-gold);"></i>
+          </div>
+          <span class="hero-tag"><i class="fa-solid fa-location-dot"></i> Step 2 of 3 &bull; Flexible Fulfillment</span>
+          <h2>Home Delivery or Bakery Store Pickup</h2>
+          <p>Choose Express Home Delivery directly to your doorstep in Chhab, or select Free Bakery Store Self-Pickup with live baking countdown timers.</p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="splash-step" id="splash-step-3" style="display:none;">
+          <div class="splash-graphic">
+            <i class="fa-solid fa-shield-halved splash-icon" style="color:var(--accent-mint);"></i>
+          </div>
+          <span class="hero-tag"><i class="fa-solid fa-envelope-circle-check"></i> Step 3 of 3 &bull; Instant Email Receipts</span>
+          <h2>Secure Payments & Email Receipts</h2>
+          <p>Pay easily via Cash on Delivery, JazzCash / EasyPaisa, or Cards. Receive automated official HTML email receipts sent directly via Gmail SMTP!</p>
+        </div>
+
+        <!-- Step Dots Indicator -->
+        <div class="splash-dots">
+          <span class="dot active" id="dot-1" onclick="goToSplashStep(1)"></span>
+          <span class="dot" id="dot-2" onclick="goToSplashStep(2)"></span>
+          <span class="dot" id="dot-3" onclick="goToSplashStep(3)"></span>
+        </div>
+
+        <!-- Action Controls -->
+        <div class="splash-footer">
+          <button class="btn btn-outline btn-sm" id="splash-btn-skip" onclick="finishSplashOnboarding()">
+            Skip Intro
+          </button>
+          <button class="btn btn-primary" id="splash-btn-next" onclick="nextSplashStep()">
+            Next Step <i class="fa-solid fa-arrow-right"></i>
+          </button>
+          <button class="btn btn-gold" id="splash-btn-start" onclick="finishSplashOnboarding(true)" style="display:none;">
+            <i class="fa-solid fa-rocket"></i> Get Started / Sign In
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Public Store Navigation Header -->
+  <header class="app-header">
+    <div class="header-container" style="display:flex; align-items:center; justify-content:space-between; max-width:1320px; margin:0 auto; padding:0 1.5rem;">
+      <a href="index.html" class="brand" style="display:flex; align-items:center; gap:0.85rem;">
+        <img src="logo.png" alt="Royal Chhab Custom Cakes Logo" width="48" height="48" style="width:48px !important; height:48px !important; max-width:48px !important; max-height:48px !important; min-width:48px !important; min-height:48px !important; object-fit:contain !important; flex-shrink:0 !important; border-radius:10px; border:2px solid rgba(212,163,89,0.3); background:#ffffff; display:block !important;">
+        <div class="brand-text">
+          <h1 style="font-size:1.45rem; font-weight:700; color:var(--primary-rose); margin:0;">Royal Chhab Custom Cakes</h1>
+          <span class="brand-subtitle" style="font-size:0.78rem; color:var(--accent-gold); letter-spacing:0.08em; text-transform:uppercase; font-weight:700;">Near RHC Hospital &bull; Chhab</span>
+        </div>
+      </a>
+
+      <!-- Customer Navigation Links -->
+      <nav class="customer-nav-links">
+        <a href="#catalog-section"><i class="fa-solid fa-utensils"></i> Cake Menu</a>
+        <a href="javascript:void(0)" onclick="openCustomCakeModal()"><i class="fa-solid fa-crown"></i> Design Custom Cake</a>
+        <a href="#about-section"><i class="fa-solid fa-heart"></i> Our Story</a>
+      </nav>
+
+      <!-- Store Actions & User Auth Profile -->
+      <div class="header-actions">
+        <div id="customer-auth-widget">
+          <button class="btn btn-outline btn-sm" onclick="openCustomerAuthModal()">
+            <i class="fa-solid fa-user-lock"></i> Sign In / Register
+          </button>
+        </div>
+        <button class="icon-btn" id="orders-toggle-btn" onclick="openOrderTrackerModal()" title="Track My Order">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+          <span class="pulse-dot" id="active-orders-dot" style="display:none;"></span>
+        </button>
+        <button class="icon-btn" id="cart-toggle-btn" onclick="toggleCartDrawer()" title="View Basket">
+          <i class="fa-solid fa-basket-shopping"></i>
+          <span class="cart-badge" id="cart-count">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Notification Toast Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- MAIN STOREFRONT CONTENT -->
+  <main class="main-content">
+    <!-- Hero Banner -->
+    <div class="hero-banner">
+      <div class="hero-content">
+        <span class="hero-tag"><i class="fa-solid fa-crown"></i> Handcrafted Fresh Daily in Chhab</span>
+        <h2>Royal Chhab Custom Cakes</h2>
+        <p>Located near RHC Hospital, Chhab. Order luxury signature cakes online, design custom tiered cakes with personalized message inscriptions, select Home Delivery or Bakery Self-Pickup, and track live baking countdowns.</p>
+        <div class="hero-actions">
+          <button class="btn btn-primary" onclick="scrollToCatalog()">
+            <i class="fa-solid fa-cake-candles"></i> Explore Menu
+          </button>
+          <button class="btn btn-gold" onclick="openCustomCakeModal()">
+            <i class="fa-solid fa-palette"></i> Build Custom Cake
+          </button>
+        </div>
+      </div>
+      <div class="hero-image-box">
+        <div class="hero-badge">
+          <i class="fa-solid fa-bolt"></i> Live Kitchen Prep, Home Delivery or Store Pickup in Chhab
+        </div>
+        <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=800&q=80" alt="Royal Chhab Cake" class="hero-img">
+      </div>
+    </div>
+
+    <!-- Category Header -->
+    <div class="section-header" id="catalog-section">
+      <div>
+        <h3 class="section-title">Royal Chhab Cake Collection</h3>
+        <p class="section-sub">Baked with pure butter, belgian chocolate, and fresh organic ingredients</p>
+      </div>
+      <div class="category-pills">
+        <button class="pill active" onclick="filterCategory('all', this)">All Cakes</button>
+        <button class="pill" onclick="filterCategory('Birthday', this)">Birthday</button>
+        <button class="pill" onclick="filterCategory('Wedding', this)">Wedding</button>
+        <button class="pill" onclick="filterCategory('Signature', this)">Signature Artisanal</button>
+        <button class="pill" onclick="filterCategory('Cupcakes', this)">Cupcakes</button>
+      </div>
+    </div>
+
+    <!-- Live Product Catalog Grid -->
+    <div class="product-grid" id="product-grid">
+      <!-- Injected via JavaScript -->
+    </div>
+
+    <!-- Story of Royal Chhab Custom Cakes -->
+    <div style="margin-top:4.5rem; background:#ffffff; border:1px solid var(--border-light); border-radius:var(--radius-lg); padding:3.5rem; display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:center; box-shadow:var(--shadow-sm);" id="about-section">
+      <div>
+        <span class="hero-tag"><i class="fa-solid fa-location-dot"></i> Near RHC Hospital, Chhab</span>
+        <h3 style="font-size:2.4rem; margin-bottom:1.2rem; color:var(--primary-rose);">Crafted with Royalty & Love</h3>
+        <p style="color:var(--text-muted); font-size:1.08rem; margin-bottom:1.75rem;">
+          Royal Chhab Custom Cakes brings boutique cake design and luxury custom bakery craftsmanship directly to your celebrations in Chhab. Located conveniently near RHC Hospital, choose home delivery or store pickup with live baking countdown timers.
+        </p>
+        <div style="display:flex; gap:2rem;">
+          <div>
+            <strong style="font-size:2rem; color:var(--accent-gold); display:block;">100%</strong>
+            <span style="font-size:0.88rem; color:var(--text-muted);">Pure Ingredients</span>
+          </div>
+          <div>
+            <strong style="font-size:2rem; color:var(--accent-gold); display:block;">Chhab</strong>
+            <span style="font-size:0.88rem; color:var(--text-muted);">Delivery or Store Pickup</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <img src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=800&q=80" style="width:100%; height:320px; object-fit:cover; border-radius:var(--radius-md); box-shadow:var(--shadow-rose);" alt="Royal Chhab Bakery Kitchen">
+      </div>
+    </div>
+
+    <!-- General Testimonials / Customer Reviews & Feedback Section -->
+    <div style="margin-top:4.5rem; background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-lg); padding:3.5rem; box-shadow:var(--shadow-sm);" id="reviews-section">
+      <div style="text-align:center; margin-bottom:2.5rem;">
+        <h3 style="font-size:2.2rem; color:var(--primary-rose); margin-bottom:0.5rem; font-family:var(--font-heading); font-weight: 700;">What Our Customers Say</h3>
+        <p style="color:var(--text-muted); font-size:1rem;">Real experiences and feedback from custom cake lovers in Chhab</p>
+      </div>
+
+      <!-- Testimonials grid -->
+      <div id="general-testimonials-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:2rem; margin-bottom:3.5rem;">
+        <!-- Injected via JS -->
+      </div>
+
+      <!-- Write a feedback form -->
+      <div style="max-width:600px; margin: 0 auto; background:var(--bg-surface); padding:2rem; border-radius:var(--radius-md); border:1px solid var(--border-subtle);">
+        <h4 style="font-size:1.3rem; margin-bottom:1.2rem; color:var(--primary-rose); font-weight:700; text-align:center;">Share Your Royal Feedback</h4>
+        <form id="general-feedback-form" onsubmit="handleGeneralFeedbackSubmit(event)">
+          <div class="form-row">
+            <div class="form-group col-6">
+              <label>Your Name *</label>
+              <input type="text" id="feedback-name" class="form-control" required placeholder="e.g. Faheem Ahmed">
+            </div>
+            <div class="form-group col-6">
+              <label>Select Rating *</label>
+              <select id="feedback-rating" class="form-control">
+                <option value="5" selected>⭐⭐⭐⭐⭐ (5/5 Stars)</option>
+                <option value="4">⭐⭐⭐⭐ (4/5 Stars)</option>
+                <option value="3">⭐⭐⭐ (3/5 Stars)</option>
+                <option value="2">⭐⭐ (2/5 Stars)</option>
+                <option value="1">⭐ (1/5 Stars)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group mt-2">
+            <label>Your Review & Experience *</label>
+            <textarea id="feedback-comment" class="form-control" rows="3" required placeholder="Describe the taste, service, delivery in Chhab..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary w-100 mt-3">
+            <i class="fa-solid fa-paper-plane"></i> Submit Store Feedback
+          </button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <!-- MODALS & DRAWERS -->
+  <!-- PRODUCT DETAILS & REVIEWS MODAL -->
+  <div id="product-details-modal" class="modal">
+    <div class="modal-overlay" onclick="closeProductDetailsModal()"></div>
+    <div class="modal-content large" style="max-width: 900px;">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-cake-candles" style="color:var(--primary-rose);"></i> Product Details & Customer Reviews</h3>
+        <button class="close-btn" onclick="closeProductDetailsModal()">&times;</button>
+      </div>
+      <div class="modal-body customizer-grid" id="product-details-modal-body" style="padding: 1.5rem;">
+        <!-- Injected via JS dynamically -->
+      </div>
+    </div>
+  </div>
+  <div id="cart-drawer" class="drawer">
+    <div class="drawer-overlay" onclick="toggleCartDrawer()"></div>
+    <div class="drawer-content">
+      <div class="drawer-header">
+        <h3><i class="fa-solid fa-basket-shopping" style="color:var(--primary-rose);"></i> Your Order Basket</h3>
+        <button class="close-btn" onclick="toggleCartDrawer()">&times;</button>
+      </div>
+
+      <div class="drawer-body" id="cart-items-container">
+        <!-- Injected via JS -->
+      </div>
+
+      <div class="drawer-footer">
+        <div class="price-summary">
+          <div class="price-row">
+            <span>Subtotal:</span>
+            <span id="cart-subtotal">Rs. 0</span>
+          </div>
+          <div class="price-row">
+            <span>Delivery Fee:</span>
+            <span id="cart-delivery-fee">Rs. 300</span>
+          </div>
+          <div class="price-row total">
+            <span>Total:</span>
+            <span id="cart-total">Rs. 0</span>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-block" id="cart-checkout-btn" onclick="openCheckoutModal()">
+          Proceed to Checkout <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CUSTOMER SIGN-IN / SIGN-UP MODAL WITH REAL GOOGLE SIGN-IN ONLY -->
+  <div id="customer-auth-modal" class="modal">
+    <div class="modal-overlay" onclick="closeCustomerAuthModal()"></div>
+    <div class="modal-content medium">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-user-lock" style="color:var(--primary-rose);"></i> Royal Chhab Account Access</h3>
+        <button class="close-btn" onclick="closeCustomerAuthModal()">&times;</button>
+      </div>
+
+      <div class="modal-body" style="text-align: center; padding: 2rem 1.5rem;">
+        <i class="fa-brands fa-google fa-4x mb-3" style="color:#ea4335; display:block;"></i>
+        <h4 style="font-size:1.25rem; margin-bottom:0.5rem; font-family:var(--font-body); font-weight:700;">Official Gmail Sign In / Sign Up</h4>
+        <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:1.8rem; max-width:340px; margin-left:auto; margin-right:auto;">
+          Sign in or register instantly using your real Google / Gmail account. No passwords or registration forms required.
+        </p>
+
+        <!-- Official Google Sign-In button container -->
+        <div id="google-signin-btn-container" style="display:flex; justify-content:center; margin:1.5rem 0; min-height: 40px;"></div>
+        
+        <!-- Offline Simulation/Fallback -->
+        <div style="margin-top:1.5rem; padding-top:1.2rem; border-top:1px solid var(--border-subtle); font-size:0.8rem; color:var(--text-muted);">
+          <span>For offline or localhost testing without a Google Client ID:</span>
+          <button class="btn btn-sm btn-outline mt-2" onclick="simulateGoogleLogin()" style="width:100%;">
+            <i class="fa-solid fa-flask"></i> Simulate Real Google Login Response
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CUSTOM CAKE BUILDER MODAL -->
+  <div id="custom-cake-modal" class="modal">
+    <div class="modal-overlay" onclick="closeCustomCakeModal()"></div>
+    <div class="modal-content large">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-crown" style="color:var(--primary-rose);"></i> Design Your Royal Chhab Custom Cake</h3>
+        <button class="close-btn" onclick="closeCustomCakeModal()">&times;</button>
+      </div>
+
+      <div class="modal-body customizer-grid">
+        <div class="customizer-controls">
+          <div class="form-group">
+            <label>Select Cake Weight & Tiers:</label>
+            <select id="custom-size" class="form-control" onchange="calculateCustomPrice()">
+              <option value="2-lbs" data-price="2200">2 Lbs Single Tier (Serves 6-8) - Rs. 2,200</option>
+              <option value="3-lbs" data-price="3200" selected>3 Lbs Single Tier (Serves 10-12) - Rs. 3,200</option>
+              <option value="2-tier" data-price="5500">2-Tier Deluxe (Serves 20-25) - Rs. 5,500</option>
+              <option value="3-tier" data-price="9800">3-Tier Grand Celebration (Serves 40+) - Rs. 9,800</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Sponge Flavor Profile:</label>
+            <select id="custom-flavor" class="form-control">
+              <option value="Belgian Dark Chocolate">Belgian Dark Chocolate</option>
+              <option value="Madagascar Vanilla Bean">Madagascar Vanilla Bean</option>
+              <option value="Red Velvet Velvet">Red Velvet</option>
+              <option value="Salted Caramel Crunch">Salted Caramel Crunch</option>
+              <option value="Pistachio Pineapple">Pistachio Pineapple</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Buttercream / Frosting Type:</label>
+            <select id="custom-frosting" class="form-control">
+              <option value="Swiss Meringue Buttercream">Swiss Meringue Buttercream</option>
+              <option value="Dark Chocolate Ganache">Dark Chocolate Ganache</option>
+              <option value="Cream Cheese Frosting">Cream Cheese Frosting</option>
+              <option value="Gold Leaf Fondant Accent">Gold Leaf Fondant Accent (+Rs. 500)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Custom Text Message on Cake:</label>
+            <input type="text" id="custom-text" class="form-control" placeholder="e.g. Happy Birthday Sarah!" oninput="updateCustomCakePreviewText(this.value)">
+          </div>
+
+          <div class="form-group">
+            <label>Special Bakery Instructions:</label>
+            <textarea id="custom-notes" class="form-control" rows="2" placeholder="e.g. Add extra chocolate curls on top, less sweet"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Select Delivery / Pickup Date:</label>
+            <select id="custom-delivery-day" class="form-control">
+              <!-- Dynamically populated via JS -->
+            </select>
+            <div id="custom-cake-lead-warning" style="margin-top:0.45rem; font-size:0.85rem; color:var(--primary-rose); font-weight:700; display:flex; align-items:center; gap:0.4rem;">
+              <!-- Dynamically loaded -->
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Estimated Kitchen Preparation Time:</label>
+            <div style="background:var(--primary-rose-light); padding:0.6rem 1.1rem; border-radius:var(--radius-md); display:inline-flex; align-items:center; gap:0.5rem; color:var(--primary-rose); font-weight:700;">
+              <i class="fa-solid fa-stopwatch"></i> <span id="custom-prep-time">45 Minutes</span> Baking Countdown
+            </div>
+          </div>
+        </div>
+
+        <!-- Dynamic Visual Preview -->
+        <div class="customizer-preview">
+          <div class="product-card" style="padding:1.6rem;">
+            <h4>Live Royal Cake Preview</h4>
+            <div class="cake-visualizer">
+              <div class="cake-graphic" id="cake-graphic">
+                <i class="fa-solid fa-cake-candles cake-icon-big"></i>
+                <div class="cake-text-overlay" id="cake-text-preview">Happy Birthday!</div>
+              </div>
+            </div>
+            <div class="price-display" style="display:flex; justify-content:space-between; align-items:center; margin-top:1rem;">
+              <span>Calculated Total:</span>
+              <strong id="custom-total-price" style="font-size:1.5rem; color:var(--primary-rose);">Rs. 3,200</strong>
+            </div>
+            <button class="btn btn-primary w-100 mt-3" onclick="addCustomCakeToCart()">
+              <i class="fa-solid fa-basket-shopping"></i> Add Custom Cake to Basket
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CHECKOUT MODAL WITH EMAIL RECEIPT SUPPORT -->
+  <div id="checkout-modal" class="modal">
+    <div class="modal-overlay" onclick="closeCheckoutModal()"></div>
+    <div class="modal-content medium">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-shield-halved" style="color:var(--primary-rose);"></i> Order Fulfillment & Payment Details</h3>
+        <button class="close-btn" onclick="closeCheckoutModal()">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <form id="checkout-form" onsubmit="handlePaymentSubmit(event)">
+          
+          <!-- FULFILLMENT TYPE SELECTOR -->
+          <div style="font-size:1rem; font-weight:700; color:var(--primary-rose); margin-bottom:0.8rem;">
+            <i class="fa-solid fa-truck-ramp-box"></i> Order Fulfillment Type
+          </div>
+          
+          <div class="payment-tabs mb-3">
+            <label class="payment-tab active" id="tab-fulfillment-delivery">
+              <input type="radio" name="fulfillment-type" value="delivery" checked onchange="toggleFulfillmentType('delivery')">
+              <i class="fa-solid fa-motorcycle"></i> Express Home Delivery (+<span id="display-checkout-fee">Rs. 300</span>)
+            </label>
+            <label class="payment-tab" id="tab-fulfillment-pickup">
+              <input type="radio" name="fulfillment-type" value="pickup" onchange="toggleFulfillmentType('pickup')">
+              <i class="fa-solid fa-store"></i> Self Pickup from Bakery (Free / Rs. 0)
+            </label>
+          </div>
+
+          <!-- Customer Contact & Email for Gmail SMTP Receipt -->
+          <div class="form-row">
+            <div class="form-group col-6">
+              <label>Full Name *</label>
+              <input type="text" id="cust-name" class="form-control" required placeholder="e.g. Faheem Ahmed">
+            </div>
+            <div class="form-group col-6">
+              <label>Phone / WhatsApp Number *</label>
+              <input type="tel" id="cust-phone" class="form-control" required placeholder="e.g. 0300 1234567">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label><i class="fa-solid fa-envelope" style="color:var(--accent-gold);"></i> Email Address for Email Receipt (Gmail SMTP) *</label>
+            <input type="email" id="cust-email" class="form-control" required placeholder="faheemkhan101992@gmail.com" value="faheemkhan101992@gmail.com">
+          </div>
+
+          <!-- Address Fields for Delivery -->
+          <div id="fulfillment-delivery-box" class="form-group">
+            <label>Chhab Delivery Address (House / Street / Near RHC Hospital) *</label>
+            <input type="text" id="cust-address" class="form-control" required placeholder="e.g. Street 3, Near RHC Hospital, Chhab">
+          </div>
+
+          <!-- Store Pickup Location Box -->
+          <div id="fulfillment-pickup-box" class="job-detail-box" style="display:none; background:var(--primary-rose-light); border-color:var(--primary-rose);">
+            <div style="font-weight:700; color:var(--primary-rose);"><i class="fa-solid fa-store"></i> Bakery Store Pickup Location:</div>
+            <div style="font-size:0.92rem; color:var(--text-main); margin-top:0.3rem;">
+              <strong>Royal Chhab Custom Cakes Kitchen</strong><br>
+              Main Road, Near RHC Hospital, Chhab, Punjab, Pakistan
+            </div>
+            <div style="font-size:0.8rem; color:var(--text-muted); margin-top:0.3rem;">
+              <i class="fa-solid fa-clock"></i> Your cake will be ready for pickup in 35-45 minutes. Countdown live in tracker!
+            </div>
+          </div>
+
+          <!-- Payment Options -->
+          <div style="font-size:1rem; font-weight:700; color:var(--primary-rose); margin-top:1.4rem; margin-bottom:0.8rem;"><i class="fa-solid fa-credit-card"></i> Payment Method</div>
+          
+          <div class="payment-tabs" id="checkout-payment-tabs" style="display:flex; flex-wrap:wrap; gap:0.6rem;">
+            <!-- Injected via JS dynamically -->
+          </div>
+
+          <!-- Dynamic Payment Details Box -->
+          <div id="checkout-payment-details-box" class="job-detail-box mt-3" style="border-color:var(--accent-gold);">
+            <!-- Injected via JS dynamically -->
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:1.6rem;">
+            <div style="font-size:1.15rem;">
+              Total to Pay: <strong id="pay-modal-total" style="color:var(--primary-rose); font-size:1.4rem;">Rs. 0</strong>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg">
+              <i class="fa-solid fa-paper-plane"></i> Place Order & Send Email Receipt
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- LIVE ORDER TRACKER & MAP MODAL -->
+  <div id="order-tracker-modal" class="modal">
+    <div class="modal-overlay" onclick="closeOrderTrackerModal()"></div>
+    <div class="modal-content medium">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-clock-rotate-left" style="color:var(--primary-rose);"></i> Live Royal Chhab Order & GPS Map Tracking</h3>
+        <button class="close-btn" onclick="closeOrderTrackerModal()">&times;</button>
+      </div>
+
+      <div class="modal-body" id="order-tracker-body">
+        <!-- Injected via JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js?v=7"></script>
+</body>
+</html>

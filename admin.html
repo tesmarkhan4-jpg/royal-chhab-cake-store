@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Royal Chhab Ops | Executive Administration Desk</title>
+  <meta name="description" content="Royal Chhab Custom Cakes Operations Suite: Complete order pipeline, kitchen preparation timers, rider fleet dispatch, product manager, store settings, and AI photo studio.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Leaflet.js Free Interactive Map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <link rel="stylesheet" href="styles.css?v=6">
+</head>
+<body data-page="admin">
+
+  <!-- Admin Navigation Header -->
+  <header class="app-header">
+    <div class="header-container" style="display:flex; align-items:center; justify-content:space-between; max-width:1380px; margin:0 auto; padding:0 1.5rem;">
+      <div class="brand" style="display:flex; align-items:center; gap:0.85rem;">
+        <img src="logo.png" alt="Royal Chhab Logo" width="48" height="48" style="width:48px !important; height:48px !important; max-width:48px !important; max-height:48px !important; min-width:48px !important; min-height:48px !important; object-fit:contain !important; flex-shrink:0 !important; border-radius:10px; border:2px solid rgba(245,158,11,0.3); background:#ffffff; display:block !important;">
+        <div class="brand-text">
+          <h1 style="font-size:1.35rem; font-weight:700; color:var(--primary-rose); margin:0; line-height:1.2;">Royal Chhab Ops</h1>
+          <span class="brand-subtitle" style="font-size:0.75rem; color:var(--accent-gold); letter-spacing:0.08em; text-transform:uppercase; font-weight:700;">Executive Store Administration &bull; Chhab</span>
+        </div>
+      </div>
+
+      <!-- Quick Admin Actions -->
+      <div class="header-actions" style="display:flex; align-items:center; gap:0.85rem;">
+        <button class="btn btn-sm btn-outline" id="admin-audio-indicator" onclick="stopAdminContinuousAlert()" style="display:none; border-color:var(--primary-rose); color:var(--primary-rose);">
+          <i class="fa-solid fa-bell fa-shake"></i> Stop Alert Audio Loop
+        </button>
+
+        <button class="btn btn-gold btn-sm" onclick="openAddProductModal()">
+          <i class="fa-solid fa-plus"></i> Add Product
+        </button>
+        <button class="btn btn-outline btn-sm" onclick="openAddRiderModal()">
+          <i class="fa-solid fa-user-plus"></i> Add Rider
+        </button>
+        <button class="btn btn-outline btn-sm" onclick="openStoreSettingsModal()">
+          <i class="fa-solid fa-gear"></i> Store Settings
+        </button>
+        <div style="font-size:0.85rem; color:var(--text-muted); padding-left:0.8rem; border-left:1px solid var(--border-subtle);">
+          <i class="fa-solid fa-user-shield" style="color:var(--accent-gold);"></i> Owner Console
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Notification Toast Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- MAIN ADMIN DASHBOARD CONTENT -->
+  <main class="main-content" style="max-width:1380px; margin:0 auto; padding:2rem 1.5rem 4rem;">
+    
+    <!-- Store Status Banner -->
+    <div style="background:var(--bg-card); border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:1rem 1.5rem; margin-bottom:1.8rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
+      <div style="display:flex; align-items:center; gap:0.8rem;">
+        <span class="badge badge-online" id="admin-store-status-badge"><i class="fa-solid fa-circle"></i> Kitchen Open & Accepting Orders</span>
+        <span style="font-size:0.88rem; color:var(--text-muted);">Main Kitchen: Near RHC Hospital, Chhab &bull; Express Delivery Fee: <strong>Rs. 300</strong></span>
+      </div>
+      <div style="display:flex; align-items:center; gap:0.8rem;">
+        <button class="btn btn-sm btn-outline" onclick="toggleStoreOpenStatus()">
+          <i class="fa-solid fa-power-off"></i> Toggle Store Status
+        </button>
+      </div>
+    </div>
+
+    <!-- Top Executive Metrics Bar -->
+    <div class="admin-quick-stats">
+      <div class="stat-card gold">
+        <i class="fa-solid fa-money-bill-wave"></i>
+        <div>
+          <span class="stat-value" id="stat-total-revenue">Rs. 0</span>
+          <span class="stat-label">Total Revenue</span>
+        </div>
+      </div>
+
+      <div class="stat-card glow">
+        <i class="fa-solid fa-receipt"></i>
+        <div>
+          <span class="stat-value" id="stat-total-orders">0</span>
+          <span class="stat-label">Total Orders</span>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <i class="fa-solid fa-fire" style="color:var(--primary-rose);"></i>
+        <div>
+          <span class="stat-value" id="stat-active-prep">0</span>
+          <span class="stat-label">Kitchen Baking Now</span>
+        </div>
+      </div>
+
+      <div class="stat-card mint">
+        <i class="fa-solid fa-circle-check"></i>
+        <div>
+          <span class="stat-value" id="stat-delivered-count">0</span>
+          <span class="stat-label">Delivered Orders</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin Operations Tabs Navigation -->
+    <div class="admin-nav-tabs">
+      <button class="tab-btn active" onclick="switchAdminTab('orders', this)">
+        <i class="fa-solid fa-list-check"></i> Live Orders & Kitchen Pipeline (<span id="admin-tab-order-count">0</span>)
+      </button>
+      <button class="tab-btn" onclick="switchAdminTab('products', this)">
+        <i class="fa-solid fa-box-open"></i> Product Catalog Manager (<span id="admin-tab-product-count">0</span>)
+      </button>
+      <button class="tab-btn" onclick="switchAdminTab('riders', this)">
+        <i class="fa-solid fa-motorcycle"></i> Courier Fleet & Riders (<span id="admin-tab-rider-count">2</span>)
+      </button>
+      <button class="tab-btn" onclick="switchAdminTab('payment-methods', this)">
+        <i class="fa-solid fa-credit-card"></i> Payment Systems Manager (<span id="admin-tab-payment-count">0</span>)
+      </button>
+      <button class="tab-btn highlight" onclick="switchAdminTab('ai-studio', this)">
+        <i class="fa-solid fa-wand-magic-sparkles"></i> AI Photo Studio & Enhancer
+      </button>
+    </div>
+
+    <!-- TAB 1: LIVE ORDERS PIPELINE & MANAGEMENT -->
+    <div id="admin-tab-orders" class="admin-tab-content active">
+      <div class="admin-card">
+        <div class="card-header">
+          <div>
+            <h3 style="font-size:1.35rem;"><i class="fa-solid fa-spinner fa-spin-pulse" style="color:var(--primary-rose);"></i> Order Management & Kitchen Pipeline</h3>
+            <span style="font-size:0.85rem; color:var(--text-muted);">Track customer orders in Chhab, monitor baking countdown timers, print receipts, and dispatch riders.</span>
+          </div>
+          <div style="display:flex; gap:0.6rem;">
+            <button class="btn btn-sm btn-outline" onclick="renderAdminOrders()">
+              <i class="fa-solid fa-rotate"></i> Refresh Pipeline
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter Sub-Pills -->
+        <div class="category-pills mb-3">
+          <button class="pill active" onclick="filterAdminOrders('all', this)">All Orders</button>
+          <button class="pill" onclick="filterAdminOrders('New Order', this)">New Unaccepted Orders</button>
+          <button class="pill" onclick="filterAdminOrders('Baking & Prepping', this)">Baking & Prepping</button>
+          <button class="pill" onclick="filterAdminOrders('Ready for Pickup', this)">Ready for Pickup</button>
+          <button class="pill" onclick="filterAdminOrders('Dispatching Rider', this)">Dispatching Rider</button>
+          <button class="pill" onclick="filterAdminOrders('Out for Delivery', this)">Out for Delivery</button>
+          <button class="pill" onclick="filterAdminOrders('Delivered', this)">Delivered</button>
+        </div>
+
+        <div class="table-responsive">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Customer & Phone</th>
+                <th>Delivery Address</th>
+                <th>Items & Specs</th>
+                <th>Total (PKR)</th>
+                <th>Baking Countdown</th>
+                <th>Status</th>
+                <th>Actions & Dispatch</th>
+              </tr>
+            </thead>
+            <tbody id="admin-orders-tbody">
+              <!-- Injected via JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: STORE CATALOG INVENTORY MANAGER -->
+    <div id="admin-tab-products" class="admin-tab-content">
+      <div class="admin-card">
+        <div class="card-header">
+          <div>
+            <h3 style="font-size:1.35rem;"><i class="fa-solid fa-cake-candles" style="color:var(--accent-gold);"></i> Store Product Inventory Manager</h3>
+            <span style="font-size:0.85rem; color:var(--text-muted);">Add new cakes, edit prices, change prep times, or push enhanced AI images to the live storefront catalog.</span>
+          </div>
+          <button class="btn btn-gold btn-sm" onclick="openAddProductModal()">
+            <i class="fa-solid fa-plus"></i> Add New Product
+          </button>
+        </div>
+        <div class="product-manager-grid" id="admin-product-grid">
+          <!-- Injected via JavaScript -->
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: COURIER FLEET & RIDER MANAGEMENT (ADMIN ADD/REMOVE RIDERS) -->
+    <div id="admin-tab-riders" class="admin-tab-content">
+      <div class="admin-card">
+        <div class="card-header">
+          <div>
+            <h3 style="font-size:1.35rem;"><i class="fa-solid fa-motorcycle" style="color:var(--accent-mint);"></i> Chhab Courier Fleet Operations & Rider Roster</h3>
+            <span style="font-size:0.85rem; color:var(--text-muted);">View all active riders, contact numbers, delivery status, or add/remove riders from fleet.</span>
+          </div>
+          <div style="display:flex; gap:0.6rem;">
+            <button class="btn btn-gold btn-sm" onclick="openAddRiderModal()">
+              <i class="fa-solid fa-user-plus"></i> Add New Rider
+            </button>
+            <button class="btn btn-outline btn-sm" onclick="triggerBroadcastRiderAlert()">
+              <i class="fa-solid fa-bullhorn"></i> Test Broadcast Alert
+            </button>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Rider Name</th>
+                <th>Courier ID</th>
+                <th>Phone / WhatsApp Number</th>
+                <th>Vehicle Type</th>
+                <th>Status</th>
+                <th>Completed Trips</th>
+                <th>Total Earnings</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="admin-riders-tbody">
+              <!-- Injected via JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: AI PRODUCT PHOTO STUDIO & ENHANCER -->
+    <div id="admin-tab-ai-studio" class="admin-tab-content">
+      <div class="admin-card ai-studio-card">
+        <div class="card-header">
+          <div>
+            <h3 style="font-size:1.35rem;"><i class="fa-solid fa-wand-magic-sparkles" style="color:var(--accent-gold);"></i> AI Cake Photo Studio & Background Refresh</h3>
+            <p style="color:var(--text-muted); margin:0;">Upload a phone photo of your cake taken in Chhab. AI auto-enhances lighting, contrast, sharpness, and replaces cluttered backgrounds with a fresh bakery studio backdrop.</p>
+          </div>
+        </div>
+
+        <div class="ai-studio-workspace">
+          <!-- Control Panel -->
+          <div class="ai-controls-panel">
+            <div class="upload-dropzone" id="ai-upload-dropzone">
+              <input type="file" id="ai-image-input" accept="image/*" onchange="loadAIStudioImage(event)" hidden>
+              <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+              <p><strong>Click or Drag Mobile Cake Photo</strong></p>
+              <span>Supports JPG, PNG (Mobile uploads welcome)</span>
+              <button class="btn btn-sm btn-outline mt-2" onclick="document.getElementById('ai-image-input').click()">
+                <i class="fa-solid fa-camera"></i> Select Photo
+              </button>
+            </div>
+
+            <div class="preset-buttons">
+              <label>Quick AI Presets:</label>
+              <div class="preset-grid">
+                <button class="btn btn-sm btn-preset" onclick="applyAIPreset('auto')"><i class="fa-solid fa-bolt"></i> Auto Magic</button>
+                <button class="btn btn-sm btn-preset" onclick="applyAIPreset('vivid')"><i class="fa-solid fa-eye"></i> Bakery Vivid</button>
+                <button class="btn btn-sm btn-preset" onclick="applyAIPreset('gourmet')"><i class="fa-solid fa-crown"></i> Gourmet Warm</button>
+                <button class="btn btn-sm btn-preset" onclick="applyAIPreset('studio')"><i class="fa-solid fa-camera-retro"></i> Clean Studio</button>
+              </div>
+            </div>
+
+            <!-- AI Sliders -->
+            <div class="control-group">
+              <label><i class="fa-solid fa-sun"></i> Brightness & Lighting (<span id="val-brightness">110%</span>)</label>
+              <input type="range" id="slider-brightness" min="80" max="150" value="110" oninput="updateAIStudio()">
+            </div>
+
+            <div class="control-group">
+              <label><i class="fa-solid fa-circle-half-stroke"></i> Contrast & Richness (<span id="val-contrast">115%</span>)</label>
+              <input type="range" id="slider-contrast" min="80" max="160" value="115" oninput="updateAIStudio()">
+            </div>
+
+            <div class="control-group">
+              <label><i class="fa-solid fa-droplet"></i> Color Saturation (<span id="val-saturation">120%</span>)</label>
+              <input type="range" id="slider-saturation" min="80" max="180" value="120" oninput="updateAIStudio()">
+            </div>
+
+            <div class="control-group">
+              <label><i class="fa-solid fa-wand-sparkles"></i> Soft Glow / Bloom (<span id="val-bloom">15px</span>)</label>
+              <input type="range" id="slider-bloom" min="0" max="30" value="15" oninput="updateAIStudio()">
+            </div>
+
+            <!-- Background Polish Options -->
+            <div class="control-group">
+              <label><i class="fa-solid fa-image"></i> AI Background Studio Polish:</label>
+              <select id="select-ai-bg" onchange="updateAIStudio()" class="form-control">
+                <option value="warm-bakery">Gourmet Warm Bakery Studio (Bokeh Gold)</option>
+                <option value="marble-luxury">Luxury White Marble & Silk Soft Blur</option>
+                <option value="dark-gourmet">Dark Velvet Chocolate Mood</option>
+                <option value="pastel-pink">Pastel Rose & Vanilla Dream</option>
+                <option value="original">Original Background (Cleaned & Sharp)</option>
+              </select>
+            </div>
+
+            <div class="ai-actions mt-3">
+              <button class="btn btn-gold w-100" onclick="saveAIStudioToCatalog()">
+                <i class="fa-solid fa-floppy-disk"></i> Use Enhanced Image in Catalog
+              </button>
+            </div>
+          </div>
+
+          <!-- Preview Canvas -->
+          <div class="ai-canvas-area">
+            <div class="canvas-header-bar">
+              <span><i class="fa-solid fa-eye"></i> Real-Time AI Canvas Preview</span>
+              <span class="badge badge-success"><i class="fa-solid fa-check"></i> Non-destructive Canvas Engine</span>
+            </div>
+            <div class="canvas-container">
+              <canvas id="ai-canvas" width="600" height="600"></canvas>
+              <div id="ai-placeholder-msg" class="ai-placeholder">
+                <i class="fa-solid fa-wand-magic-sparkles fa-3x mb-2" style="color:var(--accent-gold);"></i>
+                <h4>No Image Loaded</h4>
+                <p>Upload a mobile photo or select one from sample cakes below</p>
+                <div class="sample-images-bar mt-3">
+                  <span>Try Sample Mobile Uploads:</span>
+                  <div class="sample-thumbs">
+                    <img src="https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&w=300&q=80" alt="Sample 1" onclick="loadSampleToAI(this.src)">
+                    <img src="https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=300&q=80" alt="Sample 2" onclick="loadSampleToAI(this.src)">
+                    <img src="https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?auto=format&fit=crop&w=300&q=80" alt="Sample 3" onclick="loadSampleToAI(this.src)">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 5: PAYMENT SYSTEMS MANAGER -->
+    <div id="admin-tab-payment-methods" class="admin-tab-content">
+      <div class="admin-card">
+        <div class="card-header" style="display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <h3 style="font-size:1.35rem;"><i class="fa-solid fa-credit-card" style="color:var(--primary-rose);"></i> Payment Systems & Custom Bank Methods</h3>
+            <span style="font-size:0.85rem; color:var(--text-muted);">Manage payment methods for customers in Pakistan. Custom payment methods require customers to upload screenshots of payment receipts for Admin approval before baking starts.</span>
+          </div>
+          <button class="btn btn-gold btn-sm" onclick="openAddPaymentModal()">
+            <i class="fa-solid fa-plus"></i> Add Payment Method
+          </button>
+        </div>
+
+        <div style="padding:1.5rem;">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Payment Method Name</th>
+                <th>Account Name</th>
+                <th>Account Number / IBAN</th>
+                <th>Instructions</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="admin-payments-tbody">
+              <!-- Injected via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ADD / EDIT PRODUCT MODAL -->
+  <div id="add-product-modal" class="modal">
+    <div class="modal-overlay" onclick="closeAddProductModal()"></div>
+    <div class="modal-content medium">
+      <div class="modal-header">
+        <h3 id="product-modal-title"><i class="fa-solid fa-plus-circle" style="color:var(--accent-gold);"></i> Add New Product to Storefront</h3>
+        <button class="close-btn" onclick="closeAddProductModal()">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <form id="add-product-form" onsubmit="handleAddProductSubmit(event)">
+          <input type="hidden" id="edit-prod-id" value="">
+          <div class="form-group">
+            <label>Product Name *</label>
+            <input type="text" id="prod-name" class="form-control" required placeholder="e.g. Royal Chhab Berry Torte">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-6">
+              <label>Price (Rs.) *</label>
+              <input type="number" step="1" id="prod-price" class="form-control" required placeholder="2500">
+            </div>
+            <div class="form-group col-6">
+              <label>Category *</label>
+              <select id="prod-category" class="form-control">
+                <option value="Birthday">Birthday</option>
+                <option value="Wedding">Wedding</option>
+                <option value="Signature">Signature Artisanal</option>
+                <option value="Cupcakes">Cupcakes</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Image URL (or select enhanced image from AI Studio)</label>
+            <input type="url" id="prod-image" class="form-control" placeholder="https://images.unsplash.com/photo-..." required>
+          </div>
+
+          <div class="form-group">
+            <label>Description</label>
+            <textarea id="prod-desc" class="form-control" rows="2" placeholder="Gourmet description of ingredients and sponge profile..."></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-gold w-100 mt-3">
+            <i class="fa-solid fa-check"></i> Save Product to Catalog
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD NEW RIDER MODAL -->
+  <div id="add-rider-modal" class="modal">
+    <div class="modal-overlay" onclick="closeAddRiderModal()"></div>
+    <div class="modal-content medium">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-user-plus" style="color:var(--accent-gold);"></i> Register New Courier Rider</h3>
+        <button class="close-btn" onclick="closeAddRiderModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="handleAddRiderSubmit(event)">
+          <div class="form-group">
+            <label>Rider Full Name *</label>
+            <input type="text" id="new-rider-name" class="form-control" placeholder="e.g. Bilal Ahmed" required>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-6">
+              <label>Phone / WhatsApp Number *</label>
+              <input type="tel" id="new-rider-phone" class="form-control" placeholder="0302-1112233" required>
+            </div>
+            <div class="form-group col-6">
+              <label>Vehicle Type</label>
+              <select id="new-rider-vehicle" class="form-control">
+                <option value="Motorbike">Motorbike</option>
+                <option value="Express Scooter">Express Scooter</option>
+                <option value="Bicycle">Bicycle</option>
+              </select>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-gold w-100 mt-3">
+            <i class="fa-solid fa-check"></i> Add Rider to Chhab Fleet
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORDER INVOICE & DETAILS MODAL -->
+  <div id="admin-order-modal" class="modal">
+    <div class="modal-overlay" onclick="closeAdminOrderModal()"></div>
+    <div class="modal-content medium">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-receipt" style="color:var(--accent-gold);"></i> Royal Chhab Official Order Invoice</h3>
+        <button class="close-btn" onclick="closeAdminOrderModal()">&times;</button>
+      </div>
+      <div class="modal-body" id="admin-order-modal-body">
+        <!-- Injected via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- STORE SETTINGS MODAL -->
+  <div id="store-settings-modal" class="modal">
+    <div class="modal-overlay" onclick="closeStoreSettingsModal()"></div>
+    <div class="modal-content medium">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-gear" style="color:var(--accent-gold);"></i> Storefront & Kitchen Settings</h3>
+        <button class="close-btn" onclick="closeStoreSettingsModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="saveStoreSettings(event)">
+          <div class="form-group">
+            <label>Bakery Main Location Address</label>
+            <input type="text" id="setting-store-address" class="form-control" value="Near RHC Hospital, Main Road, Chhab, Punjab, Pakistan">
+          </div>
+          <div class="form-row">
+            <div class="form-group col-6">
+              <label>Delivery Fee (PKR)</label>
+              <input type="number" id="setting-delivery-fee" class="form-control" value="300">
+            </div>
+            <div class="form-group col-6">
+              <label>WhatsApp Support Contact</label>
+              <input type="text" id="setting-whatsapp" class="form-control" value="0300-ROYAL-CHHAB">
+            </div>
+          </div>
+          <div class="form-row mt-2">
+            <div class="form-group col-6">
+              <label>Default Cake Prep Time (mins)</label>
+              <input type="number" id="setting-prep-time" class="form-control" value="40" required>
+            </div>
+            <div class="form-group col-6">
+              <label>Default Delivery Time (mins)</label>
+              <input type="number" id="setting-delivery-time" class="form-control" value="30" required>
+            </div>
+          </div>
+          <div class="form-group mt-2">
+            <label>Custom Cake Min Lead Time (Days) *</label>
+            <select id="setting-lead-days" class="form-control">
+              <option value="1">1 Day</option>
+              <option value="2">2 Days (Standard)</option>
+              <option value="3">3 Days</option>
+              <option value="4">4 Days</option>
+              <option value="5">5 Days</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-gold w-100 mt-3">
+            <i class="fa-solid fa-check"></i> Save Settings
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADJUST ORDER TIME MODAL -->
+  <div id="adjust-order-time-modal" class="modal">
+    <div class="modal-overlay" onclick="closeAdjustTimeModal()"></div>
+    <div class="modal-content small">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-hourglass-half" style="color:var(--accent-gold);"></i> Adjust Order Time</h3>
+        <button class="close-btn" onclick="closeAdjustTimeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form onsubmit="handleAdjustTimeSubmit(event)">
+          <input type="hidden" id="adjust-order-id">
+          <div class="form-group">
+            <label>Cake Prep Time (minutes)</label>
+            <input type="number" id="adjust-prep-time" class="form-control" required min="1" max="300">
+          </div>
+          <div class="form-group mt-2">
+            <label>Delivery Time (minutes)</label>
+            <input type="number" id="adjust-delivery-time" class="form-control" required min="1" max="180">
+          </div>
+          <button type="submit" class="btn btn-gold w-100 mt-3">
+            <i class="fa-solid fa-check"></i> Apply Time Adjustments
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD PAYMENT METHOD MODAL -->
+  <div id="add-payment-modal" class="modal">
+    <div class="modal-overlay" onclick="closeAddPaymentModal()"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-plus"></i> Add Custom Payment Method</h3>
+        <button class="close-btn" onclick="closeAddPaymentModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="add-payment-form" onsubmit="handleAddPaymentSubmit(event)">
+          <div class="form-group">
+            <label>Payment Method Name *</label>
+            <input type="text" id="new-pay-name" class="form-control" required placeholder="e.g. EasyPaisa, JazzCash, Meezan Bank">
+          </div>
+          <div class="form-group">
+            <label>Account Name *</label>
+            <input type="text" id="new-pay-account-name" class="form-control" required placeholder="e.g. Faheem Ahmed">
+          </div>
+          <div class="form-group">
+            <label>Account Number / IBAN *</label>
+            <input type="text" id="new-pay-account-number" class="form-control" required placeholder="e.g. 03001234567 or PK73MEZN00...">
+          </div>
+          <div class="form-group">
+            <label>Instructions for Customer *</label>
+            <textarea id="new-pay-instructions" class="form-control" rows="3" required placeholder="e.g. Transfer the total amount to this account and upload screenshot of the receipt."></textarea>
+          </div>
+          <button type="submit" class="btn btn-gold w-100 mt-2">
+            <i class="fa-solid fa-check"></i> Add Payment Method
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js?v=6"></script>
+</body>
+</html>

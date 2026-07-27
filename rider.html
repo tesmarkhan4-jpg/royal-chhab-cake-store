@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Royal Chhab Express | Rider Delivery Console</title>
+  <meta name="description" content="Dedicated Royal Chhab Custom Cakes rider console with instant siren sound notifications, pickup address reveal, and delivery GPS route tracking.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Leaflet.js Free Interactive Map -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <link rel="stylesheet" href="styles.css?v=6">
+  <!-- Google Identity Services for Real Gmail Authentication -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body data-page="rider">
+
+  <!-- Rider Navigation Header -->
+  <header class="app-header">
+    <div class="header-container" style="display:flex; align-items:center; justify-content:space-between; max-width:1380px; margin:0 auto; padding:0 1.5rem;">
+      <div class="brand" style="display:flex; align-items:center; gap:0.85rem;">
+        <img src="logo.png" alt="Royal Chhab Logo" width="48" height="48" style="width:48px !important; height:48px !important; max-width:48px !important; max-height:48px !important; min-width:48px !important; min-height:48px !important; object-fit:contain !important; flex-shrink:0 !important; border-radius:10px; border:2px solid rgba(16,185,129,0.3); background:#ffffff; display:block !important;">
+        <div class="brand-text">
+          <h1 style="font-size:1.35rem; font-weight:700; color:var(--text-main); margin:0;">Royal Chhab Express</h1>
+          <span class="brand-subtitle" style="font-size:0.75rem; color:var(--accent-mint); letter-spacing:0.08em; text-transform:uppercase; font-weight:700;">Chhab Delivery Network &bull; Pakistan</span>
+        </div>
+      </div>
+
+      <!-- Actions & Auth Profile -->
+      <div class="header-actions">
+        <button class="btn btn-sm btn-outline" id="rider-audio-indicator" onclick="stopRiderContinuousAlert()" style="display:none; border-color:var(--accent-mint); color:var(--accent-mint);">
+          <i class="fa-solid fa-volume-xmark"></i> Stop Alarm Audio
+        </button>
+        <button class="btn btn-sm btn-outline" onclick="openRiderAuthModal()">
+          <i class="fa-solid fa-user-lock"></i> Courier Account Login
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Notification Toast Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- MAIN RIDER CONTENT -->
+  <main class="main-content">
+    <div class="rider-header">
+      <div class="rider-profile">
+        <div class="rider-avatar">
+          <i class="fa-solid fa-helmet-safety"></i>
+        </div>
+        <div>
+          <h2 style="font-size:1.8rem;" id="rider-display-name">Royal Chhab Courier #1</h2>
+          <p style="color:var(--text-muted);">Courier ID: <strong id="rider-display-id">#RD-7892</strong> &bull; Phone: <span id="rider-display-phone">0301-5557892</span> &bull; Status: <span class="badge badge-online" id="rider-status-tag">Online & Searching</span></p>
+        </div>
+      </div>
+
+      <div class="rider-controls">
+        <div class="toggle-container">
+          <span>Availability:</span>
+          <label class="switch">
+            <input type="checkbox" id="rider-toggle-online" checked onchange="toggleRiderOnlineState(this)">
+            <span class="slider round"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Siren Dispatch Alert Banner with Accept & Reject Actions -->
+    <div id="rider-alert-box" class="rider-alert-card" style="display:none;">
+      <div class="alert-content" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1.2rem;">
+        <div style="display:flex; align-items:center; gap:1.2rem;">
+          <div class="alert-icon">
+            <i class="fa-solid fa-bell fa-shake"></i>
+          </div>
+          <div>
+            <span class="badge badge-danger">NEW DELIVERY DISPATCH IN CHHAB</span>
+            <h3>Cake Ready for Pickup!</h3>
+            <p style="margin:0;">Kitchen order preparation complete. Choose to Accept or Decline delivery job below.</p>
+          </div>
+        </div>
+        <div style="display:flex; gap:0.8rem;" id="rider-alert-actions">
+          <!-- Injected via JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Rider Workspace Grid -->
+    <div class="rider-content-grid">
+      <!-- Available Jobs List -->
+      <div class="rider-card">
+        <div class="card-header">
+          <h3><i class="fa-solid fa-location-crosshairs" style="color:var(--accent-mint);"></i> Chhab Orders Ready for Pickup</h3>
+          <span class="badge badge-primary" id="rider-available-count">0 Available</span>
+        </div>
+        <div id="rider-available-list" class="rider-orders-list">
+          <!-- Injected via JavaScript -->
+        </div>
+      </div>
+
+      <!-- Active Accepted Delivery Job & Live Leaflet Map -->
+      <div class="rider-card glow-gold">
+        <div class="card-header">
+          <h3><i class="fa-solid fa-route" style="color:var(--accent-mint);"></i> Active Delivery Trip & GPS Map</h3>
+          <span class="badge badge-gold" id="rider-job-status-badge">No Active Job</span>
+        </div>
+
+        <div id="rider-active-job-body">
+          <div class="empty-job-state">
+            <i class="fa-solid fa-motorcycle fa-3x"></i>
+            <p>You have no active accepted deliveries right now.</p>
+            <span>Keep your status ONLINE above to receive siren sound notifications!</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- RIDER COURIER SIGN-IN / SIGN-UP MODAL WITH REAL GOOGLE SIGN-IN ONLY -->
+  <div id="rider-auth-modal" class="modal">
+    <div class="modal-overlay" onclick="closeRiderAuthModal()"></div>
+    <div class="modal-content medium">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-helmet-safety" style="color:var(--accent-mint);"></i> Courier Rider Account Access</h3>
+        <button class="close-btn" onclick="closeRiderAuthModal()">&times;</button>
+      </div>
+
+      <div class="modal-body" style="text-align: center; padding: 2rem 1.5rem;">
+        <i class="fa-brands fa-google fa-4x mb-3" style="color:#10b981; display:block;"></i>
+        <h4 style="font-size:1.25rem; margin-bottom:0.5rem; font-family:var(--font-body); font-weight:700;">Rider Gmail Authentication</h4>
+        <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:1.8rem; max-width:340px; margin-left:auto; margin-right:auto;">
+          Access your courier dashboard using your real Google / Gmail account. Your email will link to your rider roster.
+        </p>
+
+        <!-- Official Google Sign-In button container -->
+        <div id="rider-google-signin-btn-container" style="display:flex; justify-content:center; margin:1.5rem 0; min-height: 40px;"></div>
+
+        <!-- Offline Simulation/Fallback -->
+        <div style="margin-top:1.5rem; padding-top:1.2rem; border-top:1px solid var(--border-subtle); font-size:0.8rem; color:var(--text-muted);">
+          <span>For offline or localhost testing without a Google Client ID:</span>
+          <button class="btn btn-sm btn-outline mt-2" onclick="simulateGoogleLoginRider()" style="width:100%; border-color:#10b981; color:#10b981;">
+            <i class="fa-solid fa-flask"></i> Simulate Real Rider Google Response
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js?v=6"></script>
+</body>
+</html>
