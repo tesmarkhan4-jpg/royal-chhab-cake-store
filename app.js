@@ -1314,6 +1314,16 @@ function toggleCartDrawer() {
   if (drawer) drawer.classList.toggle('active');
 }
 
+function openCartDrawer() {
+  const drawer = document.getElementById('cart-drawer');
+  if (drawer) drawer.classList.add('active');
+}
+
+function closeCartDrawer() {
+  const drawer = document.getElementById('cart-drawer');
+  if (drawer) drawer.classList.remove('active');
+}
+
 function addToCart(productId) {
   const prod = appState.products.find(p => p.id === productId);
   if (!prod) return;
@@ -1513,7 +1523,7 @@ function addCustomCakeToCart() {
 
   closeCustomCakeModal();
   updateCartUI();
-  toggleCartDrawer();
+  openCartDrawer();
   showToast('Custom cake added to basket!', 'success');
 }
 
@@ -1523,7 +1533,7 @@ function openCheckoutModal() {
     showToast('Your basket is empty!', 'danger');
     return;
   }
-  toggleCartDrawer();
+  closeCartDrawer();  // Close cart drawer cleanly (not toggle) before opening checkout
   document.getElementById('checkout-modal').classList.add('active');
   toggleFulfillmentType(appState.fulfillmentType);
   renderCheckoutPaymentMethods();
@@ -1531,6 +1541,7 @@ function openCheckoutModal() {
 
 function closeCheckoutModal() {
   document.getElementById('checkout-modal').classList.remove('active');
+  // Do NOT touch cart drawer here - let it stay closed after checkout
 }
 
 function renderCheckoutPaymentMethods() {
@@ -1683,15 +1694,14 @@ async function handlePaymentSubmit(e) {
   broadcastStateChange('new_order_placed', { orderId: newOrder.id });
 
   appState.cart = [];
-  updateCartUI();
-  closeCheckoutModal();
+  closeCheckoutModal();   // Close checkout modal first
+  closeCartDrawer();      // Make sure cart is also closed
+  updateCartUI();         // Update cart count badge (now 0)
 
   playCustomerSuccessSound();
-  showOrderSuccessPopup(newOrder);
 
-  if (!requiresApproval) {
-    sendOrderConfirmationEmail(newOrder);
-  }
+  // Show success popup - always visible regardless of payment type
+  setTimeout(() => showOrderSuccessPopup(newOrder), 100);
 }
 
 
@@ -1885,7 +1895,14 @@ function renderAdminOrders() {
         </td>
         <td><div style="font-size:0.82rem;">${order.deliveryAddress}</div></td>
         <td>
-          <div style="font-size:0.85rem;">${order.items.map(i => `${i.quantity}x ${i.name}`).join('<br>')}</div>
+          <div style="font-size:0.85rem;">${order.items.map(i => `
+            <div style="margin-bottom:0.4rem; padding-bottom:0.4rem; border-bottom:1px solid rgba(255,255,255,0.08);">
+              <strong>${i.quantity}x ${i.name}</strong><br>
+              ${i.pounds ? `<span style="color:var(--accent-gold);font-size:0.75rem;">⚖️ ${i.pounds} Lb • ${i.layers || 2} Layers • ${i.floors || 1} Floor(s)</span><br>` : ''}
+              ${i.customText ? `<span style="color:#f9a8c9;font-size:0.75rem;">✍️ "${i.customText}"</span><br>` : ''}
+              ${i.orderImage ? `<a href="${i.orderImage}" target="_blank" style="color:var(--primary-rose);font-size:0.75rem;"><i class="fa-solid fa-image"></i> View Customer Image</a>` : ''}
+            </div>
+          `).join('')}</div>
         </td>
         <td><strong style="color:var(--accent-gold);">Rs.  ${order.totalAmount.toLocaleString()}</strong></td>
         <td>
@@ -2034,31 +2051,40 @@ function adminAcceptNewOrder(orderId) {
     saveOrdersToStorage();
     checkContinuousAudioAlerts();
     renderAdminOrders();
-    showToast(`✅ Order #${orderId} Approved! Confirmation email sending to customer...`, 'success');
-    // Send confirmation email to customer
-    sendOrderConfirmationEmail(order);
+    showToast(`✅ Order #${orderId} Accepted! Sending confirmation email to customer...`, 'success');
+    dispatchAdminConfirmationEmail(order);
   }
 }
 
-async function sendOrderConfirmationEmail(order) {
-  try {
-    const res = await fetch('/api/send-confirmation', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(order)
-    });
-    const data = await res.json();
-    if (data.success) {
-      showToast(`✉️ Confirmation email sent to ${order.customerEmail}!`, 'success');
-      // Also broadcast to customer screen
-      broadcastStateChange('order_confirmed_by_admin', { orderId: order.id });
-    } else {
-      showToast('⚠️ Order approved but email could not be sent. Check server.', 'info');
+async function dispatchAdminConfirmationEmail(order) {
+  // Try the local Node.js server first (runs on port 3000 locally)
+  const endpoints = [
+    'http://localhost:3000/api/send-confirmation',
+    '/api/send-confirmation'
+  ];
+
+  for (const url of endpoints) {
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(order)
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success) {
+          showToast(`✉️ Confirmation email sent to ${order.customerEmail || 'customer'}!`, 'success');
+          broadcastStateChange('order_confirmed_by_admin', { orderId: order.id });
+          return;
+        }
+      }
+    } catch (err) {
+      // Try next endpoint
+      continue;
     }
-  } catch (err) {
-    console.log('Confirmation email dispatch info:', err);
-    showToast('⚠️ Order approved. Email server not reachable (run locally for live emails).', 'info');
   }
+  // If both fail (e.g. Vercel without server), show admin a warning
+  showToast('⚠️ Order confirmed! To send email, make sure Node server is running: node server.js', 'info', 6000);
 }
 
 function showOrderSuccessPopup(order) {
