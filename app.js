@@ -363,7 +363,7 @@ function finishSplashOnboarding(openAuth = false) {
 // STORAGE & REAL-TIME BROADCAST ENGINE
 // ============================================================================
 function loadStateFromStorage() {
-  const CATALOG_VERSION = 'v6-clean';
+  const CATALOG_VERSION = 'v7-fullbanner';
   const savedCatalogVersion = localStorage.getItem('luxecakes_catalog_version');
   const savedProducts = localStorage.getItem('luxecakes_products');
   if (savedProducts && savedCatalogVersion === CATALOG_VERSION) {
@@ -1099,7 +1099,7 @@ function renderStorefrontCatalog() {
       `;
     }).join('');
 
-    return `
+    const categoryRowHtml = `
       <div class="catalog-category-row">
         <div class="category-row-header">
           <div class="category-row-title-box">
@@ -1118,6 +1118,33 @@ function renderStorefrontCatalog() {
         </div>
       </div>
     `;
+
+    if (cat.id === 'Signature') {
+      const bannerHtml = `
+        <div class="full-bleed-promo-banner">
+          <div class="promo-banner-content">
+            <div class="promo-text-box">
+              <span class="hero-tag" style="background:rgba(212,163,89,0.25); color:#d4a359; border:1px solid rgba(212,163,89,0.5);">
+                <i class="fa-solid fa-crown"></i> Artisanal Chhab Bakery Speciality
+              </span>
+              <h2>Handcrafted Royal Cakes &amp; Tiered Masterpieces</h2>
+              <p>Baked fresh daily near RHC Hospital, Chhab. Order bespoke custom wedding &amp; birthday cakes with live baking status tracking and express home delivery.</p>
+              <div class="promo-actions">
+                <button class="btn btn-gold" onclick="openCustomCakeModal()">
+                  <i class="fa-solid fa-wand-magic-sparkles"></i> Design Custom Cake
+                </button>
+                <button class="btn btn-outline-white" onclick="openOrderTrackerModal()">
+                  <i class="fa-solid fa-clock-rotate-left"></i> Track Live Order
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      return categoryRowHtml + bannerHtml;
+    }
+
+    return categoryRowHtml;
   }).join('');
 }
 

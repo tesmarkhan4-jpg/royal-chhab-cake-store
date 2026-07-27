@@ -573,6 +573,15 @@ input:checked + .slider:before { transform: translateX(26px); }
     font-size: 0.85rem;
     padding: 0.6rem 0.8rem;
   }
+  .promo-text-box h2 {
+    font-size: 1.85rem !important;
+  }
+  .promo-text-box p {
+    font-size: 0.95rem !important;
+  }
+  .full-bleed-promo-banner {
+    min-height: 300px !important;
+  }
 }
 
 @media (max-width: 640px) {
@@ -936,4 +945,80 @@ input:checked + .slider:before { transform: translateX(26px); }
 .star-rating-form label:hover ~ label,
 .star-rating-form input:checked ~ label {
   color: var(--accent-gold);
+}
+
+/* FULL-BLEED PROMO BANNER (EDGE-TO-EDGE BETWEEN CATALOG SECTIONS) */
+.full-bleed-promo-banner {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  margin-top: 3.5rem;
+  margin-bottom: 4rem;
+  min-height: 380px;
+  background: linear-gradient(90deg, rgba(20, 10, 15, 0.88) 0%, rgba(20, 10, 15, 0.68) 50%, rgba(20, 10, 15, 0.85) 100%), 
+              url('https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  box-shadow: var(--shadow-md);
+  box-sizing: border-box;
+}
+
+.promo-banner-content {
+  max-width: 1380px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 3.5rem 2.5rem;
+  box-sizing: border-box;
+  color: #ffffff;
+}
+
+.promo-text-box {
+  max-width: 680px;
+}
+
+.promo-text-box h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 1rem 0;
+  line-height: 1.2;
+  font-family: var(--font-heading);
+}
+
+.promo-text-box p {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.promo-actions {
+  display: flex;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.btn-outline-white {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+.btn-outline-white:hover {
+  background: #ffffff;
+  color: var(--primary-rose);
+  border-color: #ffffff;
+  transform: translateY(-2px);
 }
