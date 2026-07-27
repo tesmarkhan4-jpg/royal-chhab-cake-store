@@ -1203,21 +1203,50 @@ function renderStorefrontCatalog() {
            </div>`;
 
       return `
-        <div class="product-card">
-          <div class="product-img-wrapper" onclick="openProductDetailsModal('${p.id}')" style="cursor:pointer;" title="View Details &amp; Reviews">
-            <span class="product-badge">${p.category}</span>
-            <img src="${p.image}" alt="${p.name}" class="product-img" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=600&q=80'">
-          </div>
-          <div class="product-info">
-            <h4 class="product-title" onclick="openProductDetailsModal('${p.id}')" style="cursor:pointer;">${p.name}</h4>
-            ${starsHtml}
-            <p class="product-desc" style="font-size:0.85rem; color:var(--text-muted); line-height:1.4; height:50px; overflow:hidden; text-overflow:ellipsis; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; margin-bottom:1rem;">${p.description}</p>
-            <div class="product-footer" style="display:flex; justify-content:space-between; align-items:center; margin-top:auto;">
-              <span class="product-price" style="font-size:1.15rem; font-weight:700; color:var(--primary-rose);">Rs. ${p.price.toLocaleString()}</span>
-              <button class="btn btn-primary btn-sm" onclick="addToCart('${p.id}')">
-                <i class="fa-solid fa-plus"></i> Add to Cart
-              </button>
+        <div class="product-card" style="display:flex; flex-direction:column; justify-content:space-between;">
+          <div>
+            <div class="product-img-wrapper" onclick="openProductDetailsModal('${p.id}')" style="cursor:pointer;" title="View Details &amp; Reviews">
+              <span class="product-badge">${p.category}</span>
+              <img src="${p.image}" alt="${p.name}" class="product-img" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=600&q=80'">
             </div>
+            <div class="product-info" style="padding-bottom:0.5rem;">
+              <h4 class="product-title" onclick="openProductDetailsModal('${p.id}')" style="cursor:pointer;">${p.name}</h4>
+              ${starsHtml}
+              <p class="product-desc" style="font-size:0.82rem; color:var(--text-muted); line-height:1.35; height:42px; overflow:hidden; text-overflow:ellipsis; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; margin-bottom:0.75rem;">${p.description}</p>
+              
+              <!-- Select Weight (1 to 4 Pounds) -->
+              <div style="margin-bottom:0.6rem; background:var(--bg-surface); padding:0.5rem 0.65rem; border-radius:var(--radius-sm); border:1px solid var(--border-subtle);">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.3rem;">
+                  <label style="font-size:0.76rem; font-weight:700; color:var(--text-main); margin:0;">
+                    <i class="fa-solid fa-weight-hanging" style="color:var(--primary-rose);"></i> Weight:
+                  </label>
+                  <span id="card-price-display-${p.id}" style="font-size:0.95rem; font-weight:700; color:var(--primary-rose);">
+                    Rs. ${(p.pricePerLb || p.price).toLocaleString()}
+                  </span>
+                </div>
+                <select id="card-pound-select-${p.id}" class="form-control" onchange="updateCardPriceDisplay('${p.id}', ${p.pricePerLb || p.price})" style="padding:0.28rem 0.5rem; font-size:0.8rem; font-weight:600;">
+                  <option value="1" selected>1 Pound (1 lb)</option>
+                  <option value="2">2 Pounds (2 lbs)</option>
+                  <option value="3">3 Pounds (3 lbs)</option>
+                  <option value="4">4 Pounds (4 lbs)</option>
+                </select>
+              </div>
+
+              <!-- Extra Instructions / Custom Inscription -->
+              <div style="margin-bottom:0.75rem;">
+                <input type="text" id="card-instructions-${p.id}" class="form-control" placeholder="Extra instructions / Name on cake..." style="padding:0.3rem 0.6rem; font-size:0.78rem;">
+              </div>
+            </div>
+          </div>
+
+          <!-- Dual Action Buttons: Buy Now & Add to Basket -->
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.4rem; padding:0 1rem 1rem 1rem;">
+            <button class="btn btn-gold btn-sm" onclick="buyNowDirect('${p.id}')" style="font-size:0.78rem; padding:0.45rem 0.3rem; font-weight:700;" title="Buy 1 Cake Directly Now">
+              <i class="fa-solid fa-bolt"></i> Buy Now
+            </button>
+            <button class="btn btn-primary btn-sm" onclick="addToCartFromCard('${p.id}')" style="font-size:0.78rem; padding:0.45rem 0.3rem; font-weight:700;" title="Add to Basket">
+              <i class="fa-solid fa-cart-plus"></i> Basket
+            </button>
           </div>
         </div>
       `;
@@ -2815,6 +2844,83 @@ function showToast(message, type = 'info') {
 // ============================================================================
 // PRODUCT DETAILS & REVIEWS ECOSYSTEM
 // ============================================================================
+
+function updateCardPriceDisplay(productId, ratePerLb) {
+  const poundSelect = document.getElementById(`card-pound-select-${productId}`);
+  const priceDisplay = document.getElementById(`card-price-display-${productId}`);
+  if (!poundSelect || !priceDisplay) return;
+
+  const pounds = parseInt(poundSelect.value) || 1;
+  const total = ratePerLb * pounds;
+  priceDisplay.textContent = `Rs. ${total.toLocaleString()}`;
+}
+
+function buyNowDirect(productId) {
+  const prod = appState.products.find(p => p.id === productId);
+  if (!prod) return;
+
+  const ratePerLb = prod.pricePerLb || prod.price;
+  const poundSelect = document.getElementById(`card-pound-select-${productId}`);
+  const pounds = poundSelect ? parseInt(poundSelect.value) || 1 : 1;
+  const instructionsInput = document.getElementById(`card-instructions-${productId}`);
+  const customText = instructionsInput ? instructionsInput.value.trim() : '';
+
+  const itemTotal = ratePerLb * pounds;
+
+  // Single-item express checkout
+  appState.cart = [{
+    id: prod.id + '-' + Date.now(),
+    productId: prod.id,
+    name: prod.name,
+    price: itemTotal,
+    ratePerLb: ratePerLb,
+    pounds: pounds,
+    layers: prod.layers || 2,
+    floors: prod.floors || 1,
+    prepTimeMinutes: prod.prepTimeMinutes,
+    image: prod.image,
+    quantity: 1,
+    isCustom: false,
+    customText: customText || undefined
+  }];
+
+  updateCartUI();
+  openCheckoutModal();
+  showToast(`Express Direct Order for "${prod.name}" (${pounds} Lb)!`, 'success');
+}
+
+function addToCartFromCard(productId) {
+  const prod = appState.products.find(p => p.id === productId);
+  if (!prod) return;
+
+  const ratePerLb = prod.pricePerLb || prod.price;
+  const poundSelect = document.getElementById(`card-pound-select-${productId}`);
+  const pounds = poundSelect ? parseInt(poundSelect.value) || 1 : 1;
+  const instructionsInput = document.getElementById(`card-instructions-${productId}`);
+  const customText = instructionsInput ? instructionsInput.value.trim() : '';
+
+  const itemTotal = ratePerLb * pounds;
+
+  appState.cart.push({
+    id: prod.id + '-' + Date.now(),
+    productId: prod.id,
+    name: prod.name,
+    price: itemTotal,
+    ratePerLb: ratePerLb,
+    pounds: pounds,
+    layers: prod.layers || 2,
+    floors: prod.floors || 1,
+    prepTimeMinutes: prod.prepTimeMinutes,
+    image: prod.image,
+    quantity: 1,
+    isCustom: false,
+    customText: customText || undefined
+  });
+
+  updateCartUI();
+  showToast(`Added "${prod.name}" (${pounds} Lb) to basket!`, 'success');
+}
+
 function openProductDetailsModal(productId) {
   const prod = appState.products.find(p => p.id === productId);
   if (!prod) return;
@@ -2915,7 +3021,15 @@ function openProductDetailsModal(productId) {
           </select>
         </div>
 
-        <!-- Calculated Total Price & Basket Button -->
+        <!-- Extra Instructions / Custom Message on Cake -->
+        <div class="form-group mb-3">
+          <label style="font-weight:700; font-size:0.84rem; color:var(--text-main);">
+            <i class="fa-solid fa-pen-nib" style="color:var(--primary-rose);"></i> Extra Instructions / Custom Inscription:
+          </label>
+          <input type="text" id="modal-prod-instructions-${prod.id}" class="form-control" placeholder="e.g. Write 'Happy Birthday Sarah!', less sweet..." style="font-size:0.84rem;">
+        </div>
+
+        <!-- Calculated Total Price & Dual Action Buttons: Buy Now & Basket -->
         <div style="background:white; padding:0.85rem 1rem; border-radius:var(--radius-md); border:1px solid var(--border-subtle); display:flex; justify-content:space-between; align-items:center;">
           <div>
             <span style="font-size:0.78rem; color:var(--text-muted); display:block; font-weight:600;">Recalculated Total:</span>
@@ -2923,9 +3037,14 @@ function openProductDetailsModal(productId) {
               Rs. ${initialTotal.toLocaleString()}
             </strong>
           </div>
-          <button class="btn btn-primary" onclick="addToCartWithOptions('${prod.id}', ${ratePerLb})">
-            <i class="fa-solid fa-basket-shopping"></i> Add to Basket
-          </button>
+          <div style="display:flex; gap:0.4rem;">
+            <button class="btn btn-gold" onclick="buyNowFromModal('${prod.id}', ${ratePerLb})">
+              <i class="fa-solid fa-bolt"></i> Buy Now
+            </button>
+            <button class="btn btn-primary" onclick="addToCartWithOptions('${prod.id}', ${ratePerLb})">
+              <i class="fa-solid fa-basket-shopping"></i> Basket
+            </button>
+          </div>
         </div>
       </div>
 
@@ -3001,6 +3120,47 @@ function recalculateProductModalPrice(productId, ratePerLb) {
   totalDisplay.textContent = `Rs. ${total.toLocaleString()}`;
 }
 
+function buyNowFromModal(productId, ratePerLb) {
+  const prod = appState.products.find(p => p.id === productId);
+  if (!prod) return;
+
+  const poundsSelect = document.getElementById(`modal-prod-pounds-${productId}`);
+  const layersSelect = document.getElementById(`modal-prod-layers-${productId}`);
+  const floorsSelect = document.getElementById(`modal-prod-floors-${productId}`);
+  const instructionsInput = document.getElementById(`modal-prod-instructions-${productId}`);
+
+  const pounds = poundsSelect ? parseInt(poundsSelect.value) || 1 : 1;
+  const layers = layersSelect ? parseInt(layersSelect.value) || 2 : 2;
+  const floors = floorsSelect ? parseInt(floorsSelect.value) || 1 : 1;
+  const customText = instructionsInput ? instructionsInput.value.trim() : '';
+
+  const layerAddon = (layers - 1) * 200;
+  const floorAddon = (floors - 1) * 800;
+  const itemTotal = (ratePerLb * pounds) + layerAddon + floorAddon;
+
+  // Single-item express direct checkout
+  appState.cart = [{
+    id: prod.id + '-' + Date.now(),
+    productId: prod.id,
+    name: prod.name,
+    price: itemTotal,
+    ratePerLb: ratePerLb,
+    pounds: pounds,
+    layers: layers,
+    floors: floors,
+    prepTimeMinutes: prod.prepTimeMinutes,
+    image: prod.image,
+    quantity: 1,
+    isCustom: false,
+    customText: customText || undefined
+  }];
+
+  updateCartUI();
+  closeProductDetailsModal();
+  openCheckoutModal();
+  showToast(`Express Checkout for "${prod.name}" (${pounds} Lb)!`, 'success');
+}
+
 function addToCartWithOptions(productId, ratePerLb) {
   const prod = appState.products.find(p => p.id === productId);
   if (!prod) return;
@@ -3008,10 +3168,12 @@ function addToCartWithOptions(productId, ratePerLb) {
   const poundsSelect = document.getElementById(`modal-prod-pounds-${productId}`);
   const layersSelect = document.getElementById(`modal-prod-layers-${productId}`);
   const floorsSelect = document.getElementById(`modal-prod-floors-${productId}`);
+  const instructionsInput = document.getElementById(`modal-prod-instructions-${productId}`);
 
   const pounds = poundsSelect ? parseInt(poundsSelect.value) || 1 : 1;
   const layers = layersSelect ? parseInt(layersSelect.value) || 2 : 2;
   const floors = floorsSelect ? parseInt(floorsSelect.value) || 1 : 1;
+  const customText = instructionsInput ? instructionsInput.value.trim() : '';
 
   const layerAddon = (layers - 1) * 200;
   const floorAddon = (floors - 1) * 800;
@@ -3029,7 +3191,8 @@ function addToCartWithOptions(productId, ratePerLb) {
     prepTimeMinutes: prod.prepTimeMinutes,
     image: prod.image,
     quantity: 1,
-    isCustom: false
+    isCustom: false,
+    customText: customText || undefined
   });
 
   updateCartUI();
