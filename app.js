@@ -38,7 +38,7 @@ const DEFAULT_GENERAL_FEEDBACK = [
     author: "Faheem",
     rating: 5,
     comment: "Main ny apni baite k birthday k liya order kiya ta MashALLAH premium quilty ka bna k diya munasib rate main",
-    image: "customer_reviews_images/review-1.jpg",
+    image: "customer_reviews_images/faheem-daughter-cake.png",
     date: Date.now() - 1 * 24 * 60 * 60 * 1000
   },
   {
@@ -469,7 +469,7 @@ function loadStateFromStorage() {
     appState.currentRider = JSON.parse(savedRider);
   }
 
-  const REVIEWS_VERSION = 'v8-romanurdu';
+  const REVIEWS_VERSION = 'v9-faheemcake';
   const savedReviewsVersion = localStorage.getItem('luxecakes_reviews_version');
   const savedReviews = localStorage.getItem('luxecakes_reviews');
   if (savedReviews && savedReviewsVersion === REVIEWS_VERSION) {
