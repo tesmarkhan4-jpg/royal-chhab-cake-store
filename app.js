@@ -2967,7 +2967,7 @@ function renderAdminUsers() {
 // STOREFRONT HERO BANNER SLIDER CONTROLLER
 // ============================================================================
 function showHeroSlide(index) {
-  const slides = document.querySelectorAll('.hero-slide');
+  const slides = document.querySelectorAll('.hero-slide-wrapper');
   const dots = document.querySelectorAll('.hero-slider-dot');
   if (slides.length === 0) return;
 

@@ -84,8 +84,8 @@
   </div>
 
   <!-- Public Store Navigation Header -->
-  <header class="app-header">
-    <div class="header-container" style="display:flex; align-items:center; justify-content:space-between; max-width:1320px; margin:0 auto; padding:0 1.5rem;">
+  <header class="app-header" style="width:100%; box-sizing:border-box;">
+    <div class="header-container" style="display:flex; align-items:center; justify-content:space-between; width:100%; padding:0 2.5rem; box-sizing:border-box;">
       <a href="index.html" class="brand" style="display:flex; align-items:center; gap:0.85rem;">
         <img src="logo.png" alt="Royal Chhab Custom Cakes Logo" width="48" height="48" style="width:48px !important; height:48px !important; max-width:48px !important; max-height:48px !important; min-width:48px !important; min-height:48px !important; object-fit:contain !important; flex-shrink:0 !important; border-radius:10px; border:2px solid rgba(212,163,89,0.3); background:#ffffff; display:block !important;">
         <div class="brand-text">
@@ -124,58 +124,68 @@
   <div id="toast-container" class="toast-container"></div>
 
   <!-- MAIN STOREFRONT CONTENT -->
-  <main class="main-content">
-    <!-- Hero Banner Slider -->
+  <main class="main-content" style="padding:0; max-width:100%;">
+    <!-- Hero Banner Slider (full-bleed, edge-to-edge) -->
     <div class="hero-banner">
       <div class="hero-slides-container">
-        <!-- Slide 1 -->
-        <div class="hero-slide active">
-          <div class="hero-content">
-            <span class="hero-tag"><i class="fa-solid fa-crown"></i> Handcrafted Fresh Daily in Chhab</span>
-            <h2>Royal Wedding Masterpieces</h2>
-            <p>Design premium multi-tiered custom wedding cakes with your choice of sponge profiles, personalized message inscriptions, and live kitchen tracking alerts. Handcrafted elegantly near RHC Hospital, Chhab.</p>
-            <div class="hero-actions">
-              <button class="btn btn-primary" onclick="scrollToCatalog()"><i class="fa-solid fa-cake-candles"></i> Explore Menu</button>
-              <button class="btn btn-gold" onclick="openCustomCakeModal()"><i class="fa-solid fa-palette"></i> Build Custom Cake</button>
+
+        <!-- Slide 1 Wrapper: Rose gradient -->
+        <div class="hero-slide-wrapper active">
+          <div class="hero-slide">
+            <div class="hero-content">
+              <span class="hero-tag"><i class="fa-solid fa-crown"></i> Handcrafted Fresh Daily in Chhab</span>
+              <h2>Royal Wedding Masterpieces</h2>
+              <p>Design premium multi-tiered custom wedding cakes with your choice of sponge profiles, personalized message inscriptions, and live kitchen tracking alerts. Handcrafted elegantly near RHC Hospital, Chhab.</p>
+              <div class="hero-actions">
+                <button class="btn btn-primary" onclick="scrollToCatalog()"><i class="fa-solid fa-cake-candles"></i> Explore Menu</button>
+                <button class="btn btn-gold" onclick="openCustomCakeModal()"><i class="fa-solid fa-palette"></i> Build Custom Cake</button>
+              </div>
+            </div>
+            <div class="hero-image-box">
+              <div class="hero-badge"><i class="fa-solid fa-bolt"></i> Custom Tiered Fondant Cakes</div>
+              <img src="https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&w=800&q=80" alt="Royal Wedding Cakes" class="hero-img">
             </div>
           </div>
-          <div class="hero-image-box">
-            <div class="hero-badge"><i class="fa-solid fa-bolt"></i> Custom Tiered Fondant Cakes</div>
-            <img src="https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&w=800&q=80" alt="Royal Wedding Cakes" class="hero-img">
-          </div>
         </div>
-        <!-- Slide 2 -->
-        <div class="hero-slide">
-          <div class="hero-content">
-            <span class="hero-tag"><i class="fa-solid fa-cake-candles"></i> Premium Cocoa & Fresh Berries</span>
-            <h2>Artisanal Birthday Delights</h2>
-            <p>Surprise your loved ones with boutique chocolate tortes and berry sponges. Freshly baked daily, with fast delivery directly to your home in Chhab, or free self-pickup option.</p>
-            <div class="hero-actions">
-              <button class="btn btn-primary" onclick="scrollToCatalog()"><i class="fa-solid fa-cake-candles"></i> Explore Menu</button>
-              <button class="btn btn-gold" onclick="openCustomerAuthModal()"><i class="fa-solid fa-user-plus"></i> Join & Save Settings</button>
+
+        <!-- Slide 2 Wrapper: Purple gradient -->
+        <div class="hero-slide-wrapper">
+          <div class="hero-slide">
+            <div class="hero-content">
+              <span class="hero-tag"><i class="fa-solid fa-cake-candles"></i> Premium Cocoa &amp; Fresh Berries</span>
+              <h2>Artisanal Birthday Delights</h2>
+              <p>Surprise your loved ones with boutique chocolate tortes and berry sponges. Freshly baked daily, with fast delivery directly to your home in Chhab, or free self-pickup option.</p>
+              <div class="hero-actions">
+                <button class="btn btn-primary" onclick="scrollToCatalog()"><i class="fa-solid fa-cake-candles"></i> Explore Menu</button>
+                <button class="btn btn-gold" onclick="openCustomerAuthModal()"><i class="fa-solid fa-user-plus"></i> Join &amp; Save Settings</button>
+              </div>
+            </div>
+            <div class="hero-image-box">
+              <div class="hero-badge"><i class="fa-solid fa-truck-fast"></i> Same-Day Delivery Available</div>
+              <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=800&q=80" alt="Artisanal Birthday Cakes" class="hero-img">
             </div>
           </div>
-          <div class="hero-image-box">
-            <div class="hero-badge"><i class="fa-solid fa-truck-fast"></i> Same-Day Delivery Available</div>
-            <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=800&q=80" alt="Artisanal Birthday Cakes" class="hero-img">
-          </div>
         </div>
-        <!-- Slide 3 -->
-        <div class="hero-slide">
-          <div class="hero-content">
-            <span class="hero-tag"><i class="fa-solid fa-cookie"></i> Gourmet Confectioneries</span>
-            <h2>Artisanal Cupcake Selection</h2>
-            <p>Delight in assorted cupcake boxes featuring red velvet rose, mango passionfruit, and dark cocoa ganache. The perfect premium treat for any gathering or high tea party.</p>
-            <div class="hero-actions">
-              <button class="btn btn-primary" onclick="scrollToCatalog()"><i class="fa-solid fa-utensils"></i> Explore Menu</button>
-              <button class="btn btn-gold" onclick="openCustomCakeModal()"><i class="fa-solid fa-wand-magic-sparkles"></i> Customize Order</button>
+
+        <!-- Slide 3 Wrapper: Mint gradient -->
+        <div class="hero-slide-wrapper">
+          <div class="hero-slide">
+            <div class="hero-content">
+              <span class="hero-tag"><i class="fa-solid fa-cookie"></i> Gourmet Confectioneries</span>
+              <h2>Artisanal Cupcake Selection</h2>
+              <p>Delight in assorted cupcake boxes featuring red velvet rose, mango passionfruit, and dark cocoa ganache. The perfect premium treat for any gathering or high tea party.</p>
+              <div class="hero-actions">
+                <button class="btn btn-primary" onclick="scrollToCatalog()"><i class="fa-solid fa-utensils"></i> Explore Menu</button>
+                <button class="btn btn-gold" onclick="openCustomCakeModal()"><i class="fa-solid fa-wand-magic-sparkles"></i> Customize Order</button>
+              </div>
+            </div>
+            <div class="hero-image-box">
+              <div class="hero-badge"><i class="fa-solid fa-circle-check"></i> 100% Organic &amp; Halal</div>
+              <img src="https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?auto=format&fit=crop&w=800&q=80" alt="Artisanal Cupcakes" class="hero-img">
             </div>
           </div>
-          <div class="hero-image-box">
-            <div class="hero-badge"><i class="fa-solid fa-circle-check"></i> 100% Organic & Halal</div>
-            <img src="https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?auto=format&fit=crop&w=800&q=80" alt="Artisanal Cupcakes" class="hero-img">
-          </div>
         </div>
+
       </div>
       <!-- Arrows -->
       <div class="hero-slider-arrow prev" onclick="moveHeroSlide(-1)"><i class="fa-solid fa-chevron-left"></i></div>
@@ -187,6 +197,9 @@
         <span class="hero-slider-dot" onclick="setHeroSlide(2)"></span>
       </div>
     </div>
+
+    <!-- Below-hero content in constrained container -->
+    <div style="max-width:1380px; margin:0 auto; padding:0 2rem;">
 
     <!-- Categorized Catalog Section -->
     <div id="catalog-section" style="margin-top:2.5rem;">
@@ -266,6 +279,7 @@
         </form>
       </div>
     </div>
+    </div><!-- end constrained inner wrapper -->
   </main>
 
   <!-- MODALS & DRAWERS -->
