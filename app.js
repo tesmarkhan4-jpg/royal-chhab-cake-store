@@ -140,7 +140,7 @@ let appState = {
 };
 
 // ============================================================================
-// ROYAL CHHAB FULL PRODUCT CATALOG â€” 20 Products (5 per Category) â€” Prices in Â£GBP
+// ROYAL CHHAB FULL PRODUCT CATALOG â€” 20 Products (5 per Category) â€” Prices in Rs. GBP
 // ============================================================================
 const DEFAULT_PRODUCTS = [
 
@@ -149,7 +149,7 @@ const DEFAULT_PRODUCTS = [
     id: 'prod-101',
     name: 'Royal Dark Chocolate Truffle',
     category: 'Signature',
-    price: 28,
+    price: 2800,
     prepTimeMinutes: 40,
     image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=600&q=80',
     description: 'Triple-layer 70% dark cocoa sponge infused with hazelnut praline and edible gold leaf flakes. A regal indulgence.'
@@ -158,7 +158,7 @@ const DEFAULT_PRODUCTS = [
     id: 'prod-104',
     name: 'Salted Caramel Macaron Torte',
     category: 'Signature',
-    price: 32,
+    price: 3200,
     prepTimeMinutes: 30,
     image: 'https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?auto=format&fit=crop&w=600&q=80',
     description: 'Rich salted caramel sponge topped with house-baked French macarons, caramel drizzle and edible pearls.'
@@ -167,7 +167,7 @@ const DEFAULT_PRODUCTS = [
     id: 'prod-107',
     name: 'Lemon Drizzle & Rose Water Cake',
     category: 'Signature',
-    price: 25,
+    price: 2500,
     prepTimeMinutes: 35,
     image: 'https://images.unsplash.com/photo-1571506165871-ee72a35bc9d4?auto=format&fit=crop&w=600&q=80',
     description: 'Zesty organic lemon sponge soaked in rose water syrup, finished with candied lemon peel and dried rose petals.'
@@ -176,7 +176,7 @@ const DEFAULT_PRODUCTS = [
     id: 'prod-108',
     name: 'Belgian Chocolate Fondant Cake',
     category: 'Signature',
-    price: 35,
+    price: 3500,
     prepTimeMinutes: 45,
     image: 'https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?auto=format&fit=crop&w=600&q=80',
     description: 'Sinfully rich Belgian dark chocolate fondant cake with a molten centre and bitter cocoa glaze. Served warm.'
@@ -185,7 +185,7 @@ const DEFAULT_PRODUCTS = [
     id: 'prod-109',
     name: 'Pistachio & Cardamom Opera Cake',
     category: 'Signature',
-    price: 42,
+    price: 4200,
     prepTimeMinutes: 50,
     image: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=600&q=80',
     description: 'Elegant layered opera cake with Iranian pistachio cream, cardamom-scented ganache and gold mirror glaze finish.'
@@ -196,7 +196,7 @@ const DEFAULT_PRODUCTS = [
     id: 'prod-102',
     name: 'Strawberry & Pistachio Special Torte',
     category: 'Birthday',
-    price: 24,
+    price: 2400,
     prepTimeMinutes: 35,
     image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=600&q=80',
     description: 'Fluffy vanilla bean cake filled with organic strawberry compote and crushed Iranian pistachios. A crowd favourite.'
@@ -205,7 +205,7 @@ const DEFAULT_PRODUCTS = [
     id: 'prod-106',
     name: 'Classic Red Velvet Birthday Cake',
     category: 'Birthday',
-    price: 22,
+    price: 2200,
     prepTimeMinutes: 35,
     image: 'https://images.unsplash.com/photo-1614707267537-b85aaf00c4b7?auto=format&fit=crop&w=600&q=80',
     description: 'Moist red velvet sponge with smooth cream cheese frosting, fresh berry garnish and custom message inscription.'
@@ -214,7 +214,7 @@ const DEFAULT_PRODUCTS = [
     id: 'prod-110',
     name: 'Rainbow Confetti Celebration Cake',
     category: 'Birthday',
-    price: 20,
+    price: 2000,
     prepTimeMinutes: 30,
     image: 'https://images.unsplash.com/photo-1587668178277-295251f900ce?auto=format&fit=crop&w=600&q=80',
     description: 'Fun-filled rainbow confetti sponge with vanilla buttercream and a vivid sprinkle cascade. Perfect for kids.'
@@ -223,7 +223,7 @@ const DEFAULT_PRODUCTS = [
     id: 'prod-111',
     name: 'Mango & Coconut Tropical Birthday',
     category: 'Birthday',
-    price: 24,
+    price: 2400,
     prepTimeMinutes: 35,
     image: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=600&q=80',
     description: 'Light coconut sponge layered with fresh Chaunsa mango cream and toasted coconut flakes. Tropical bliss.'
@@ -232,7 +232,7 @@ const DEFAULT_PRODUCTS = [
     id: 'prod-112',
     name: 'Chocolate Hazelnut Drip Cake',
     category: 'Birthday',
-    price: 26,
+    price: 2600,
     prepTimeMinutes: 40,
     image: 'https://images.unsplash.com/photo-1549040855-3d9d93ac1a89?auto=format&fit=crop&w=600&q=80',
     description: 'Decadent chocolate sponge with Nutella filling, hazelnut praline crunch and glossy chocolate drip finish.'
@@ -243,7 +243,7 @@ const DEFAULT_PRODUCTS = [
     id: 'prod-103',
     name: 'Royal Chhab Grand Wedding Tier Cake',
     category: 'Wedding',
-    price: 75,
+    price: 7500,
     prepTimeMinutes: 60,
     image: 'https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=600&q=80',
     description: 'Tiered Madagascar vanilla cake with handcrafted buttercream roses, sugar orchids and champagne glaze.'
@@ -252,7 +252,7 @@ const DEFAULT_PRODUCTS = [
     id: 'prod-113',
     name: 'Pearl White Fondant Wedding Cake',
     category: 'Wedding',
-    price: 85,
+    price: 8500,
     prepTimeMinutes: 75,
     image: 'https://images.unsplash.com/photo-1607478900766-efe13248b125?auto=format&fit=crop&w=600&q=80',
     description: 'Immaculate pearl white fondant three-tier cake with hand-piped lace detail and cascading sugar flowers.'
@@ -261,7 +261,7 @@ const DEFAULT_PRODUCTS = [
     id: 'prod-114',
     name: 'Blush Rose Gold Bridal Cake',
     category: 'Wedding',
-    price: 95,
+    price: 9500,
     prepTimeMinutes: 90,
     image: 'https://images.unsplash.com/photo-1599785209707-a456fc1337bb?auto=format&fit=crop&w=600&q=80',
     description: 'Romantic blush pink and rose gold five-tier wedding cake with hand-sugar roses and edible gold leaf.'
@@ -270,7 +270,7 @@ const DEFAULT_PRODUCTS = [
     id: 'prod-115',
     name: 'Minimalist Naked Wedding Cake',
     category: 'Wedding',
-    price: 65,
+    price: 6500,
     prepTimeMinutes: 60,
     image: 'https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?auto=format&fit=crop&w=600&q=80',
     description: 'Rustic semi-naked cake with vanilla cream cheese frosting, fresh botanicals, figs and seasonal berries.'
@@ -279,7 +279,7 @@ const DEFAULT_PRODUCTS = [
     id: 'prod-116',
     name: 'Black Tie Luxury Wedding Cake',
     category: 'Wedding',
-    price: 110,
+    price: 11000,
     prepTimeMinutes: 90,
     image: 'https://images.unsplash.com/photo-1571115177098-24ec42ed204d?auto=format&fit=crop&w=600&q=80',
     description: 'Dramatic black fondant five-tier showstopper with gold geometric patterns, hand-painted details and champagne cake inside.'
@@ -288,45 +288,45 @@ const DEFAULT_PRODUCTS = [
   // â”€â”€ GOURMET CUPCAKES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   {
     id: 'prod-105',
-    name: 'Artisanal Gourmet Cupcake Box (Ã—6)',
+    name: 'Fresh Cupcake Box (x6)',
     category: 'Cupcakes',
-    price: 16,
+    price: 1600,
     prepTimeMinutes: 20,
     image: 'https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?auto=format&fit=crop&w=600&q=80',
     description: 'Assorted artisan cupcakes: Velvet Rose, Dark Cocoa, Salted Caramel, Mango Passionfruit. Perfect gift boxes.'
   },
   {
     id: 'prod-117',
-    name: 'Red Velvet Cream Cheese Cupcakes (Ã—6)',
+    name: 'Red Velvet Cream Cheese Cupcakes (x6)',
     category: 'Cupcakes',
-    price: 14,
+    price: 1400,
     prepTimeMinutes: 20,
     image: 'https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=600&q=80',
     description: 'Classic red velvet cupcakes crowned with swirls of tangy cream cheese frosting and edible glitter hearts.'
   },
   {
     id: 'prod-118',
-    name: 'Chocolate Fudge Frosted Cupcakes (Ã—6)',
+    name: 'Chocolate Fudge Frosted Cupcakes (x6)',
     category: 'Cupcakes',
-    price: 15,
+    price: 1500,
     prepTimeMinutes: 20,
     image: 'https://images.unsplash.com/photo-1571506165871-ee72a35bc9d4?auto=format&fit=crop&w=600&q=80',
     description: 'Triple-chocolate cupcakes with dark fudge ganache frosting, Oreo crumble and chocolate chip topping.'
   },
   {
     id: 'prod-119',
-    name: 'Lemon & Blueberry Swirl Cupcakes (Ã—6)',
+    name: 'Lemon & Blueberry Swirl Cupcakes (x6)',
     category: 'Cupcakes',
-    price: 14,
+    price: 1400,
     prepTimeMinutes: 20,
     image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=600&q=80',
     description: 'Zesty lemon sponge cupcakes with blueberry compote centre and lemon curd buttercream swirl on top.'
   },
   {
     id: 'prod-120',
-    name: 'Luxury Unicorn Cupcake Party Box (Ã—12)',
+    name: 'Unicorn Cupcake Party Box (x12)',
     category: 'Cupcakes',
-    price: 28,
+    price: 2800,
     prepTimeMinutes: 25,
     image: 'https://images.unsplash.com/photo-1587668178277-295251f900ce?auto=format&fit=crop&w=600&q=80',
     description: 'Magical rainbow unicorn cupcake party box with multicolour buttercream swirls, edible horns and star sprinkles. Kids love it!'
@@ -427,7 +427,7 @@ function finishSplashOnboarding(openAuth = false) {
 // STORAGE & REAL-TIME BROADCAST ENGINE
 // ============================================================================
 function loadStateFromStorage() {
-  const CATALOG_VERSION = 'v11-simplewords';
+  const CATALOG_VERSION = 'v12-pkrprices';
   const savedCatalogVersion = localStorage.getItem('luxecakes_catalog_version');
   const savedProducts = localStorage.getItem('luxecakes_products');
   if (savedProducts && savedCatalogVersion === CATALOG_VERSION) {
@@ -1158,7 +1158,7 @@ function renderStorefrontCatalog() {
             ${starsHtml}
             <p class="product-desc" style="font-size:0.85rem; color:var(--text-muted); line-height:1.4; height:50px; overflow:hidden; text-overflow:ellipsis; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; margin-bottom:1rem;">${p.description}</p>
             <div class="product-footer" style="display:flex; justify-content:space-between; align-items:center; margin-top:auto;">
-              <span class="product-price" style="font-size:1.15rem; font-weight:700; color:var(--primary-rose);">&pound;${p.price.toLocaleString()}</span>
+              <span class="product-price" style="font-size:1.15rem; font-weight:700; color:var(--primary-rose);">Rs. ${p.price.toLocaleString()}</span>
               <button class="btn btn-primary btn-sm" onclick="addToCart('${p.id}')">
                 <i class="fa-solid fa-plus"></i> Add to Cart
               </button>
@@ -1309,7 +1309,7 @@ function updateCartUI() {
         <img src="${item.image}" style="width:56px; height:56px; border-radius:10px; object-fit:cover;">
         <div style="flex-grow:1;">
           <h5 style="font-size:0.95rem; margin-bottom:2px;">${item.name}</h5>
-          <span style="color:var(--primary-rose); font-weight:700; font-size:0.9rem;">£ ${item.price.toLocaleString()}</span>
+          <span style="color:var(--primary-rose); font-weight:700; font-size:0.9rem;">Rs.  ${item.price.toLocaleString()}</span>
           ${item.customText ? `<div style="font-size:0.78rem; color:var(--text-muted);">Text: "${item.customText}"</div>` : ''}
         </div>
         <div style="display:flex; align-items:center; gap:0.4rem;">
@@ -1331,11 +1331,11 @@ function updateCartUI() {
   const elPayTot = document.getElementById('pay-modal-total');
   const elCheckoutFeeDisplay = document.getElementById('display-checkout-fee');
 
-  if (elSub) elSub.textContent = `£ ${subtotal.toLocaleString()}`;
-  if (elFee) elFee.textContent = appState.fulfillmentType === 'pickup' ? '£ 0 (Free Pickup)' : `£ ${appState.deliveryFee.toLocaleString()}`;
-  if (elTot) elTot.textContent = `£ ${total.toLocaleString()}`;
-  if (elPayTot) elPayTot.textContent = `£ ${total.toLocaleString()}`;
-  if (elCheckoutFeeDisplay) elCheckoutFeeDisplay.textContent = `£ ${appState.deliveryFee.toLocaleString()}`;
+  if (elSub) elSub.textContent = `Rs.  ${subtotal.toLocaleString()}`;
+  if (elFee) elFee.textContent = appState.fulfillmentType === 'pickup' ? 'Rs.  0 (Free Pickup)' : `Rs.  ${appState.deliveryFee.toLocaleString()}`;
+  if (elTot) elTot.textContent = `Rs.  ${total.toLocaleString()}`;
+  if (elPayTot) elPayTot.textContent = `Rs.  ${total.toLocaleString()}`;
+  if (elCheckoutFeeDisplay) elCheckoutFeeDisplay.textContent = `Rs.  ${appState.deliveryFee.toLocaleString()}`;
 }
 
 // CUSTOM CAKE BUILDER
@@ -1387,7 +1387,7 @@ function calculateCustomPrice() {
   let addon = frosting.includes('Gold Leaf') ? 500 : 0;
 
   const total = basePrice + addon;
-  document.getElementById('custom-total-price').textContent = `£ ${total.toLocaleString()}`;
+  document.getElementById('custom-total-price').textContent = `Rs.  ${total.toLocaleString()}`;
   
   let prep = 40;
   if (sizeSelect.value === '2-tier') prep = 55;
@@ -1767,7 +1767,7 @@ function renderAdminOrders() {
   const elPrep = document.getElementById('stat-active-prep');
   const elDeliv = document.getElementById('stat-delivered-count');
 
-  if (elRev) elRev.textContent = `£ ${totalRevenue.toLocaleString()}`;
+  if (elRev) elRev.textContent = `Rs.  ${totalRevenue.toLocaleString()}`;
   if (elOrd) elOrd.textContent = totalOrders;
   if (elPrep) elPrep.textContent = bakingCount;
   if (elDeliv) elDeliv.textContent = deliveredCount;
@@ -1816,7 +1816,7 @@ function renderAdminOrders() {
         <td>
           <div style="font-size:0.85rem;">${order.items.map(i => `${i.quantity}x ${i.name}`).join('<br>')}</div>
         </td>
-        <td><strong style="color:var(--accent-gold);">£ ${order.totalAmount.toLocaleString()}</strong></td>
+        <td><strong style="color:var(--accent-gold);">Rs.  ${order.totalAmount.toLocaleString()}</strong></td>
         <td>
           ${order.status === 'Pending Payment Approval' ? `
             <span style="font-size:0.78rem; color:var(--text-muted); font-weight:700;"><i class="fa-solid fa-hourglass-half"></i> Pending Verify</span>
@@ -1903,7 +1903,7 @@ function renderAdminRiders() {
       <td><span style="font-size:0.85rem;"><i class="fa-solid fa-motorcycle"></i> ${r.vehicle}</span></td>
       <td><span class="badge ${r.status === 'Online' ? 'badge-online' : 'badge-danger'}">${r.status}</span></td>
       <td><strong>${r.trips || 0} Trips</strong></td>
-      <td><strong style="color:var(--accent-gold);">£ ${(r.earnings || 0).toLocaleString()}</strong></td>
+      <td><strong style="color:var(--accent-gold);">Rs.  ${(r.earnings || 0).toLocaleString()}</strong></td>
       <td>
         <button class="btn btn-sm btn-danger" title="Remove Rider from Fleet" onclick="adminDeleteRider('${r.id}')">
           <i class="fa-solid fa-user-minus"></i> Remove
@@ -2067,17 +2067,17 @@ function viewOrderInvoice(orderId) {
                 ${item.customText ? `<br><small style="color:#a83250;">Inscription: "${item.customText}"</small>` : ''}
               </td>
               <td style="padding:8px;">${item.quantity}</td>
-              <td style="padding:8px;">£ ${item.price.toLocaleString()}</td>
-              <td style="padding:8px; text-align:right;">£ ${(item.price * item.quantity).toLocaleString()}</td>
+              <td style="padding:8px;">Rs.  ${item.price.toLocaleString()}</td>
+              <td style="padding:8px; text-align:right;">Rs.  ${(item.price * item.quantity).toLocaleString()}</td>
             </tr>
           `).join('')}
         </tbody>
       </table>
 
       <div style="text-align:right; font-size:1.1rem; margin-top:1rem; border-top:2px solid #ddd; padding-top:0.8rem;">
-        Subtotal: £ ${(order.totalAmount - (order.deliveryFee || 0)).toLocaleString()}<br>
-        Delivery Fee: £ ${(order.deliveryFee || 0).toLocaleString()}<br>
-        <strong style="font-size:1.3rem; color:#a83250;">Grand Total: £ ${order.totalAmount.toLocaleString()}</strong>
+        Subtotal: Rs.  ${(order.totalAmount - (order.deliveryFee || 0)).toLocaleString()}<br>
+        Delivery Fee: Rs.  ${(order.deliveryFee || 0).toLocaleString()}<br>
+        <strong style="font-size:1.3rem; color:#a83250;">Grand Total: Rs.  ${order.totalAmount.toLocaleString()}</strong>
       </div>
     </div>
 
@@ -2144,7 +2144,7 @@ function saveStoreSettings(e) {
   closeStoreSettingsModal();
   broadcastStateChange('settings_updated');
   updateCartUI();
-  showToast(`Store settings updated! Express Delivery Fee set to £ ${appState.deliveryFee}.`, 'success');
+  showToast(`Store settings updated! Express Delivery Fee set to Rs.  ${appState.deliveryFee}.`, 'success');
 }
 
 // ADJUST ORDER TIME IN REAL-TIME
@@ -2218,7 +2218,7 @@ function renderAdminProducts() {
         <img src="${p.image}" style="width:58px; height:58px; border-radius:12px; object-fit:cover;">
         <div>
           <strong style="font-size:1rem; color:var(--text-main);">${p.name}</strong>
-          <div style="font-size:0.82rem; color:var(--text-muted);">${p.category} &bull; <strong style="color:var(--accent-gold);">£ ${p.price.toLocaleString()}</strong> &bull; ${p.prepTimeMinutes || 35}m prep</div>
+          <div style="font-size:0.82rem; color:var(--text-muted);">${p.category} &bull; <strong style="color:var(--accent-gold);">Rs.  ${p.price.toLocaleString()}</strong> &bull; ${p.prepTimeMinutes || 35}m prep</div>
           <div style="font-size:0.78rem; color:var(--text-muted);">${p.description.substring(0, 48)}...</div>
         </div>
       </div>
@@ -2512,7 +2512,7 @@ function renderRiderPortal() {
     if (alertActions) {
       alertActions.innerHTML = `
         <button class="btn btn-gold btn-sm" onclick="riderAcceptJob('${alertJob.id}')">
-          <i class="fa-solid fa-check"></i> Accept Job (£ ${appState.deliveryFee})
+          <i class="fa-solid fa-check"></i> Accept Job (Rs.  ${appState.deliveryFee})
         </button>
         <button class="btn btn-danger btn-sm" onclick="riderRejectJob('${alertJob.id}')">
           <i class="fa-solid fa-xmark"></i> Decline / Reject
@@ -2536,7 +2536,7 @@ function renderRiderPortal() {
       <div class="job-detail-box mb-3">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
           <strong style="color:var(--accent-gold);">Order #${order.id}</strong>
-          <span class="badge badge-gold">£ ${appState.deliveryFee} Earnings</span>
+          <span class="badge badge-gold">Rs.  ${appState.deliveryFee} Earnings</span>
         </div>
         <div style="font-size:0.85rem; color:var(--text-muted); margin-bottom:0.8rem;">
           <i class="fa-solid fa-store"></i> Pickup: Royal Chhab Kitchen (Near RHC Hospital, Chhab)<br>
@@ -2575,7 +2575,7 @@ function renderRiderPortal() {
       <div class="job-detail-box">
         <div style="display:flex; justify-content:space-between; margin-bottom:0.75rem;">
           <strong>Order #${activeJob.id}</strong>
-          <span class="badge badge-online">Earnings: £ ${appState.deliveryFee}</span>
+          <span class="badge badge-online">Earnings: Rs.  ${appState.deliveryFee}</span>
         </div>
 
         <!-- Step 1: Pickup Address in Chhab -->
@@ -2683,7 +2683,7 @@ function riderMarkDelivered(orderId) {
     saveOrdersToStorage();
     renderRiderPortal();
     playCustomerSuccessSound();
-    showToast(`ðŸŽ‰ Order Successfully Delivered in Chhab! £ ${appState.deliveryFee} added.`, 'success');
+    showToast(`ðŸŽ‰ Order Successfully Delivered in Chhab! Rs.  ${appState.deliveryFee} added.`, 'success');
     sendFollowupEmail(order);
   }
 }
@@ -2782,7 +2782,7 @@ function openProductDetailsModal(productId) {
         <p style="color:var(--text-muted); font-size:0.92rem; margin-bottom:1.2rem; line-height:1.5;">${prod.description}</p>
       </div>
       <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-surface); padding:0.8rem 1.2rem; border-radius:var(--radius-md); border:1px solid var(--border-subtle); margin-top:1rem;">
-        <span style="font-size:1.35rem; font-weight:700; color:var(--primary-rose);">£ ${prod.price.toLocaleString()}</span>
+        <span style="font-size:1.35rem; font-weight:700; color:var(--primary-rose);">Rs.  ${prod.price.toLocaleString()}</span>
         <button class="btn btn-primary btn-sm" onclick="addToCart('${prod.id}'); closeProductDetailsModal();">
           <i class="fa-solid fa-basket-shopping"></i> Add to Basket
         </button>
@@ -3255,7 +3255,7 @@ function renderAdminUsers() {
         <td><span class="badge badge-online" style="background:#4f46e5; font-size:0.75rem;"><i class="fa-brands fa-google"></i> ${u.provider || 'Google'}</span></td>
         <td style="color:var(--text-muted); font-size:0.85rem;">${joinDateFormatted}</td>
         <td style="text-align:center; font-weight:700; color:var(--text-main);">${userOrders.length}</td>
-        <td style="text-align:right; font-weight:700; color:var(--accent-gold);">£ ${totalSpent.toLocaleString()}</td>
+        <td style="text-align:right; font-weight:700; color:var(--accent-gold);">Rs.  ${totalSpent.toLocaleString()}</td>
       </tr>
     `;
   }).join('');
