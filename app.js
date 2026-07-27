@@ -191,7 +191,7 @@ const DEFAULT_PRODUCTS = [
     price: 85,
     prepTimeMinutes: 75,
     image: 'https://images.unsplash.com/photo-1607478900766-efe13248b125?auto=format&fit=crop&w=600&q=80',
-    description: 'Immaculate pearl white fondant three-tier cake with hand-piped lace detail and cascading sugar flowe£'
+    description: 'Immaculate pearl white fondant three-tier cake with hand-piped lace detail and cascading sugar flowers.'
   },
   {
     id: 'prod-114',
@@ -363,7 +363,7 @@ function finishSplashOnboarding(openAuth = false) {
 // STORAGE & REAL-TIME BROADCAST ENGINE
 // ============================================================================
 function loadStateFromStorage() {
-  const CATALOG_VERSION = 'v5-fixed';
+  const CATALOG_VERSION = 'v6-clean';
   const savedCatalogVersion = localStorage.getItem('luxecakes_catalog_version');
   const savedProducts = localStorage.getItem('luxecakes_products');
   if (savedProducts && savedCatalogVersion === CATALOG_VERSION) {
@@ -512,8 +512,8 @@ function initBroadcastListener() {
 }
 
 function updatePendingBadges() {
-  const bakingCount = appState.orde£filter(o => o.status === 'Baking & Prepping' || o.status === 'New Order').length;
-  const dispatchCount = appState.orde£filter(o => o.status === 'Dispatching Rider').length;
+  const bakingCount = appState.orders.filter(o => o.status === 'Baking & Prepping' || o.status === 'New Order').length;
+  const dispatchCount = appState.orders.filter(o => o.status === 'Dispatching Rider').length;
 
   const adminBadge = document.getElementById('admin-pending-count');
   if (adminBadge) adminBadge.textContent = bakingCount;
@@ -685,7 +685,7 @@ function toggleRiderAuthTab(tab) {
 function handleRiderLogin(e) {
   e.preventDefault();
   const phoneOrId = document.getElementById('rider-login-phone').value.trim();
-  const rider = appState.ride£find(r => r.phone === phoneOrId || r.id === phoneOrId);
+  const rider = appState.riders.find(r => r.phone === phoneOrId || r.id === phoneOrId);
 
   if (!rider) {
     showToast('Rider account not found. Please Sign Up/Register first!', 'danger');
@@ -707,7 +707,7 @@ function handleRiderRegister(e) {
   const vehicle = document.getElementById('rider-reg-vehicle').value;
 
   // Check if phone or email already registered
-  const existingRider = appState.ride£find(r => r.phone === phone || r.email.toLowerCase() === email.toLowerCase());
+  const existingRider = appState.riders.find(r => r.phone === phone || r.email.toLowerCase() === email.toLowerCase());
   if (existingRider) {
     showToast('Rider account with this phone or email already exists!', 'danger');
     return;
@@ -724,7 +724,7 @@ function handleRiderRegister(e) {
     earnings: 0
   };
 
-  appState.ride£push(newRider);
+  appState.riders.push(newRider);
   saveRidersToStorage();
 
   appState.currentRider = newRider;
@@ -809,9 +809,9 @@ function handleGoogleCredentialResponse(response) {
 
     // Register user in list if not already present
     const emailLower = payload.email.toLowerCase();
-    const userExists = appState.use£find(u => u.email.toLowerCase() === emailLower);
+    const userExists = appState.users.find(u => u.email.toLowerCase() === emailLower);
     if (!userExists) {
-      appState.use£push({
+      appState.users.push({
         name: payload.name,
         email: payload.email,
         provider: 'Google',
@@ -836,7 +836,7 @@ function handleGoogleCredentialResponseRider(response) {
   const payload = decodeJwt(response.credential);
   if (payload) {
     const email = payload.email.toLowerCase();
-    let rider = appState.ride£find(r => (r.email && r.email.toLowerCase() === email) || r.phone === email);
+    let rider = appState.riders.find(r => (r.email && r.email.toLowerCase() === email) || r.phone === email);
     
     if (!rider) {
       showToast('This Google account is not registered as a Rider. Please register yourself first!', 'danger');
@@ -885,14 +885,14 @@ function checkContinuousAudioAlerts() {
   const page = document.body.dataset.page;
 
   if (page === 'admin') {
-    const unacceptedCount = appState.orde£filter(o => o.status === 'New Order').length;
+    const unacceptedCount = appState.orders.filter(o => o.status === 'New Order').length;
     if (unacceptedCount > 0) {
       startAdminContinuousAlert();
     } else {
       stopAdminContinuousAlert();
     }
   } else if (page === 'rider' && appState.riderOnline) {
-    const activeDispatches = appState.orde£filter(o => o.status === 'Dispatching Rider' && o.fulfillmentType !== 'pickup' && !appState.rejectedJobs.includes(o.id));
+    const activeDispatches = appState.orders.filter(o => o.status === 'Dispatching Rider' && o.fulfillmentType !== 'pickup' && !appState.rejectedJobs.includes(o.id));
     if (activeDispatches.length > 0) {
       startRiderContinuousAlert();
     } else {
@@ -1095,32 +1095,6 @@ function renderStorefrontCatalog() {
               </button>
             </div>
           </div>
-        </div>
-      `;
-    }).join('');
-
-    return `
-      <div class="catalog-category-row">
-        <div class="category-row-header">
-          <div class="category-row-title-box">
-            <h3>${cat.name}</h3>
-            <p>${cat.sub}</p>
-          </div>
-          <div class="slider-nav-controls">
-            <button class="slider-nav-btn" onclick="slideCatalog('${cat.id}', -1)" title="Scroll Left"><i class="fa-solid fa-chevron-left"></i></button>
-            <button class="slider-nav-btn" onclick="slideCatalog('${cat.id}', 1)" title="Scroll Right"><i class="fa-solid fa-chevron-right"></i></button>
-          </div>
-        </div>
-        <div class="slider-container">
-          <div class="slider-track" id="track-${cat.id}">
-            ${cardsHtml}
-          </div>
-        </div>
-      </div>
-    `;
-  }).join('');
-}
-
         </div>
       `;
     }).join('');
@@ -1521,7 +1495,7 @@ async function handlePaymentSubmit(e) {
     assignedRider: null
   };
 
-  appState.orde£unshift(newOrder);
+  appState.orders.unshift(newOrder);
   saveOrdersToStorage();
   broadcastStateChange('new_order_placed', { orderId: newOrder.id });
 
@@ -1565,16 +1539,16 @@ function closeOrderTrackerModal() {
 }
 
 function updateActiveOrdersIndicator() {
-  const activeOrders = appState.orde£filter(o => o.status !== 'Delivered');
+  const activeOrders = appState.orders.filter(o => o.status !== 'Delivered');
   const dot = document.getElementById('active-orders-dot');
-  if (dot) dot.style.display = activeOrde£length > 0 ? 'block' : 'none';
+  if (dot) dot.style.display = activeOrders.length > 0 ? 'block' : 'none';
 }
 
 function renderCustomerOrderTracker() {
   const body = document.getElementById('order-tracker-body');
   if (!body) return;
 
-  if (appState.orde£length === 0) {
+  if (appState.orders.length === 0) {
     body.innerHTML = `
       <div class="empty-job-state">
         <i class="fa-solid fa-clock-rotate-left fa-3x" style="color:var(--primary-rose);"></i>
@@ -1584,7 +1558,7 @@ function renderCustomerOrderTracker() {
     return;
   }
 
-  body.innerHTML = appState.orde£map(order => {
+  body.innerHTML = appState.orders.map(order => {
     const remainingMs = Math.max(0, order.targetFinishTime - Date.now());
     const remainingSecs = Math.floor(remainingMs / 1000);
     const mins = Math.floor(remainingSecs / 60);
@@ -1638,7 +1612,7 @@ function renderCustomerOrderTracker() {
     `;
   }).join('');
 
-  appState.orde£forEach(order => {
+  appState.orders.forEach(order => {
     if (order.status === 'Out for Delivery' || order.status === 'Rider Accepted') {
       setTimeout(() => renderInteractiveLeafletMap(`cust-map-${order.id}`), 200);
     }
@@ -1687,10 +1661,10 @@ function renderAdminOrders() {
   const tbody = document.getElementById('admin-orders-tbody');
   if (!tbody) return;
 
-  const totalOrders = appState.orde£length;
-  const totalRevenue = appState.orde£reduce((sum, o) => sum + o.totalAmount, 0);
-  const bakingCount = appState.orde£filter(o => o.status === 'Baking & Prepping' || o.status === 'New Order').length;
-  const deliveredCount = appState.orde£filter(o => o.status === 'Delivered').length;
+  const totalOrders = appState.orders.length;
+  const totalRevenue = appState.orders.reduce((sum, o) => sum + o.totalAmount, 0);
+  const bakingCount = appState.orders.filter(o => o.status === 'Baking & Prepping' || o.status === 'New Order').length;
+  const deliveredCount = appState.orders.filter(o => o.status === 'Delivered').length;
 
   const elRev = document.getElementById('stat-total-revenue');
   const elOrd = document.getElementById('stat-total-orders');
@@ -1707,14 +1681,14 @@ function renderAdminOrders() {
 
   const filteredOrders = appState.adminOrderFilter === 'all'
     ? appState.orders
-    : appState.orde£filter(o => o.status === appState.adminOrderFilter);
+    : appState.orders.filter(o => o.status === appState.adminOrderFilter);
 
-  if (filteredOrde£length === 0) {
+  if (filteredOrders.length === 0) {
     tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:2rem; color:var(--text-muted);">No orders found matching filter "${appState.adminOrderFilter}".</td></tr>`;
     return;
   }
 
-  tbody.innerHTML = filteredOrde£map(order => {
+  tbody.innerHTML = filteredOrders.map(order => {
     const remainingMs = Math.max(0, order.targetFinishTime - Date.now());
     const remainingSecs = Math.floor(remainingMs / 1000);
     const mins = Math.floor(remainingSecs / 60);
@@ -1813,15 +1787,15 @@ function renderAdminOrders() {
 function renderAdminRiders() {
   const tbody = document.getElementById('admin-riders-tbody');
   const countBadge = document.getElementById('admin-tab-rider-count');
-  if (countBadge) countBadge.textContent = appState.ride£length;
+  if (countBadge) countBadge.textContent = appState.riders.length;
   if (!tbody) return;
 
-  if (appState.ride£length === 0) {
+  if (appState.riders.length === 0) {
     tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:2rem; color:var(--text-muted);">No riders currently in fleet. Click "Add New Rider" above!</td></tr>`;
     return;
   }
 
-  tbody.innerHTML = appState.ride£map(r => `
+  tbody.innerHTML = appState.riders.map(r => `
     <tr>
       <td><strong style="color:var(--text-main); font-size:0.95rem;">${r.name}</strong></td>
       <td><span class="badge badge-gold">${r.id}</span></td>
@@ -1867,7 +1841,7 @@ function handleAddRiderSubmit(e) {
     earnings: 0
   };
 
-  appState.ride£push(newRider);
+  appState.riders.push(newRider);
   saveRidersToStorage();
   closeAddRiderModal();
   renderAdminRiders();
@@ -1875,9 +1849,9 @@ function handleAddRiderSubmit(e) {
 }
 
 function adminDeleteRider(riderId) {
-  const rider = appState.ride£find(r => r.id === riderId);
+  const rider = appState.riders.find(r => r.id === riderId);
   if (confirm(`Are you sure you want to remove rider "${rider?.name || riderId}" from the fleet?`)) {
-    appState.riders = appState.ride£filter(r => r.id !== riderId);
+    appState.riders = appState.riders.filter(r => r.id !== riderId);
     saveRidersToStorage();
     renderAdminRiders();
     showToast(`Rider #${riderId} removed from roster.`, 'danger');
@@ -1885,7 +1859,7 @@ function adminDeleteRider(riderId) {
 }
 
 function adminAcceptNewOrder(orderId) {
-  const order = appState.orde£find(o => o.id === orderId);
+  const order = appState.orders.find(o => o.id === orderId);
   if (order) {
     order.status = 'Baking & Prepping';
     saveOrdersToStorage();
@@ -1896,7 +1870,7 @@ function adminAcceptNewOrder(orderId) {
 }
 
 function adminMarkReady(orderId) {
-  const order = appState.orde£find(o => o.id === orderId);
+  const order = appState.orders.find(o => o.id === orderId);
   if (order) {
     order.status = 'Ready for Pickup';
     saveOrdersToStorage();
@@ -1906,7 +1880,7 @@ function adminMarkReady(orderId) {
 }
 
 function adminMarkDelivered(orderId) {
-  const order = appState.orde£find(o => o.id === orderId);
+  const order = appState.orders.find(o => o.id === orderId);
   if (order) {
     order.status = 'Delivered';
     saveOrdersToStorage();
@@ -1917,7 +1891,7 @@ function adminMarkDelivered(orderId) {
 }
 
 function adminDispatchRider(orderId) {
-  const order = appState.orde£find(o => o.id === orderId);
+  const order = appState.orders.find(o => o.id === orderId);
   if (order) {
     order.status = 'Dispatching Rider';
     saveOrdersToStorage();
@@ -1929,7 +1903,7 @@ function adminDispatchRider(orderId) {
 
 function adminDeleteOrder(orderId) {
   if (confirm(`Are you sure you want to delete Order #${orderId}?`)) {
-    appState.orders = appState.orde£filter(o => o.id !== orderId);
+    appState.orders = appState.orders.filter(o => o.id !== orderId);
     saveOrdersToStorage();
     checkContinuousAudioAlerts();
     renderAdminOrders();
@@ -1938,7 +1912,7 @@ function adminDeleteOrder(orderId) {
 }
 
 function viewOrderInvoice(orderId) {
-  const order = appState.orde£find(o => o.id === orderId);
+  const order = appState.orders.find(o => o.id === orderId);
   if (!order) return;
 
   const modalBody = document.getElementById('admin-order-modal-body');
@@ -2079,7 +2053,7 @@ function saveStoreSettings(e) {
 
 // ADJUST ORDER TIME IN REAL-TIME
 function openAdjustTimeModal(orderId) {
-  const order = appState.orde£find(o => o.id === orderId);
+  const order = appState.orders.find(o => o.id === orderId);
   if (!order) return;
 
   const orderIdInput = document.getElementById('adjust-order-id');
@@ -2105,7 +2079,7 @@ function handleAdjustTimeSubmit(e) {
   const prepTime = parseInt(document.getElementById('adjust-prep-time').value);
   const deliveryTime = parseInt(document.getElementById('adjust-delivery-time').value);
 
-  const order = appState.orde£find(o => o.id === orderId);
+  const order = appState.orders.find(o => o.id === orderId);
   if (order) {
     order.prepTimeMinutes = prepTime;
     order.deliveryTimeMinutes = deliveryTime;
@@ -2432,11 +2406,11 @@ function renderRiderPortal() {
 
   if (!availableList || !activeJobBody) return;
 
-  const readyOrders = appState.orde£filter(o => o.status === 'Dispatching Rider' && o.fulfillmentType !== 'pickup' && !appState.rejectedJobs.includes(o.id));
+  const readyOrders = appState.orders.filter(o => o.status === 'Dispatching Rider' && o.fulfillmentType !== 'pickup' && !appState.rejectedJobs.includes(o.id));
   const countEl = document.getElementById('rider-available-count');
-  if (countEl) countEl.textContent = `${readyOrde£length} Available`;
+  if (countEl) countEl.textContent = `${readyOrders.length} Available`;
 
-  if (readyOrde£length > 0 && appState.riderOnline) {
+  if (readyOrders.length > 0 && appState.riderOnline) {
     const alertJob = readyOrders[0];
     if (alertBox) alertBox.style.display = 'block';
     if (alertActions) {
@@ -2453,7 +2427,7 @@ function renderRiderPortal() {
     if (alertBox) alertBox.style.display = 'none';
   }
 
-  if (readyOrde£length === 0) {
+  if (readyOrders.length === 0) {
     availableList.innerHTML = `
       <div class="empty-job-state py-4">
         <i class="fa-solid fa-radar fa-2x mb-2"></i>
@@ -2462,7 +2436,7 @@ function renderRiderPortal() {
       </div>
     `;
   } else {
-    availableList.innerHTML = readyOrde£map(order => `
+    availableList.innerHTML = readyOrders.map(order => `
       <div class="job-detail-box mb-3">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
           <strong style="color:var(--accent-gold);">Order #${order.id}</strong>
@@ -2484,7 +2458,7 @@ function renderRiderPortal() {
     `).join('');
   }
 
-  const activeJob = appState.orde£find(o => o.id === appState.activeRiderJobId || (o.assignedRider === '#RD-7892' && o.status !== 'Delivered'));
+  const activeJob = appState.orders.find(o => o.id === appState.activeRiderJobId || (o.assignedRider === '#RD-7892' && o.status !== 'Delivered'));
 
   if (!activeJob) {
     if (jobStatusBadge) jobStatusBadge.textContent = 'No Active Job';
@@ -2560,13 +2534,13 @@ function renderRiderPortal() {
 }
 
 function riderAcceptJob(orderId) {
-  const order = appState.orde£find(o => o.id === orderId);
+  const order = appState.orders.find(o => o.id === orderId);
   if (order) {
     order.status = 'Rider Accepted';
     order.assignedRider = appState.currentRider ? appState.currentRider.name : '#RD-7892';
     appState.activeRiderJobId = orderId;
 
-    const riderObj = appState.ride£find(r => r.id === (appState.currentRider?.id || 'RD-7892'));
+    const riderObj = appState.riders.find(r => r.id === (appState.currentRider?.id || 'RD-7892'));
     if (riderObj) {
       riderObj.status = 'On Delivery';
       saveRidersToStorage();
@@ -2587,7 +2561,7 @@ function riderRejectJob(orderId) {
 }
 
 function riderMarkPickedUp(orderId) {
-  const order = appState.orde£find(o => o.id === orderId);
+  const order = appState.orders.find(o => o.id === orderId);
   if (order) {
     order.status = 'Out for Delivery';
     saveOrdersToStorage();
@@ -2597,12 +2571,12 @@ function riderMarkPickedUp(orderId) {
 }
 
 function riderMarkDelivered(orderId) {
-  const order = appState.orde£find(o => o.id === orderId);
+  const order = appState.orders.find(o => o.id === orderId);
   if (order) {
     order.status = 'Delivered';
     appState.activeRiderJobId = null;
 
-    const riderObj = appState.ride£find(r => r.id === (appState.currentRider?.id || 'RD-7892'));
+    const riderObj = appState.riders.find(r => r.id === (appState.currentRider?.id || 'RD-7892'));
     if (riderObj) {
       riderObj.status = 'Online';
       riderObj.trips = (riderObj.trips || 0) + 1;
@@ -2640,7 +2614,7 @@ async function sendFollowupEmail(order) {
 function startCountdownTimerLoop() {
   setInterval(() => {
     let updated = false;
-    appState.orde£forEach(order => {
+    appState.orders.forEach(order => {
       if (order.status === 'Baking & Prepping') {
         const remaining = order.targetFinishTime - Date.now();
         if (remaining <= 0) {
@@ -3033,7 +3007,7 @@ function adminDeletePayment(paymentId) {
 // ADMIN RECEIPT APPROVAL & VERIFICATION
 // ============================================================================
 async function adminApprovePayment(orderId) {
-  const order = appState.orde£find(o => o.id === orderId);
+  const order = appState.orders.find(o => o.id === orderId);
   if (!order) return;
 
   order.status = 'New Order';
@@ -3062,7 +3036,7 @@ async function adminApprovePayment(orderId) {
 }
 
 function adminRejectPayment(orderId) {
-  const order = appState.orde£find(o => o.id === orderId);
+  const order = appState.orders.find(o => o.id === orderId);
   if (!order) return;
 
   if (confirm(`Reject payment receipt and cancel Order #${orderId}?`)) {
@@ -3074,7 +3048,7 @@ function adminRejectPayment(orderId) {
 }
 
 function viewReceiptImage(orderId) {
-  const order = appState.orde£find(o => o.id === orderId);
+  const order = appState.orders.find(o => o.id === orderId);
   if (!order || !order.paymentReceipt) return;
 
   // Render a responsive full-screen lightbox overlay
@@ -3104,19 +3078,19 @@ function renderAdminUsers() {
   const totalBadge = document.getElementById('admin-total-users-badge');
   const countBadge = document.getElementById('admin-tab-users-count');
 
-  if (totalBadge) totalBadge.textContent = `Total Users: ${appState.use£length}`;
-  if (countBadge) countBadge.textContent = appState.use£length;
+  if (totalBadge) totalBadge.textContent = `Total Users: ${appState.users.length}`;
+  if (countBadge) countBadge.textContent = appState.users.length;
   if (!tbody) return;
 
-  if (appState.use£length === 0) {
+  if (appState.users.length === 0) {
     tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:2rem; color:var(--text-muted);">No users registered yet.</td></tr>`;
     return;
   }
 
-  tbody.innerHTML = appState.use£map(u => {
+  tbody.innerHTML = appState.users.map(u => {
     // Match their email against orders to calculate total orders and spent
-    const userOrders = appState.orde£filter(o => o.customerEmail && o.customerEmail.toLowerCase() === u.email.toLowerCase());
-    const totalSpent = userOrde£reduce((sum, o) => sum + (o.totalAmount || 0), 0);
+    const userOrders = appState.orders.filter(o => o.customerEmail && o.customerEmail.toLowerCase() === u.email.toLowerCase());
+    const totalSpent = userOrders.reduce((sum, o) => sum + (o.totalAmount || 0), 0);
     const joinDateFormatted = new Date(u.joinedAt || Date.now()).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'short',
@@ -3138,7 +3112,7 @@ function renderAdminUsers() {
         <td><code>${u.email}</code></td>
         <td><span class="badge badge-online" style="background:#4f46e5; font-size:0.75rem;"><i class="fa-brands fa-google"></i> ${u.provider || 'Google'}</span></td>
         <td style="color:var(--text-muted); font-size:0.85rem;">${joinDateFormatted}</td>
-        <td style="text-align:center; font-weight:700; color:var(--text-main);">${userOrde£length}</td>
+        <td style="text-align:center; font-weight:700; color:var(--text-main);">${userOrders.length}</td>
         <td style="text-align:right; font-weight:700; color:var(--accent-gold);">£ ${totalSpent.toLocaleString()}</td>
       </tr>
     `;
