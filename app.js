@@ -25,13 +25,21 @@ const DEFAULT_RIDERS = [
 const DEFAULT_PRODUCT_REVIEWS = [
   { productId: 'prod-101', author: 'Faris Ali', rating: 5, comment: 'Exceptional dark cocoa flavor, gold flakes look spectacular. Very luxury cake!', date: Date.now() - 4 * 24 * 60 * 60 * 1000 },
   { productId: 'prod-101', author: 'Amna Nawaz', rating: 4, comment: 'Super moist and chocolatey. Highly recommend for birthday surprises.', date: Date.now() - 2 * 24 * 60 * 60 * 1000 },
-  { productId: 'prod-102', author: 'Zafar Hayat', rating: 5, comment: 'The combination of strawberry compote and pistachio cream is so delicious and light.', date: Date.now() - 5 * 24 * 60 * 60 * 1000 }
+  { productId: 'prod-102', author: 'Zafar Hayat', rating: 5, comment: 'The combination of strawberry compote and pistachio cream is so delicious and light.', date: Date.now() - 5 * 24 * 60 * 60 * 1000 },
+  { productId: 'prod-103', author: 'Hina Baig', rating: 5, comment: 'Ordered for my daughter wedding. Absolutely stunning tiered cake, everyone loved it!', date: Date.now() - 6 * 24 * 60 * 60 * 1000 },
+  { productId: 'prod-105', author: 'Tariq Mehmood', rating: 5, comment: 'Best cupcakes in Chhab! The mango passionfruit flavor is unreal.', date: Date.now() - 1 * 24 * 60 * 60 * 1000 },
+  { productId: 'prod-107', author: 'Asma Raza', rating: 4, comment: 'Beautiful lemon drizzle, loved the tangy sweetness. Great for afternoon tea!', date: Date.now() - 3 * 24 * 60 * 60 * 1000 },
+  { productId: 'prod-110', author: 'Bilal Khan', rating: 5, comment: 'The Belgian chocolate fondant is pure perfection. Rich, dark and fudgy.', date: Date.now() - 7 * 24 * 60 * 60 * 1000 }
 ];
 
 // Initial Mock General Storefront Testimonials
 const DEFAULT_GENERAL_FEEDBACK = [
   { author: "Kamil Shah", rating: 5, comment: "Ordered custom fondant tier cake for my brother's wedding near RHC Hospital. The delivery was on-time and the chocolate cake tasted heavenly!", date: Date.now() - 3 * 24 * 60 * 60 * 1000 },
-  { author: "Sania Malik", rating: 5, comment: "Their strawberry pistachio torte is a masterpiece. The online status tracker worked perfectly, bakes were fresh. Royal Chhab is definitely the best bakery in Punjab!", date: Date.now() - 24 * 60 * 60 * 1000 }
+  { author: "Sania Malik", rating: 5, comment: "Their strawberry pistachio torte is a masterpiece. The online status tracker worked perfectly, bakes were fresh. Royal Chhab is definitely the best bakery in Punjab!", date: Date.now() - 24 * 60 * 60 * 1000 },
+  { author: "Ahsan Butt", rating: 5, comment: "Placed an order at night, cake was ready by morning. The red velvet was absolutely divine with cream cheese frosting. Will order again!", date: Date.now() - 2 * 24 * 60 * 60 * 1000 },
+  { author: "Nadia Rasheed", rating: 4, comment: "The lemon drizzle and rose water cake was something I had never tasted before. Unique, fragrant and beautifully presented.", date: Date.now() - 4 * 24 * 60 * 60 * 1000 },
+  { author: "Usman Ghani", rating: 5, comment: "10/10 experience. The cupcake box with mango passionfruit was the star of our office party. Everyone asked where we got it!", date: Date.now() - 5 * 24 * 60 * 60 * 1000 },
+  { author: "Mariam Iqbal", rating: 5, comment: "Fastest delivery in Chhab! The live baking countdown was so cool — my kids loved watching it. Cake was flawless.", date: Date.now() - 6 * 24 * 60 * 60 * 1000 }
 ];
 
 // Initial Pakistani Payment Systems
@@ -60,41 +68,27 @@ let appState = {
   aiOriginalImage: null,
   storeOpen: true,
   deliveryFee: 300,
-  fulfillmentType: 'delivery', // 'delivery' or 'pickup'
+  fulfillmentType: 'delivery',
   storeAddress: 'Near RHC Hospital, Main Road, Chhab, Punjab, Pakistan',
-  currentUser: null, // Logged in customer account
-  currentRider: null,  // Logged in rider account
+  currentUser: null,
+  currentRider: null,
   users: []
 };
 
-// Initial Sample Products Catalog (Royal Chhab Specialities)
+// ============================================================================
+// ROYAL CHHAB FULL PRODUCT CATALOG — 20 Products (5 per Category)
+// ============================================================================
 const DEFAULT_PRODUCTS = [
+
+  // ── SIGNATURE ARTISANAL ─────────────────────────────────────────────────
   {
     id: 'prod-101',
-    name: 'Royal Chhab Dark Chocolate Truffle',
+    name: 'Royal Dark Chocolate Truffle',
     category: 'Signature',
     price: 3200,
     prepTimeMinutes: 40,
     image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=600&q=80',
-    description: 'Triple-layer 70% dark cocoa sponge infused with hazelnut praline and gold leaf flakes.'
-  },
-  {
-    id: 'prod-102',
-    name: 'Strawberry & Pistachio Special Torte',
-    category: 'Birthday',
-    price: 2800,
-    prepTimeMinutes: 35,
-    image: 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&w=600&q=80',
-    description: 'Fluffy vanilla bean cake filled with organic strawberry compote and crushed Iranian pistachios.'
-  },
-  {
-    id: 'prod-103',
-    name: 'Royal Chhab Grand Wedding Tier Cake',
-    category: 'Wedding',
-    price: 8500,
-    prepTimeMinutes: 60,
-    image: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=600&q=80',
-    description: 'Tiered Madagascar vanilla cake with handcrafted buttercream roses and champagne glaze.'
+    description: 'Triple-layer 70% dark cocoa sponge infused with hazelnut praline and edible gold leaf flakes. A regal indulgence.'
   },
   {
     id: 'prod-104',
@@ -103,16 +97,45 @@ const DEFAULT_PRODUCTS = [
     price: 3500,
     prepTimeMinutes: 30,
     image: 'https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?auto=format&fit=crop&w=600&q=80',
-    description: 'Rich salted caramel sponge topped with house-baked French macarons.'
+    description: 'Rich salted caramel sponge topped with house-baked French macarons, caramel drizzle and edible pearls.'
   },
   {
-    id: 'prod-105',
-    name: 'Artisanal Gourmet Cupcake Box (Set of 6)',
-    category: 'Cupcakes',
-    price: 1800,
-    prepTimeMinutes: 20,
-    image: 'https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?auto=format&fit=crop&w=600&q=80',
-    description: 'Assorted artisan cupcakes: Velvet Rose, Dark Cocoa, Salted Caramel, Mango Passionfruit.'
+    id: 'prod-107',
+    name: 'Lemon Drizzle & Rose Water Cake',
+    category: 'Signature',
+    price: 2900,
+    prepTimeMinutes: 35,
+    image: 'https://images.unsplash.com/photo-1558636508-e0db3814bd1d?auto=format&fit=crop&w=600&q=80',
+    description: 'Zesty organic lemon sponge soaked in rose water syrup, finished with candied lemon peel and dried rose petals.'
+  },
+  {
+    id: 'prod-108',
+    name: 'Belgian Chocolate Fondant Cake',
+    category: 'Signature',
+    price: 3800,
+    prepTimeMinutes: 45,
+    image: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=600&q=80',
+    description: 'Sinfully rich Belgian dark chocolate fondant cake with a molten centre and bitter cocoa glaze. Served warm.'
+  },
+  {
+    id: 'prod-109',
+    name: 'Pistachio & Cardamom Opera Cake',
+    category: 'Signature',
+    price: 4200,
+    prepTimeMinutes: 50,
+    image: 'https://images.unsplash.com/photo-1571115177098-24ec42ed204d?auto=format&fit=crop&w=600&q=80',
+    description: 'Elegant layered opera cake with Iranian pistachio cream, cardamom-scented ganache and gold mirror glaze finish.'
+  },
+
+  // ── BIRTHDAY DELIGHTS ────────────────────────────────────────────────────
+  {
+    id: 'prod-102',
+    name: 'Strawberry & Pistachio Special Torte',
+    category: 'Birthday',
+    price: 2800,
+    prepTimeMinutes: 35,
+    image: 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&w=600&q=80',
+    description: 'Fluffy vanilla bean cake filled with organic strawberry compote and crushed Iranian pistachios. A crowd favourite.'
   },
   {
     id: 'prod-106',
@@ -121,7 +144,128 @@ const DEFAULT_PRODUCTS = [
     price: 2600,
     prepTimeMinutes: 35,
     image: 'https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?auto=format&fit=crop&w=600&q=80',
-    description: 'Moist red velvet sponge with smooth cream cheese frosting and fresh berries.'
+    description: 'Moist red velvet sponge with smooth cream cheese frosting, fresh berry garnish and custom message inscription.'
+  },
+  {
+    id: 'prod-110',
+    name: 'Rainbow Confetti Celebration Cake',
+    category: 'Birthday',
+    price: 2400,
+    prepTimeMinutes: 30,
+    image: 'https://images.unsplash.com/photo-1587668178277-295251f900ce?auto=format&fit=crop&w=600&q=80',
+    description: 'Fun-filled rainbow confetti sponge with vanilla buttercream and a vivid sprinkle cascade. Perfect for kids.'
+  },
+  {
+    id: 'prod-111',
+    name: 'Mango & Coconut Tropical Birthday',
+    category: 'Birthday',
+    price: 2750,
+    prepTimeMinutes: 35,
+    image: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=600&q=80',
+    description: 'Light coconut sponge layered with fresh Chaunsa mango cream and toasted coconut flakes. Tropical bliss.'
+  },
+  {
+    id: 'prod-112',
+    name: 'Chocolate Hazelnut Drip Cake',
+    category: 'Birthday',
+    price: 3000,
+    prepTimeMinutes: 40,
+    image: 'https://images.unsplash.com/photo-1571506165871-ee72a35bc9d4?auto=format&fit=crop&w=600&q=80',
+    description: 'Decadent chocolate sponge with Nutella filling, hazelnut praline crunch and glossy chocolate drip finish.'
+  },
+
+  // ── BOUTIQUE WEDDING CAKES ───────────────────────────────────────────────
+  {
+    id: 'prod-103',
+    name: 'Royal Chhab Grand Wedding Tier Cake',
+    category: 'Wedding',
+    price: 8500,
+    prepTimeMinutes: 60,
+    image: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=600&q=80',
+    description: 'Tiered Madagascar vanilla cake with handcrafted buttercream roses, sugar orchids and champagne glaze.'
+  },
+  {
+    id: 'prod-113',
+    name: 'Pearl White Fondant Wedding Cake',
+    category: 'Wedding',
+    price: 9200,
+    prepTimeMinutes: 75,
+    image: 'https://images.unsplash.com/photo-1519947487923-b52c9e64d82a?auto=format&fit=crop&w=600&q=80',
+    description: 'Immaculate pearl white fondant three-tier cake with hand-piped lace detail and cascading sugar flowers.'
+  },
+  {
+    id: 'prod-114',
+    name: 'Blush Rose Gold Bridal Cake',
+    category: 'Wedding',
+    price: 10500,
+    prepTimeMinutes: 90,
+    image: 'https://images.unsplash.com/photo-1622896784083-cc051313b6b4?auto=format&fit=crop&w=600&q=80',
+    description: 'Romantic blush pink and rose gold five-tier wedding cake with hand-sugar roses and edible gold leaf.'
+  },
+  {
+    id: 'prod-115',
+    name: 'Minimalist Naked Wedding Cake',
+    category: 'Wedding',
+    price: 7200,
+    prepTimeMinutes: 60,
+    image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=600&q=80',
+    description: 'Rustic semi-naked cake with vanilla cream cheese frosting, fresh botanicals, figs and seasonal berries.'
+  },
+  {
+    id: 'prod-116',
+    name: 'Black Tie Luxury Wedding Cake',
+    category: 'Wedding',
+    price: 12000,
+    prepTimeMinutes: 90,
+    image: 'https://images.unsplash.com/photo-1549040855-3d9d93ac1a89?auto=format&fit=crop&w=600&q=80',
+    description: 'Dramatic black fondant five-tier showstopper with gold geometric patterns, hand-painted details and champagne cake inside.'
+  },
+
+  // ── GOURMET CUPCAKES ─────────────────────────────────────────────────────
+  {
+    id: 'prod-105',
+    name: 'Artisanal Gourmet Cupcake Box (×6)',
+    category: 'Cupcakes',
+    price: 1800,
+    prepTimeMinutes: 20,
+    image: 'https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?auto=format&fit=crop&w=600&q=80',
+    description: 'Assorted artisan cupcakes: Velvet Rose, Dark Cocoa, Salted Caramel, Mango Passionfruit. Perfect gift boxes.'
+  },
+  {
+    id: 'prod-117',
+    name: 'Red Velvet Cream Cheese Cupcakes (×6)',
+    category: 'Cupcakes',
+    price: 1600,
+    prepTimeMinutes: 20,
+    image: 'https://images.unsplash.com/photo-1614707267537-b85aaf00c4b7?auto=format&fit=crop&w=600&q=80',
+    description: 'Classic red velvet cupcakes crowned with swirls of tangy cream cheese frosting and edible glitter hearts.'
+  },
+  {
+    id: 'prod-118',
+    name: 'Chocolate Fudge Frosted Cupcakes (×6)',
+    category: 'Cupcakes',
+    price: 1700,
+    prepTimeMinutes: 20,
+    image: 'https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=600&q=80',
+    description: 'Triple-chocolate cupcakes with dark fudge ganache frosting, Oreo crumble and chocolate chip topping.'
+  },
+  {
+    id: 'prod-119',
+    name: 'Lemon & Blueberry Swirl Cupcakes (×6)',
+    category: 'Cupcakes',
+    price: 1650,
+    prepTimeMinutes: 20,
+    image: 'https://images.unsplash.com/photo-1607478900766-efe13248b125?auto=format&fit=crop&w=600&q=80',
+    description: 'Zesty lemon sponge cupcakes with blueberry compote centre and lemon curd buttercream swirl on top.'
+  },
+  {
+    id: 'prod-120',
+    name: 'Luxury Unicorn Cupcake Party Box (×12)',
+    category: 'Cupcakes',
+    price: 3200,
+    prepTimeMinutes: 25,
+    image: 'https://images.unsplash.com/photo-1599785209707-a456fc1337bb?auto=format&fit=crop&w=600&q=80',
+    description: 'Magical rainbow unicorn cupcake party box with multicolour buttercream swirls, edible horns and star sprinkles. Kids love it!'
   }
 ];
 
@@ -219,12 +363,16 @@ function finishSplashOnboarding(openAuth = false) {
 // STORAGE & REAL-TIME BROADCAST ENGINE
 // ============================================================================
 function loadStateFromStorage() {
+  const CATALOG_VERSION = 'v3-20products';
+  const savedCatalogVersion = localStorage.getItem('luxecakes_catalog_version');
   const savedProducts = localStorage.getItem('luxecakes_products');
-  if (savedProducts) {
+  if (savedProducts && savedCatalogVersion === CATALOG_VERSION) {
     appState.products = JSON.parse(savedProducts);
   } else {
+    // Seed/upgrade to full 20-product catalog
     appState.products = DEFAULT_PRODUCTS;
     saveProductsToStorage();
+    localStorage.setItem('luxecakes_catalog_version', CATALOG_VERSION);
   }
 
   const savedOrders = localStorage.getItem('luxecakes_orders');
