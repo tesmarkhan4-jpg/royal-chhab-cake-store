@@ -1,4 +1,4 @@
-﻿/* ==========================================================================
+/* ==========================================================================
    Royal Chhab Custom Cakes - Real-Time Multi-Page Sync Engine & Gmail Receipts
    Location: Near RHC Hospital, Chhab, Punjab, Pakistan
    ========================================================================== */
@@ -363,7 +363,7 @@ function finishSplashOnboarding(openAuth = false) {
 // STORAGE & REAL-TIME BROADCAST ENGINE
 // ============================================================================
 function loadStateFromStorage() {
-  const CATALOG_VERSION = 'v4-gbp-fixedimages';
+  const CATALOG_VERSION = 'v5-fixed';
   const savedCatalogVersion = localStorage.getItem('luxecakes_catalog_version');
   const savedProducts = localStorage.getItem('luxecakes_products');
   if (savedProducts && savedCatalogVersion === CATALOG_VERSION) {
@@ -1049,8 +1049,13 @@ function renderStorefrontCatalog() {
   const container = document.getElementById('catalog-section');
   if (!container) return;
 
+  if (!appState.products || appState.products.length === 0) {
+    container.innerHTML = '<p style="text-align:center; padding:3rem; color:var(--text-muted);">Loading menu...</p>';
+    return;
+  }
+
   const categories = [
-    { id: 'Signature', name: 'Signature Artisanal Masterpieces', sub: 'Chef\'s premium selections with luxury cake finishes', filter: 'Signature' },
+    { id: 'Signature', name: 'Signature Artisanal Masterpieces', sub: "Chef's premium selections with luxury cake finishes", filter: 'Signature' },
     { id: 'Birthday', name: 'Celebration Birthday Delights', sub: 'Make birthdays unforgettable with soft, moist sponges', filter: 'Birthday' },
     { id: 'Wedding', name: 'Boutique Tiered Wedding Cakes', sub: 'Elegantly designed tiered masterpieces for your big day', filter: 'Wedding' },
     { id: 'Cupcakes', name: 'Gourmet Cupcake Selection', sub: 'Bite-sized luxury treats crafted for high tea celebrations', filter: 'Cupcakes' }
@@ -1062,31 +1067,60 @@ function renderStorefrontCatalog() {
 
     const cardsHtml = products.map(p => {
       const ratingData = getProductAverageRating(p.id);
-      const starsHtml = ratingData.count > 0 
-        ? `<div class="product-rating-stars" onclick="openProductDetailsModal('${p.id}')" style="cursor:pointer;" title="View Details & Reviews">
-             ${'â˜…'.repeat(Math.round(ratingData.average))}${'â˜†'.repeat(5 - Math.round(ratingData.average))} <span style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">(${ratingData.count})</span>
+      const fullStar = '&#9733;';
+      const emptyStar = '&#9734;';
+      const filled = ratingData.count > 0 ? Math.round(ratingData.average) : 0;
+      const starsHtml = ratingData.count > 0
+        ? `<div class="product-rating-stars" onclick="openProductDetailsModal('${p.id}')" style="cursor:pointer;" title="View Details &amp; Reviews">
+             ${fullStar.repeat(filled)}${emptyStar.repeat(5 - filled)} <span style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">(${ratingData.count})</span>
            </div>`
-        : `<div class="product-rating-stars" onclick="openProductDetailsModal('${p.id}')" style="cursor:pointer; opacity: 0.55;" title="Be the first to review">
-             â˜†â˜†â˜†â˜†â˜† <span style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">(0)</span>
+        : `<div class="product-rating-stars" onclick="openProductDetailsModal('${p.id}')" style="cursor:pointer; opacity:0.5;" title="Be the first to review">
+             ${emptyStar.repeat(5)} <span style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">(0)</span>
            </div>`;
 
       return `
         <div class="product-card">
-          <div class="product-img-wrapper" onclick="openProductDetailsModal('${p.id}')" style="cursor:pointer;" title="View Details & Reviews">
+          <div class="product-img-wrapper" onclick="openProductDetailsModal('${p.id}')" style="cursor:pointer;" title="View Details &amp; Reviews">
             <span class="product-badge">${p.category}</span>
-            <img src="${p.image}" alt="${p.name}" class="product-img" loading="lazy">
+            <img src="${p.image}" alt="${p.name}" class="product-img" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=600&q=80'">
           </div>
           <div class="product-info">
-            <h4 class="product-title" onclick="openProductDetailsModal('${p.id}')" style="cursor:pointer;" title="View Details & Reviews">${p.name}</h4>
+            <h4 class="product-title" onclick="openProductDetailsModal('${p.id}')" style="cursor:pointer;">${p.name}</h4>
             ${starsHtml}
             <p class="product-desc" style="font-size:0.85rem; color:var(--text-muted); line-height:1.4; height:50px; overflow:hidden; text-overflow:ellipsis; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; margin-bottom:1rem;">${p.description}</p>
             <div class="product-footer" style="display:flex; justify-content:space-between; align-items:center; margin-top:auto;">
-              <span class="product-price" style="font-size:1.15rem; font-weight:700; color:var(--primary-rose);">£ ${p.price.toLocaleString()}</span>
+              <span class="product-price" style="font-size:1.15rem; font-weight:700; color:var(--primary-rose);">&pound;${p.price.toLocaleString()}</span>
               <button class="btn btn-primary btn-sm" onclick="addToCart('${p.id}')">
                 <i class="fa-solid fa-plus"></i> Add to Cart
               </button>
             </div>
           </div>
+        </div>
+      `;
+    }).join('');
+
+    return `
+      <div class="catalog-category-row">
+        <div class="category-row-header">
+          <div class="category-row-title-box">
+            <h3>${cat.name}</h3>
+            <p>${cat.sub}</p>
+          </div>
+          <div class="slider-nav-controls">
+            <button class="slider-nav-btn" onclick="slideCatalog('${cat.id}', -1)" title="Scroll Left"><i class="fa-solid fa-chevron-left"></i></button>
+            <button class="slider-nav-btn" onclick="slideCatalog('${cat.id}', 1)" title="Scroll Right"><i class="fa-solid fa-chevron-right"></i></button>
+          </div>
+        </div>
+        <div class="slider-container">
+          <div class="slider-track" id="track-${cat.id}">
+            ${cardsHtml}
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
         </div>
       `;
     }).join('');
