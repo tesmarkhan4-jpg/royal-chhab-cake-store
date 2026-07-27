@@ -427,7 +427,7 @@ function finishSplashOnboarding(openAuth = false) {
 // STORAGE & REAL-TIME BROADCAST ENGINE
 // ============================================================================
 function loadStateFromStorage() {
-  const CATALOG_VERSION = 'v7-fullbanner';
+  const CATALOG_VERSION = 'v11-simplewords';
   const savedCatalogVersion = localStorage.getItem('luxecakes_catalog_version');
   const savedProducts = localStorage.getItem('luxecakes_products');
   if (savedProducts && savedCatalogVersion === CATALOG_VERSION) {
@@ -1124,10 +1124,10 @@ function renderStorefrontCatalog() {
   }
 
   const categories = [
-    { id: 'Signature', name: 'Signature Artisanal Masterpieces', sub: "Chef's premium selections with luxury cake finishes", filter: 'Signature' },
-    { id: 'Birthday', name: 'Celebration Birthday Delights', sub: 'Make birthdays unforgettable with soft, moist sponges', filter: 'Birthday' },
-    { id: 'Wedding', name: 'Boutique Tiered Wedding Cakes', sub: 'Elegantly designed tiered masterpieces for your big day', filter: 'Wedding' },
-    { id: 'Cupcakes', name: 'Gourmet Cupcake Selection', sub: 'Bite-sized luxury treats crafted for high tea celebrations', filter: 'Cupcakes' }
+    { id: 'Signature', name: 'Signature Custom Cakes', sub: "Chef's special selections with beautiful cake finishes", filter: 'Signature' },
+    { id: 'Birthday', name: 'Fresh Birthday Cakes', sub: 'Make birthdays unforgettable with soft, delicious sponges', filter: 'Birthday' },
+    { id: 'Wedding', name: 'Special Wedding Cakes', sub: 'Elegantly designed tiered cakes for your big day', filter: 'Wedding' },
+    { id: 'Cupcakes', name: 'Delicious Cupcakes', sub: 'Bite-sized sweet treats crafted for parties & tea time', filter: 'Cupcakes' }
   ];
 
   container.innerHTML = categories.map(cat => {
@@ -1194,9 +1194,9 @@ function renderStorefrontCatalog() {
           <div class="promo-banner-content">
             <div class="promo-text-box">
               <span class="hero-tag" style="background:rgba(212,163,89,0.25); color:#d4a359; border:1px solid rgba(212,163,89,0.5);">
-                <i class="fa-solid fa-crown"></i> Artisanal Chhab Bakery Speciality
+                <i class="fa-solid fa-crown"></i> Royal Chhab Special Cakes
               </span>
-              <h2>Handcrafted Royal Cakes &amp; Tiered Masterpieces</h2>
+              <h2>Fresh Custom Cakes &amp; Tiered Wedding Cakes</h2>
               <p>Baked fresh daily near RHC Hospital, Chhab. Order bespoke custom wedding &amp; birthday cakes with live baking status tracking and express home delivery.</p>
               <div class="promo-actions">
                 <button class="btn btn-gold" onclick="openCustomCakeModal()">

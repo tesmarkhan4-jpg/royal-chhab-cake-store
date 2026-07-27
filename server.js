@@ -78,7 +78,7 @@ app.post('/api/send-receipt', async (req, res) => {
           <!-- Header -->
           <div style="background: linear-gradient(135deg, #a83250, #6b1d31); padding: 30px 25px; text-align: center; color: #ffffff;">
             <h1 style="margin: 0; font-size: 26px; letter-spacing: 1px; color: #f59e0b;">👑 Royal Chhab Custom Cakes</h1>
-            <p style="margin: 6px 0 0 0; font-size: 13px; color: #f8bbd0; text-transform: uppercase; letter-spacing: 2px;">Artisanal Bakery & Studio &bull; Chhab, Pakistan</p>
+            <p style="margin: 6px 0 0 0; font-size: 13px; color: #f8bbd0; text-transform: uppercase; letter-spacing: 2px;">Fresh Bakery &amp; Cake Shop &bull; Chhab, Pakistan</p>
           </div>
 
           <!-- Body Container -->
