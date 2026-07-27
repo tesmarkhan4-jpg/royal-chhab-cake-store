@@ -499,12 +499,13 @@ function handleSocialAuthRider(provider) {
 function initializeGoogleAuth() {
   if (typeof google !== 'undefined') {
     const page = document.body.dataset.page;
+    const client_id = localStorage.getItem('luxecakes_google_client_id') || '921102927236-u4n88i6q41plu5u5b3i3l9p233f21m25.apps.googleusercontent.com';
     
     if (page === 'customer') {
       const container = document.getElementById('google-signin-btn-container');
       if (container) {
         google.accounts.id.initialize({
-          client_id: '921102927236-u4n88i6q41plu5u5b3i3l9p233f21m25.apps.googleusercontent.com',
+          client_id: client_id,
           callback: handleGoogleCredentialResponse
         });
         google.accounts.id.renderButton(container, {
@@ -517,7 +518,7 @@ function initializeGoogleAuth() {
       const container = document.getElementById('rider-google-signin-btn-container');
       if (container) {
         google.accounts.id.initialize({
-          client_id: '921102927236-u4n88i6q41plu5u5b3i3l9p233f21m25.apps.googleusercontent.com',
+          client_id: client_id,
           callback: handleGoogleCredentialResponseRider
         });
         google.accounts.id.renderButton(container, {
@@ -1712,12 +1713,14 @@ function openStoreSettingsModal() {
   const prepInput = document.getElementById('setting-prep-time');
   const delivInput = document.getElementById('setting-delivery-time');
   const leadInput = document.getElementById('setting-lead-days');
+  const googleClientInput = document.getElementById('setting-google-client-id');
 
   if (feeInput) feeInput.value = appState.deliveryFee;
   if (addrInput) addrInput.value = appState.storeAddress;
   if (prepInput) prepInput.value = localStorage.getItem('luxecakes_default_prep_time') || 40;
   if (delivInput) delivInput.value = localStorage.getItem('luxecakes_default_delivery_time') || 30;
   if (leadInput) leadInput.value = localStorage.getItem('luxecakes_custom_lead_days') || 2;
+  if (googleClientInput) googleClientInput.value = localStorage.getItem('luxecakes_google_client_id') || '';
 
   document.getElementById('store-settings-modal').classList.add('active');
 }
@@ -1743,6 +1746,11 @@ function saveStoreSettings(e) {
 
   const leadVal = parseInt(document.getElementById('setting-lead-days').value);
   if (!isNaN(leadVal)) localStorage.setItem('luxecakes_custom_lead_days', leadVal);
+
+  const googleClientInput = document.getElementById('setting-google-client-id');
+  if (googleClientInput) {
+    localStorage.setItem('luxecakes_google_client_id', googleClientInput.value.trim());
+  }
 
   closeStoreSettingsModal();
   broadcastStateChange('settings_updated');
