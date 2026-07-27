@@ -273,6 +273,16 @@
             <label>Your Review & Experience *</label>
             <textarea id="feedback-comment" class="form-control" rows="3" required placeholder="Describe the taste, service, delivery in Chhab..."></textarea>
           </div>
+          <div class="form-group mt-2">
+            <label style="font-weight:600; color:var(--text-main); font-size:0.88rem;">
+              <i class="fa-solid fa-camera" style="color:var(--primary-rose); margin-right:0.3rem;"></i> Upload Your Cake Photo (Optional)
+            </label>
+            <input type="file" id="feedback-image" class="form-control" accept="image/*" onchange="previewFeedbackImage(event)" style="padding:0.45rem 0.6rem; font-size:0.85rem; cursor:pointer;">
+            <div id="feedback-image-preview" style="display:none; margin-top:0.75rem; position:relative;">
+              <img id="feedback-preview-img" src="" alt="Cake Photo Preview" style="width:100%; max-height:220px; object-fit:cover; border-radius:var(--radius-md); border:1px solid var(--border-subtle); display:block;">
+              <button type="button" onclick="removeFeedbackImage()" style="position:absolute; top:8px; right:8px; background:rgba(168,50,80,0.85); color:white; border:none; border-radius:50%; width:28px; height:28px; cursor:pointer; font-weight:bold;" title="Remove Photo">&times;</button>
+            </div>
+          </div>
           <button type="submit" class="btn btn-primary w-100 mt-3">
             <i class="fa-solid fa-paper-plane"></i> Submit Store Feedback
           </button>

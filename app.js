@@ -3018,6 +3018,33 @@ function closeAllReviewsModal() {
   if (modal) modal.classList.remove('active');
 }
 
+let currentFeedbackImageData = null;
+
+function previewFeedbackImage(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(evt) {
+    currentFeedbackImageData = evt.target.result;
+    const previewBox = document.getElementById('feedback-image-preview');
+    const previewImg = document.getElementById('feedback-preview-img');
+    if (previewBox && previewImg) {
+      previewImg.src = currentFeedbackImageData;
+      previewBox.style.display = 'block';
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
+function removeFeedbackImage() {
+  currentFeedbackImageData = null;
+  const fileInput = document.getElementById('feedback-image');
+  const previewBox = document.getElementById('feedback-image-preview');
+  if (fileInput) fileInput.value = '';
+  if (previewBox) previewBox.style.display = 'none';
+}
+
 function handleGeneralFeedbackSubmit(e) {
   e.preventDefault();
   const name = document.getElementById('feedback-name').value.trim();
@@ -3028,6 +3055,7 @@ function handleGeneralFeedbackSubmit(e) {
     author: name,
     rating: rating,
     comment: comment,
+    image: currentFeedbackImageData || null,
     date: Date.now()
   };
 
@@ -3035,9 +3063,10 @@ function handleGeneralFeedbackSubmit(e) {
   saveFeedbackToStorage();
   
   document.getElementById('feedback-comment').value = '';
+  removeFeedbackImage();
   
   renderGeneralFeedback();
-  showToast('Thank you! Your feedback has been posted.', 'success');
+  showToast('Thank you! Your royal feedback with cake photo has been posted.', 'success');
 }
 
 // ============================================================================
