@@ -21,25 +21,89 @@ const DEFAULT_RIDERS = [
   { id: 'RD-3410', name: 'Tariq Mehmood', phone: '0333-8883410', email: 'tariq@gmail.com', vehicle: 'Express Scooter', status: 'Online', trips: 8, earnings: 2400 }
 ];
 
-// Initial Mock Product Reviews
+// Initial Mock Product Reviews (Roman Urdu, First Names Only)
 const DEFAULT_PRODUCT_REVIEWS = [
-  { productId: 'prod-101', author: 'Faris Ali', rating: 5, comment: 'Exceptional dark cocoa flavor, gold flakes look spectacular. Very luxury cake!', date: Date.now() - 4 * 24 * 60 * 60 * 1000 },
-  { productId: 'prod-101', author: 'Amna Nawaz', rating: 4, comment: 'Super moist and chocolatey. Highly recommend for birthday surprises.', date: Date.now() - 2 * 24 * 60 * 60 * 1000 },
-  { productId: 'prod-102', author: 'Zafar Hayat', rating: 5, comment: 'The combination of strawberry compote and pistachio cream is so delicious and light.', date: Date.now() - 5 * 24 * 60 * 60 * 1000 },
-  { productId: 'prod-103', author: 'Hina Baig', rating: 5, comment: 'Ordered for my daughter wedding. Absolutely stunning tiered cake, everyone loved it!', date: Date.now() - 6 * 24 * 60 * 60 * 1000 },
-  { productId: 'prod-105', author: 'Tariq Mehmood', rating: 5, comment: 'Best cupcakes in Chhab! The mango passionfruit flavor is unreal.', date: Date.now() - 1 * 24 * 60 * 60 * 1000 },
-  { productId: 'prod-107', author: 'Asma Raza', rating: 4, comment: 'Beautiful lemon drizzle, loved the tangy sweetness. Great for afternoon tea!', date: Date.now() - 3 * 24 * 60 * 60 * 1000 },
-  { productId: 'prod-110', author: 'Bilal Khan', rating: 5, comment: 'The Belgian chocolate fondant is pure perfection. Rich, dark and fudgy.', date: Date.now() - 7 * 24 * 60 * 60 * 1000 }
+  { productId: 'prod-101', author: 'Faris', rating: 5, comment: 'Dark cocoa ka taste zabardast tha, gold leafing look bohot shandar hai!', date: Date.now() - 4 * 24 * 60 * 60 * 1000 },
+  { productId: 'prod-101', author: 'Amna', rating: 4, comment: 'Moist aur chocolatey cake, birthday surprise k liye best option hai.', date: Date.now() - 2 * 24 * 60 * 60 * 1000 },
+  { productId: 'prod-102', author: 'Zafar', rating: 5, comment: 'Strawberry compote aur pistachio cream ka combination buhat halke taste me mazedaar tha.', date: Date.now() - 5 * 24 * 60 * 60 * 1000 },
+  { productId: 'prod-103', author: 'Hina', rating: 5, comment: 'Beti ki shadi k liye tier cake banwaya tha. Sub ghar walon ko bohot pasand aya!', date: Date.now() - 6 * 24 * 60 * 60 * 1000 },
+  { productId: 'prod-105', author: 'Tariq', rating: 5, comment: 'Chhab me cupcakes ka aisa taste pehle kabhi nahi mila, 10/10 experience.', date: Date.now() - 1 * 24 * 60 * 60 * 1000 },
+  { productId: 'prod-107', author: 'Asma', rating: 4, comment: 'Lemon drizzle ki mehak aur halki khatai zabardast thi. High tea k liye perfect.', date: Date.now() - 3 * 24 * 60 * 60 * 1000 },
+  { productId: 'prod-110', author: 'Bilal', rating: 5, comment: 'Rainbow confetti cake bachon ko buhat pasand aya, colourful aur soft sponge.', date: Date.now() - 7 * 24 * 60 * 60 * 1000 }
 ];
 
-// Initial Mock General Storefront Testimonials
+// Initial Mock General Storefront Testimonials (Roman Urdu, First Names Only, Real Cake Images)
 const DEFAULT_GENERAL_FEEDBACK = [
-  { author: "Kamil Shah", rating: 5, comment: "Ordered custom fondant tier cake for my brother's wedding near RHC Hospital. The delivery was on-time and the chocolate cake tasted heavenly!", date: Date.now() - 3 * 24 * 60 * 60 * 1000 },
-  { author: "Sania Malik", rating: 5, comment: "Their strawberry pistachio torte is a masterpiece. The online status tracker worked perfectly, bakes were fresh. Royal Chhab is definitely the best bakery in Punjab!", date: Date.now() - 24 * 60 * 60 * 1000 },
-  { author: "Ahsan Butt", rating: 5, comment: "Placed an order at night, cake was ready by morning. The red velvet was absolutely divine with cream cheese frosting. Will order again!", date: Date.now() - 2 * 24 * 60 * 60 * 1000 },
-  { author: "Nadia Rasheed", rating: 4, comment: "The lemon drizzle and rose water cake was something I had never tasted before. Unique, fragrant and beautifully presented.", date: Date.now() - 4 * 24 * 60 * 60 * 1000 },
-  { author: "Usman Ghani", rating: 5, comment: "10/10 experience. The cupcake box with mango passionfruit was the star of our office party. Everyone asked where we got it!", date: Date.now() - 5 * 24 * 60 * 60 * 1000 },
-  { author: "Mariam Iqbal", rating: 5, comment: "Fastest delivery in Chhab! The live baking countdown was so cool â€” my kids loved watching it. Cake was flawless.", date: Date.now() - 6 * 24 * 60 * 60 * 1000 }
+  {
+    author: "Faheem",
+    rating: 5,
+    comment: "Main ny apni baite k birthday k liya order kiya ta MashALLAH premium quilty ka bna k diya munasib rate main",
+    image: "customer_reviews_images/review-1.jpg",
+    date: Date.now() - 1 * 24 * 60 * 60 * 1000
+  },
+  {
+    author: "Kamil",
+    rating: 5,
+    comment: "Bhai Chhab me sachi itna zabardast cake pehle kabhi nahi khaya! Dark chocolate bilkul fresh aur taste next level tha.",
+    image: "customer_reviews_images/review-2.jpg",
+    date: Date.now() - 3 * 24 * 60 * 60 * 1000
+  },
+  {
+    author: "Sania",
+    rating: 5,
+    comment: "Strawberry & pistachio wala torte order kia tha, icing aur sponge bohot soft tha. Delivery bhi timing pe mili RHC hospital k pas.",
+    image: "customer_reviews_images/review-3.jpg",
+    date: Date.now() - 2 * 24 * 60 * 60 * 1000
+  },
+  {
+    author: "Ahsan",
+    rating: 5,
+    comment: "Raat ko 11 baje customized order place kiya tha, subah time pe ready mil gaya. Red velvet cream cheese packing amazing thi!",
+    image: "customer_reviews_images/review-4.jpg",
+    date: Date.now() - 4 * 24 * 60 * 60 * 1000
+  },
+  {
+    author: "Nadia",
+    rating: 5,
+    comment: "Lemon drizzle cake ka taste buhat unique aur refreshing tha. Mitha bilkul balanced tha, sab ghar walon ko buhat pasand aya.",
+    image: "customer_reviews_images/review-5.jpg",
+    date: Date.now() - 5 * 24 * 60 * 60 * 1000
+  },
+  {
+    author: "Usman",
+    rating: 5,
+    comment: "Office event k liye 12 cupcakes box order kia tha. Mango passionfruit flavor outstanding tha, highly recommended bakery!",
+    image: "customer_reviews_images/review-6.jpg",
+    date: Date.now() - 6 * 24 * 60 * 60 * 1000
+  },
+  {
+    author: "Mariam",
+    rating: 5,
+    comment: "Online live baking tracker feature bohat zabardast hai. Bachon ne timer dekh kar bohot enjoy kiya aur cake fresh warm deliver hua.",
+    image: "customer_reviews_images/review-7.jpg",
+    date: Date.now() - 7 * 24 * 60 * 60 * 1000
+  },
+  {
+    author: "Zohaib",
+    rating: 5,
+    comment: "Wedding tier cake order kiya tha, exact design jaisa picture me tha waisa hi tayyar kia. Shadi k guests bohot impress huye.",
+    image: "customer_reviews_images/review-8.jpg",
+    date: Date.now() - 8 * 24 * 60 * 60 * 1000
+  },
+  {
+    author: "Amna",
+    rating: 5,
+    comment: "Pistachio opera cake ki presentation 10/10 thi. Taste rich aur gold glaze finish super luxury feel deta hai.",
+    image: "customer_reviews_images/review-9.jpg",
+    date: Date.now() - 9 * 24 * 60 * 60 * 1000
+  },
+  {
+    author: "Bilal",
+    rating: 5,
+    comment: "Salted caramel macaron torte super delicious tha. Packaging secure thi aur parcel safe condition me receive hua.",
+    image: "customer_reviews_images/review-10.jpg",
+    date: Date.now() - 10 * 24 * 60 * 60 * 1000
+  }
 ];
 
 // Initial Pakistani Payment Systems
@@ -405,20 +469,25 @@ function loadStateFromStorage() {
     appState.currentRider = JSON.parse(savedRider);
   }
 
+  const REVIEWS_VERSION = 'v8-romanurdu';
+  const savedReviewsVersion = localStorage.getItem('luxecakes_reviews_version');
   const savedReviews = localStorage.getItem('luxecakes_reviews');
-  if (savedReviews) {
+  if (savedReviews && savedReviewsVersion === REVIEWS_VERSION) {
     appState.reviews = JSON.parse(savedReviews);
   } else {
     appState.reviews = DEFAULT_PRODUCT_REVIEWS;
     saveReviewsToStorage();
+    localStorage.setItem('luxecakes_reviews_version', REVIEWS_VERSION);
   }
 
   const savedFeedback = localStorage.getItem('luxecakes_general_feedback');
-  if (savedFeedback) {
+  const savedFeedbackVersion = localStorage.getItem('luxecakes_feedback_version');
+  if (savedFeedback && savedFeedbackVersion === REVIEWS_VERSION) {
     appState.generalFeedback = JSON.parse(savedFeedback);
   } else {
     appState.generalFeedback = DEFAULT_GENERAL_FEEDBACK;
     saveFeedbackToStorage();
+    localStorage.setItem('luxecakes_feedback_version', REVIEWS_VERSION);
   }
 
   const savedPayments = localStorage.getItem('luxecakes_payment_methods');
@@ -2828,17 +2897,27 @@ function renderGeneralFeedback() {
     return;
   }
 
-  // Display only top 3 testimonials on home page
+  // Display top 3 testimonials on home page
   const limited = appState.generalFeedback.slice(0, 3);
+  const fullStar = '&#9733;';
+  const emptyStar = '&#9734;';
 
-  grid.innerHTML = limited.map(f => `
-    <div class="testimonial-card">
-      <i class="fa-solid fa-quote-right quote-icon"></i>
-      <div class="rating">${'â˜…'.repeat(f.rating)}${'â˜†'.repeat(5 - f.rating)}</div>
-      <p class="comment">"${f.comment}"</p>
-      <div class="author">- ${f.author}</div>
-    </div>
-  `).join('');
+  grid.innerHTML = limited.map(f => {
+    const starsHtml = fullStar.repeat(f.rating) + emptyStar.repeat(5 - f.rating);
+    const imgHtml = f.image ? `<div style="margin-top:0.85rem; border-radius:var(--radius-md); overflow:hidden; border:1px solid var(--border-subtle);"><img src="${f.image}" alt="${f.author}'s Cake" style="width:100%; height:210px; object-fit:cover; display:block;"></div>` : '';
+
+    return `
+      <div class="testimonial-card" style="display:flex; flex-direction:column; justify-content:space-between;">
+        <div>
+          <i class="fa-solid fa-quote-right quote-icon"></i>
+          <div class="rating" style="color:var(--accent-gold); font-size:1rem; margin-bottom:0.6rem;">${starsHtml}</div>
+          <p class="comment" style="font-size:0.95rem; line-height:1.5;">"${f.comment}"</p>
+          ${imgHtml}
+        </div>
+        <div class="author" style="margin-top:1rem; font-weight:700; color:var(--primary-rose);">- ${f.author}</div>
+      </div>
+    `;
+  }).join('');
 
   const nameInput = document.getElementById('feedback-name');
   if (nameInput && appState.currentUser && !nameInput.value) {
@@ -2852,6 +2931,9 @@ function openAllReviewsModal() {
   const listContainer = document.getElementById('reviews-modal-list');
 
   if (!modal || !listContainer) return;
+
+  const fullStar = '&#9733;';
+  const emptyStar = '&#9734;';
 
   // Calculate statistics
   const totalReviews = appState.generalFeedback.length;
@@ -2881,12 +2963,13 @@ function openAllReviewsModal() {
       `;
     }).join('');
 
+    const roundedAvg = Math.round(averageRating);
     statsContainer.innerHTML = `
       <div class="reviews-stats-row">
         <div class="reviews-stats-score">
           <h2>${averageRating.toFixed(1)}</h2>
           <div style="color:var(--accent-gold); font-size:1.25rem; margin-bottom:0.3rem;">
-            ${'â˜…'.repeat(Math.round(averageRating))}${'â˜†'.repeat(5 - Math.round(averageRating))}
+            ${fullStar.repeat(roundedAvg)}${emptyStar.repeat(5 - roundedAvg)}
           </div>
           <span style="font-size:0.85rem; color:var(--text-muted);">${totalReviews} Store Reviews</span>
         </div>
@@ -2902,6 +2985,8 @@ function openAllReviewsModal() {
     const dateStr = f.date 
       ? new Date(f.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
       : 'Recent';
+    const starsHtml = fullStar.repeat(f.rating) + emptyStar.repeat(5 - f.rating);
+    const imgHtml = f.image ? `<div style="margin-top:0.85rem; border-radius:var(--radius-md); overflow:hidden; border:1px solid var(--border-subtle); max-width:420px;"><img src="${f.image}" alt="${f.author}'s Cake" style="width:100%; max-height:280px; object-fit:cover; display:block;"></div>` : '';
 
     return `
       <div style="padding:1.2rem; background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:var(--radius-md); margin-bottom:1rem; position:relative;">
@@ -2916,10 +3001,11 @@ function openAllReviewsModal() {
             </div>
           </div>
           <div style="color:var(--accent-gold); font-size:0.9rem;">
-            ${'â˜…'.repeat(f.rating)}${'â˜†'.repeat(5 - f.rating)}
+            ${starsHtml}
           </div>
         </div>
-        <p style="font-size:0.88rem; color:var(--text-muted); line-height:1.5; margin:0; font-style:italic;">"${f.comment}"</p>
+        <p style="font-size:0.92rem; color:var(--text-muted); line-height:1.5; margin:0; font-style:italic;">"${f.comment}"</p>
+        ${imgHtml}
       </div>
     `;
   }).join('');
