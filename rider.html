@@ -63,7 +63,7 @@
         </div>
       </div>
 
-      <div class="rider-controls">
+      <div class="rider-controls" style="display:flex; align-items:center; gap:1rem;">
         <div class="toggle-container">
           <span>Availability:</span>
           <label class="switch">
@@ -71,6 +71,9 @@
             <span class="slider round"></span>
           </label>
         </div>
+        <button class="btn btn-outline btn-sm" onclick="handleRiderLogout()" style="border-color:#ef4444; color:#ef4444; margin-left: 0.5rem; padding: 0.4rem 0.8rem; font-size: 0.8rem; font-weight: 600;">
+          <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+        </button>
       </div>
     </div>
 
@@ -124,7 +127,7 @@
     </div>
   </main>
 
-  <!-- RIDER COURIER SIGN-IN / SIGN-UP MODAL WITH REAL GOOGLE SIGN-IN ONLY -->
+  <!-- RIDER COURIER SIGN-IN / SIGN-UP MODAL -->
   <div id="rider-auth-modal" class="modal">
     <div class="modal-overlay" onclick="closeRiderAuthModal()"></div>
     <div class="modal-content medium">
@@ -133,27 +136,80 @@
         <button class="close-btn" onclick="closeRiderAuthModal()">&times;</button>
       </div>
 
-      <div class="modal-body" style="text-align: center; padding: 2rem 1.5rem;">
-        <i class="fa-brands fa-google fa-4x mb-3" style="color:#10b981; display:block;"></i>
-        <h4 style="font-size:1.25rem; margin-bottom:0.5rem; font-family:var(--font-body); font-weight:700;">Rider Gmail Authentication</h4>
-        <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:1.8rem; max-width:340px; margin-left:auto; margin-right:auto;">
-          Access your courier dashboard using your real Google / Gmail account. Your email will link to your rider roster.
-        </p>
-
-        <!-- Official Google Sign-In button container -->
-        <div id="rider-google-signin-btn-container" style="display:flex; justify-content:center; margin:1.5rem 0; min-height: 40px;"></div>
-
-        <!-- Google 401 Bypass Note -->
-        <div style="font-size: 0.8rem; color: #d43f3f; margin: 0.5rem auto 1rem auto; max-width: 320px; line-height: 1.3;">
-          <i class="fa-solid fa-triangle-exclamation"></i> <strong>Note:</strong> If Google blocks access (e.g. <em>invalid_client</em>), you can use the simulation login option below to instantly bypass the consent screen and test.
+      <div class="modal-body" style="padding: 1.5rem 1.5rem;">
+        <!-- Tab Selectors -->
+        <div style="display: flex; border-bottom: 2px solid var(--border-subtle); margin-bottom: 1.5rem; justify-content: center; gap: 0.5rem;">
+          <button class="rider-tab-btn active" id="rider-tab-signin-btn" onclick="toggleRiderAuthTab('signin')" style="background: none; border: none; padding: 0.5rem 1rem; cursor: pointer; font-weight: 700; color: #10b981; border-bottom: 3px solid #10b981; font-size: 0.95rem; font-family: inherit;">
+            <i class="fa-solid fa-right-to-bracket"></i> Sign In
+          </button>
+          <button class="rider-tab-btn" id="rider-tab-signup-btn" onclick="toggleRiderAuthTab('signup')" style="background: none; border: none; padding: 0.5rem 1rem; cursor: pointer; font-weight: 700; color: var(--text-muted); font-size: 0.95rem; font-family: inherit;">
+            <i class="fa-solid fa-user-plus"></i> Sign Up (Register)
+          </button>
         </div>
 
-        <!-- Offline Simulation/Fallback -->
-        <div style="margin-top:1.5rem; padding-top:1.2rem; border-top:1px solid var(--border-subtle); font-size:0.8rem; color:var(--text-muted);">
-          <span>For offline or localhost testing without a Google Client ID:</span>
-          <button class="btn btn-sm btn-outline mt-2" onclick="simulateGoogleLoginRider()" style="width:100%; border-color:#10b981; color:#10b981;">
-            <i class="fa-solid fa-flask"></i> Simulate Real Rider Google Response
-          </button>
+        <!-- Form 1: Sign In Container -->
+        <div id="rider-signin-form-container" style="display: block; text-align: center;">
+          <form onsubmit="handleRiderLogin(event)" style="text-align: left; margin-bottom: 1.5rem;">
+            <div class="form-group">
+              <label style="font-weight: 600; font-size: 0.85rem; color: var(--text-main);">Phone Number or Rider ID</label>
+              <input type="text" id="rider-login-phone" class="form-control" placeholder="e.g. 0301-5557892 or RD-7892" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100 mt-2" style="background-color:#10b981; border-color:#10b981; font-weight: 600;">
+              Sign In with Credentials
+            </button>
+          </form>
+
+          <div style="border-top:1px solid var(--border-subtle); padding-top:1.2rem; margin-top:1rem;">
+            <h5 style="font-size:0.85rem; margin-bottom:0.75rem; color:var(--text-muted); font-weight:600;">Or Authenticate with Google (Registered Riders Only)</h5>
+            <div id="rider-google-signin-btn-container" style="display:flex; justify-content:center; margin:1rem 0; min-height: 40px;"></div>
+            
+            <!-- Google 401 Bypass Note -->
+            <div style="font-size: 0.78rem; color: #d43f3f; margin: 0.5rem auto 1rem auto; max-width: 320px; line-height: 1.3; text-align: left;">
+              <i class="fa-solid fa-triangle-exclamation"></i> <strong>Note:</strong> Google authentication will only work if your Gmail address is registered in the roster first.
+            </div>
+
+            <!-- Offline Simulation/Fallback -->
+            <div style="margin-top:1rem; padding-top:1rem; border-top:1px solid var(--border-subtle); font-size:0.78rem; color:var(--text-muted);">
+              <span>Bypass / offline testing:</span>
+              <button type="button" class="btn btn-sm btn-outline mt-2" onclick="simulateGoogleLoginRider()" style="width:100%; border-color:#10b981; color:#10b981;">
+                <i class="fa-solid fa-flask"></i> Simulate Registered Rider Google Login
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form 2: Sign Up (Register) Container -->
+        <div id="rider-signup-form-container" style="display: none;">
+          <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1.2rem; text-align:center;">
+            Register yourself as a Royal Chhab courier partner. Once submitted, your profile is added to the delivery roster and logged in.
+          </p>
+
+          <form onsubmit="handleRiderRegister(event)">
+            <div class="form-group">
+              <label style="font-weight: 600; font-size: 0.82rem; color: var(--text-main);">Full Name</label>
+              <input type="text" id="rider-reg-name" class="form-control" placeholder="Enter your full name" required>
+            </div>
+            <div class="form-group mt-2">
+              <label style="font-weight: 600; font-size: 0.82rem; color: var(--text-main);">Phone Number</label>
+              <input type="text" id="rider-reg-phone" class="form-control" placeholder="e.g. 0300-1234567" required>
+            </div>
+            <div class="form-group mt-2">
+              <label style="font-weight: 600; font-size: 0.82rem; color: var(--text-main);">Gmail Address (For Google Sign-In)</label>
+              <input type="email" id="rider-reg-email" class="form-control" placeholder="e.g. rider@gmail.com" required>
+            </div>
+            <div class="form-group mt-2">
+              <label style="font-weight: 600; font-size: 0.82rem; color: var(--text-main);">Vehicle Type</label>
+              <select id="rider-reg-vehicle" class="form-control" required style="width:100%;">
+                <option value="Motorbike">Motorbike</option>
+                <option value="Express Scooter">Express Scooter</option>
+                <option value="Bicycle">Bicycle</option>
+                <option value="Car">Delivery Car</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary w-100 mt-4" style="background-color:#10b981; border-color:#10b981; font-weight: 600;">
+              Register & Sign In
+            </button>
+          </form>
         </div>
       </div>
     </div>

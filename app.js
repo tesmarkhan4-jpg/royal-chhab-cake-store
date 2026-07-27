@@ -15,8 +15,8 @@ let currentSplashStep = 1;
 
 // Initial Sample Rider Fleet Roster
 const DEFAULT_RIDERS = [
-  { id: 'RD-7892', name: 'Zohaib Khan', phone: '0301-5557892', vehicle: 'Motorbike', status: 'Online', trips: 14, earnings: 4200 },
-  { id: 'RD-3410', name: 'Tariq Mehmood', phone: '0333-8883410', vehicle: 'Express Scooter', status: 'Online', trips: 8, earnings: 2400 }
+  { id: 'RD-7892', name: 'Zohaib Khan', phone: '0301-5557892', email: 'zohaibkhan@gmail.com', vehicle: 'Motorbike', status: 'Online', trips: 14, earnings: 4200 },
+  { id: 'RD-3410', name: 'Tariq Mehmood', phone: '0333-8883410', email: 'tariq@gmail.com', vehicle: 'Express Scooter', status: 'Online', trips: 8, earnings: 2400 }
 ];
 
 // Initial Mock Product Reviews
@@ -244,6 +244,11 @@ function loadStateFromStorage() {
     appState.currentUser = JSON.parse(savedUser);
   }
 
+  const savedRider = localStorage.getItem('luxecakes_current_rider');
+  if (savedRider) {
+    appState.currentRider = JSON.parse(savedRider);
+  }
+
   const savedReviews = localStorage.getItem('luxecakes_reviews');
   if (savedReviews) {
     appState.reviews = JSON.parse(savedReviews);
@@ -468,29 +473,98 @@ function closeRiderAuthModal() {
   document.getElementById('rider-auth-modal').classList.remove('active');
 }
 
+function toggleRiderAuthTab(tab) {
+  const signinBtn = document.getElementById('rider-tab-signin-btn');
+  const signupBtn = document.getElementById('rider-tab-signup-btn');
+  const signinForm = document.getElementById('rider-signin-form-container');
+  const signupForm = document.getElementById('rider-signup-form-container');
+
+  if (tab === 'signin') {
+    if (signinBtn) {
+      signinBtn.classList.add('active');
+      signinBtn.style.color = '#10b981';
+      signinBtn.style.borderBottom = '3px solid #10b981';
+    }
+    if (signupBtn) {
+      signupBtn.classList.remove('active');
+      signupBtn.style.color = 'var(--text-muted)';
+      signupBtn.style.borderBottom = 'none';
+    }
+    if (signinForm) signinForm.style.display = 'block';
+    if (signupForm) signupForm.style.display = 'none';
+  } else {
+    if (signupBtn) {
+      signupBtn.classList.add('active');
+      signupBtn.style.color = '#10b981';
+      signupBtn.style.borderBottom = '3px solid #10b981';
+    }
+    if (signinBtn) {
+      signinBtn.classList.remove('active');
+      signinBtn.style.color = 'var(--text-muted)';
+      signinBtn.style.borderBottom = 'none';
+    }
+    if (signinForm) signinForm.style.display = 'none';
+    if (signupForm) signupForm.style.display = 'block';
+  }
+}
+
 function handleRiderLogin(e) {
   e.preventDefault();
-  const phone = document.getElementById('rider-login-phone').value || '0301-5557892';
-  const rider = appState.riders.find(r => r.phone.includes(phone) || r.id.includes(phone)) || appState.riders[0];
+  const phoneOrId = document.getElementById('rider-login-phone').value.trim();
+  const rider = appState.riders.find(r => r.phone === phoneOrId || r.id === phoneOrId);
+
+  if (!rider) {
+    showToast('Rider account not found. Please Sign Up/Register first!', 'danger');
+    return;
+  }
+
   appState.currentRider = rider;
+  localStorage.setItem('luxecakes_current_rider', JSON.stringify(rider));
   closeRiderAuthModal();
-
-  const nameEl = document.getElementById('rider-display-name');
-  const idEl = document.getElementById('rider-display-id');
-  const phoneEl = document.getElementById('rider-display-phone');
-
-  if (nameEl) nameEl.textContent = rider.name;
-  if (idEl) idEl.textContent = rider.id;
-  if (phoneEl) phoneEl.textContent = rider.phone;
-
+  renderRiderPortal();
   showToast(`Courier Logged In: ${rider.name} (${rider.id})`, 'success');
 }
 
-function handleSocialAuthRider(provider) {
-  const rider = appState.riders[0];
-  appState.currentRider = rider;
+function handleRiderRegister(e) {
+  e.preventDefault();
+  const name = document.getElementById('rider-reg-name').value.trim();
+  const phone = document.getElementById('rider-reg-phone').value.trim();
+  const email = document.getElementById('rider-reg-email').value.trim();
+  const vehicle = document.getElementById('rider-reg-vehicle').value;
+
+  // Check if phone or email already registered
+  const existingRider = appState.riders.find(r => r.phone === phone || r.email.toLowerCase() === email.toLowerCase());
+  if (existingRider) {
+    showToast('Rider account with this phone or email already exists!', 'danger');
+    return;
+  }
+
+  const newRider = {
+    id: 'RD-' + Math.floor(1000 + Math.random() * 9000),
+    name: name,
+    phone: phone,
+    email: email,
+    vehicle: vehicle,
+    status: 'Online',
+    trips: 0,
+    earnings: 0
+  };
+
+  appState.riders.push(newRider);
+  saveRidersToStorage();
+
+  appState.currentRider = newRider;
+  localStorage.setItem('luxecakes_current_rider', JSON.stringify(newRider));
+
   closeRiderAuthModal();
-  showToast(`Rider Console Authenticated via ${provider}!`, 'success');
+  renderRiderPortal();
+  showToast(`Rider registration successful! Welcome ${name}.`, 'success');
+}
+
+function handleRiderLogout() {
+  appState.currentRider = null;
+  localStorage.removeItem('luxecakes_current_rider');
+  location.reload();
 }
 
 // ============================================================================
@@ -573,31 +647,18 @@ function handleGoogleCredentialResponse(response) {
 function handleGoogleCredentialResponseRider(response) {
   const payload = decodeJwt(response.credential);
   if (payload) {
-    let rider = appState.riders.find(r => r.phone.includes(payload.email) || r.name.toLowerCase().includes(payload.name.split(' ')[0].toLowerCase()));
+    const email = payload.email.toLowerCase();
+    let rider = appState.riders.find(r => (r.email && r.email.toLowerCase() === email) || r.phone === email);
+    
     if (!rider) {
-      rider = {
-        id: 'RD-' + Math.floor(1000 + Math.random() * 9000),
-        name: payload.name,
-        phone: payload.email,
-        vehicle: 'Motorbike',
-        status: 'Online',
-        trips: 0,
-        earnings: 0
-      };
-      appState.riders.push(rider);
-      saveRidersToStorage();
+      showToast('This Google account is not registered as a Rider. Please register yourself first!', 'danger');
+      return;
     }
+
     appState.currentRider = rider;
+    localStorage.setItem('luxecakes_current_rider', JSON.stringify(rider));
     closeRiderAuthModal();
-
-    const nameEl = document.getElementById('rider-display-name');
-    const idEl = document.getElementById('rider-display-id');
-    const phoneEl = document.getElementById('rider-display-phone');
-
-    if (nameEl) nameEl.textContent = rider.name;
-    if (idEl) idEl.textContent = rider.id;
-    if (phoneEl) phoneEl.textContent = rider.phone;
-
+    renderRiderPortal();
     showToast(`Courier Logged In via Google: ${rider.name} (${rider.id})`, 'success');
   } else {
     showToast('Rider Google Sign-In failed.', 'danger');
@@ -2091,6 +2152,20 @@ function toggleRiderOnlineState(el) {
 }
 
 function renderRiderPortal() {
+  if (!appState.currentRider) {
+    setTimeout(openRiderAuthModal, 100);
+    return;
+  }
+
+  // Update header text to match logged in rider details
+  const nameEl = document.getElementById('rider-display-name');
+  const idEl = document.getElementById('rider-display-id');
+  const phoneEl = document.getElementById('rider-display-phone');
+  
+  if (nameEl) nameEl.textContent = appState.currentRider.name;
+  if (idEl) idEl.textContent = appState.currentRider.id;
+  if (phoneEl) phoneEl.textContent = appState.currentRider.phone;
+
   const availableList = document.getElementById('rider-available-list');
   const activeJobBody = document.getElementById('rider-active-job-body');
   const alertBox = document.getElementById('rider-alert-box');
