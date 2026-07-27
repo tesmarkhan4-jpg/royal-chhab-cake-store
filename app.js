@@ -12,6 +12,8 @@ let adminAudioInterval = null;
 let riderAudioInterval = null;
 let leafletMapInstances = {};
 let currentSplashStep = 1;
+let currentHeroSlide = 0;
+let heroAutoplayTimer = null;
 
 // Initial Sample Rider Fleet Roster
 const DEFAULT_RIDERS = [
@@ -132,6 +134,10 @@ document.addEventListener('DOMContentLoaded', () => {
   startCountdownTimerLoop();
   checkContinuousAudioAlerts();
   initializeGoogleAuth();
+  
+  if (document.body.dataset.page === 'customer') {
+    startHeroAutoplay();
+  }
 });
 
 function renderCurrentPage() {
@@ -892,43 +898,79 @@ function filterCategory(cat, el) {
 }
 
 function renderStorefrontCatalog() {
-  const grid = document.getElementById('product-grid');
-  if (!grid) return;
+  const container = document.getElementById('catalog-section');
+  if (!container) return;
 
-  const filtered = appState.categoryFilter === 'all' 
-    ? appState.products 
-    : appState.products.filter(p => p.category === appState.categoryFilter);
+  const categories = [
+    { id: 'Signature', name: 'Signature Artisanal Masterpieces', sub: 'Chef\'s premium selections with luxury cake finishes', filter: 'Signature' },
+    { id: 'Birthday', name: 'Celebration Birthday Delights', sub: 'Make birthdays unforgettable with soft, moist sponges', filter: 'Birthday' },
+    { id: 'Wedding', name: 'Boutique Tiered Wedding Cakes', sub: 'Elegantly designed tiered masterpieces for your big day', filter: 'Wedding' },
+    { id: 'Cupcakes', name: 'Gourmet Cupcake Selection', sub: 'Bite-sized luxury treats crafted for high tea celebrations', filter: 'Cupcakes' }
+  ];
 
-  grid.innerHTML = filtered.map(p => {
-    const ratingData = getProductAverageRating(p.id);
-    const starsHtml = ratingData.count > 0 
-      ? `<div class="product-rating-stars" onclick="openProductDetailsModal('${p.id}')" style="cursor:pointer;" title="View Details & Reviews">
-           ${'★'.repeat(Math.round(ratingData.average))}${'☆'.repeat(5 - Math.round(ratingData.average))} <span style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">(${ratingData.count})</span>
-         </div>`
-      : `<div class="product-rating-stars" onclick="openProductDetailsModal('${p.id}')" style="cursor:pointer; opacity: 0.55;" title="Be the first to review">
-           ☆☆☆☆☆ <span style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">(0)</span>
-         </div>`;
+  container.innerHTML = categories.map(cat => {
+    const products = appState.products.filter(p => p.category === cat.filter);
+    if (products.length === 0) return '';
+
+    const cardsHtml = products.map(p => {
+      const ratingData = getProductAverageRating(p.id);
+      const starsHtml = ratingData.count > 0 
+        ? `<div class="product-rating-stars" onclick="openProductDetailsModal('${p.id}')" style="cursor:pointer;" title="View Details & Reviews">
+             ${'★'.repeat(Math.round(ratingData.average))}${'☆'.repeat(5 - Math.round(ratingData.average))} <span style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">(${ratingData.count})</span>
+           </div>`
+        : `<div class="product-rating-stars" onclick="openProductDetailsModal('${p.id}')" style="cursor:pointer; opacity: 0.55;" title="Be the first to review">
+             ☆☆☆☆☆ <span style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">(0)</span>
+           </div>`;
+
+      return `
+        <div class="product-card">
+          <div class="product-img-wrapper" onclick="openProductDetailsModal('${p.id}')" style="cursor:pointer;" title="View Details & Reviews">
+            <span class="product-badge">${p.category}</span>
+            <img src="${p.image}" alt="${p.name}" class="product-img" loading="lazy">
+          </div>
+          <div class="product-info">
+            <h4 class="product-title" onclick="openProductDetailsModal('${p.id}')" style="cursor:pointer;" title="View Details & Reviews">${p.name}</h4>
+            ${starsHtml}
+            <p class="product-desc" style="font-size:0.85rem; color:var(--text-muted); line-height:1.4; height:50px; overflow:hidden; text-overflow:ellipsis; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; margin-bottom:1rem;">${p.description}</p>
+            <div class="product-footer" style="display:flex; justify-content:space-between; align-items:center; margin-top:auto;">
+              <span class="product-price" style="font-size:1.15rem; font-weight:700; color:var(--primary-rose);">Rs. ${p.price.toLocaleString()}</span>
+              <button class="btn btn-primary btn-sm" onclick="addToCart('${p.id}')">
+                <i class="fa-solid fa-plus"></i> Add to Cart
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
 
     return `
-      <div class="product-card">
-        <div class="product-img-wrapper" onclick="openProductDetailsModal('${p.id}')" style="cursor:pointer;" title="View Details & Reviews">
-          <span class="product-badge">${p.category}</span>
-          <img src="${p.image}" alt="${p.name}" class="product-img" loading="lazy">
+      <div class="catalog-category-row">
+        <div class="category-row-header">
+          <div class="category-row-title-box">
+            <h3>${cat.name}</h3>
+            <p>${cat.sub}</p>
+          </div>
+          <div class="slider-nav-controls">
+            <button class="slider-nav-btn" onclick="slideCatalog('${cat.id}', -1)" title="Scroll Left"><i class="fa-solid fa-chevron-left"></i></button>
+            <button class="slider-nav-btn" onclick="slideCatalog('${cat.id}', 1)" title="Scroll Right"><i class="fa-solid fa-chevron-right"></i></button>
+          </div>
         </div>
-        <div class="product-info">
-          <h4 class="product-title" onclick="openProductDetailsModal('${p.id}')" style="cursor:pointer;" title="View Details & Reviews">${p.name}</h4>
-          ${starsHtml}
-          <p class="product-desc">${p.description}</p>
-          <div class="product-footer">
-            <span class="product-price">Rs. ${p.price.toLocaleString()}</span>
-            <button class="btn btn-primary btn-sm" onclick="addToCart('${p.id}')">
-              <i class="fa-solid fa-plus"></i> Add to Cart
-            </button>
+        <div class="slider-container">
+          <div class="slider-track" id="track-${cat.id}">
+            ${cardsHtml}
           </div>
         </div>
       </div>
     `;
   }).join('');
+}
+
+function slideCatalog(catId, direction) {
+  const track = document.getElementById(`track-${catId}`);
+  if (track) {
+    const cardWidth = track.firstElementChild ? track.firstElementChild.offsetWidth + 28 : 320;
+    track.scrollBy({ left: direction * cardWidth, behavior: 'smooth' });
+  }
 }
 
 function toggleCartDrawer() {
@@ -2603,7 +2645,10 @@ function renderGeneralFeedback() {
     return;
   }
 
-  grid.innerHTML = appState.generalFeedback.map(f => `
+  // Display only top 3 testimonials on home page
+  const limited = appState.generalFeedback.slice(0, 3);
+
+  grid.innerHTML = limited.map(f => `
     <div class="testimonial-card">
       <i class="fa-solid fa-quote-right quote-icon"></i>
       <div class="rating">${'★'.repeat(f.rating)}${'☆'.repeat(5 - f.rating)}</div>
@@ -2616,6 +2661,92 @@ function renderGeneralFeedback() {
   if (nameInput && appState.currentUser && !nameInput.value) {
     nameInput.value = appState.currentUser.name;
   }
+}
+
+function openAllReviewsModal() {
+  const modal = document.getElementById('all-reviews-modal');
+  const statsContainer = document.getElementById('reviews-modal-stats-container');
+  const listContainer = document.getElementById('reviews-modal-list');
+
+  if (!modal || !listContainer) return;
+
+  // Calculate statistics
+  const totalReviews = appState.generalFeedback.length;
+  const averageRating = totalReviews > 0 
+    ? appState.generalFeedback.reduce((sum, f) => sum + f.rating, 0) / totalReviews
+    : 0;
+
+  const starCounts = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+  appState.generalFeedback.forEach(f => {
+    if (starCounts[f.rating] !== undefined) {
+      starCounts[f.rating]++;
+    }
+  });
+
+  if (statsContainer) {
+    const barsHtml = [5, 4, 3, 2, 1].map(stars => {
+      const count = starCounts[stars] || 0;
+      const percent = totalReviews > 0 ? (count / totalReviews) * 100 : 0;
+      return `
+        <div class="rating-bar-row">
+          <span style="width:50px; font-weight:600;">${stars} Stars</span>
+          <div class="rating-bar-bg">
+            <div class="rating-bar-fill" style="width:${percent}%"></div>
+          </div>
+          <span style="width:30px; text-align:right; color:var(--text-muted);">${count}</span>
+        </div>
+      `;
+    }).join('');
+
+    statsContainer.innerHTML = `
+      <div class="reviews-stats-row">
+        <div class="reviews-stats-score">
+          <h2>${averageRating.toFixed(1)}</h2>
+          <div style="color:var(--accent-gold); font-size:1.25rem; margin-bottom:0.3rem;">
+            ${'★'.repeat(Math.round(averageRating))}${'☆'.repeat(5 - Math.round(averageRating))}
+          </div>
+          <span style="font-size:0.85rem; color:var(--text-muted);">${totalReviews} Store Reviews</span>
+        </div>
+        <div style="display:flex; flex-direction:column; justify-content:center; flex-grow:1;">
+          ${barsHtml}
+        </div>
+      </div>
+    `;
+  }
+
+  // Populate list
+  listContainer.innerHTML = appState.generalFeedback.map(f => {
+    const dateStr = f.date 
+      ? new Date(f.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+      : 'Recent';
+
+    return `
+      <div style="padding:1.2rem; background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:var(--radius-md); margin-bottom:1rem; position:relative;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.6rem;">
+          <div style="display:flex; align-items:center; gap:0.6rem;">
+            <div style="width:36px; height:36px; border-radius:50%; background:var(--primary-rose-light); color:var(--primary-rose); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.95rem; font-family:sans-serif;">
+              ${f.author.charAt(0).toUpperCase()}
+            </div>
+            <div>
+              <strong style="color:var(--text-main); font-size:0.92rem; display:block;">${f.author}</strong>
+              <span style="font-size:0.75rem; color:var(--text-muted);">${dateStr}</span>
+            </div>
+          </div>
+          <div style="color:var(--accent-gold); font-size:0.9rem;">
+            ${'★'.repeat(f.rating)}${'☆'.repeat(5 - f.rating)}
+          </div>
+        </div>
+        <p style="font-size:0.88rem; color:var(--text-muted); line-height:1.5; margin:0; font-style:italic;">"${f.comment}"</p>
+      </div>
+    `;
+  }).join('');
+
+  modal.classList.add('active');
+}
+
+function closeAllReviewsModal() {
+  const modal = document.getElementById('all-reviews-modal');
+  if (modal) modal.classList.remove('active');
 }
 
 function handleGeneralFeedbackSubmit(e) {
@@ -2830,4 +2961,50 @@ function renderAdminUsers() {
       </tr>
     `;
   }).join('');
+}
+
+// ============================================================================
+// STOREFRONT HERO BANNER SLIDER CONTROLLER
+// ============================================================================
+function showHeroSlide(index) {
+  const slides = document.querySelectorAll('.hero-slide');
+  const dots = document.querySelectorAll('.hero-slider-dot');
+  if (slides.length === 0) return;
+
+  if (index >= slides.length) currentHeroSlide = 0;
+  else if (index < 0) currentHeroSlide = slides.length - 1;
+  else currentHeroSlide = index;
+
+  slides.forEach((slide, i) => {
+    if (i === currentHeroSlide) {
+      slide.classList.add('active');
+    } else {
+      slide.classList.remove('active');
+    }
+  });
+
+  dots.forEach((dot, i) => {
+    if (i === currentHeroSlide) {
+      dot.classList.add('active');
+    } else {
+      dot.classList.remove('active');
+    }
+  });
+
+  startHeroAutoplay();
+}
+
+function moveHeroSlide(direction) {
+  showHeroSlide(currentHeroSlide + direction);
+}
+
+function setHeroSlide(index) {
+  showHeroSlide(index);
+}
+
+function startHeroAutoplay() {
+  if (heroAutoplayTimer) clearInterval(heroAutoplayTimer);
+  heroAutoplayTimer = setInterval(() => {
+    moveHeroSlide(1);
+  }, 5000);
 }

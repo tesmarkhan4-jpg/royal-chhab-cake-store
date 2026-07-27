@@ -125,47 +125,72 @@
 
   <!-- MAIN STOREFRONT CONTENT -->
   <main class="main-content">
-    <!-- Hero Banner -->
+    <!-- Hero Banner Slider -->
     <div class="hero-banner">
-      <div class="hero-content">
-        <span class="hero-tag"><i class="fa-solid fa-crown"></i> Handcrafted Fresh Daily in Chhab</span>
-        <h2>Royal Chhab Custom Cakes</h2>
-        <p>Located near RHC Hospital, Chhab. Order luxury signature cakes online, design custom tiered cakes with personalized message inscriptions, select Home Delivery or Bakery Self-Pickup, and track live baking countdowns.</p>
-        <div class="hero-actions">
-          <button class="btn btn-primary" onclick="scrollToCatalog()">
-            <i class="fa-solid fa-cake-candles"></i> Explore Menu
-          </button>
-          <button class="btn btn-gold" onclick="openCustomCakeModal()">
-            <i class="fa-solid fa-palette"></i> Build Custom Cake
-          </button>
+      <div class="hero-slides-container">
+        <!-- Slide 1 -->
+        <div class="hero-slide active">
+          <div class="hero-content">
+            <span class="hero-tag"><i class="fa-solid fa-crown"></i> Handcrafted Fresh Daily in Chhab</span>
+            <h2>Royal Wedding Masterpieces</h2>
+            <p>Design premium multi-tiered custom wedding cakes with your choice of sponge profiles, personalized message inscriptions, and live kitchen tracking alerts. Handcrafted elegantly near RHC Hospital, Chhab.</p>
+            <div class="hero-actions">
+              <button class="btn btn-primary" onclick="scrollToCatalog()"><i class="fa-solid fa-cake-candles"></i> Explore Menu</button>
+              <button class="btn btn-gold" onclick="openCustomCakeModal()"><i class="fa-solid fa-palette"></i> Build Custom Cake</button>
+            </div>
+          </div>
+          <div class="hero-image-box">
+            <div class="hero-badge"><i class="fa-solid fa-bolt"></i> Custom Tiered Fondant Cakes</div>
+            <img src="https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&w=800&q=80" alt="Royal Wedding Cakes" class="hero-img">
+          </div>
+        </div>
+        <!-- Slide 2 -->
+        <div class="hero-slide">
+          <div class="hero-content">
+            <span class="hero-tag"><i class="fa-solid fa-cake-candles"></i> Premium Cocoa & Fresh Berries</span>
+            <h2>Artisanal Birthday Delights</h2>
+            <p>Surprise your loved ones with boutique chocolate tortes and berry sponges. Freshly baked daily, with fast delivery directly to your home in Chhab, or free self-pickup option.</p>
+            <div class="hero-actions">
+              <button class="btn btn-primary" onclick="scrollToCatalog()"><i class="fa-solid fa-cake-candles"></i> Explore Menu</button>
+              <button class="btn btn-gold" onclick="openCustomerAuthModal()"><i class="fa-solid fa-user-plus"></i> Join & Save Settings</button>
+            </div>
+          </div>
+          <div class="hero-image-box">
+            <div class="hero-badge"><i class="fa-solid fa-truck-fast"></i> Same-Day Delivery Available</div>
+            <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=800&q=80" alt="Artisanal Birthday Cakes" class="hero-img">
+          </div>
+        </div>
+        <!-- Slide 3 -->
+        <div class="hero-slide">
+          <div class="hero-content">
+            <span class="hero-tag"><i class="fa-solid fa-cookie"></i> Gourmet Confectioneries</span>
+            <h2>Artisanal Cupcake Selection</h2>
+            <p>Delight in assorted cupcake boxes featuring red velvet rose, mango passionfruit, and dark cocoa ganache. The perfect premium treat for any gathering or high tea party.</p>
+            <div class="hero-actions">
+              <button class="btn btn-primary" onclick="scrollToCatalog()"><i class="fa-solid fa-utensils"></i> Explore Menu</button>
+              <button class="btn btn-gold" onclick="openCustomCakeModal()"><i class="fa-solid fa-wand-magic-sparkles"></i> Customize Order</button>
+            </div>
+          </div>
+          <div class="hero-image-box">
+            <div class="hero-badge"><i class="fa-solid fa-circle-check"></i> 100% Organic & Halal</div>
+            <img src="https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?auto=format&fit=crop&w=800&q=80" alt="Artisanal Cupcakes" class="hero-img">
+          </div>
         </div>
       </div>
-      <div class="hero-image-box">
-        <div class="hero-badge">
-          <i class="fa-solid fa-bolt"></i> Live Kitchen Prep, Home Delivery or Store Pickup in Chhab
-        </div>
-        <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=800&q=80" alt="Royal Chhab Cake" class="hero-img">
+      <!-- Arrows -->
+      <div class="hero-slider-arrow prev" onclick="moveHeroSlide(-1)"><i class="fa-solid fa-chevron-left"></i></div>
+      <div class="hero-slider-arrow next" onclick="moveHeroSlide(1)"><i class="fa-solid fa-chevron-right"></i></div>
+      <!-- Dots -->
+      <div class="hero-slider-dots">
+        <span class="hero-slider-dot active" onclick="setHeroSlide(0)"></span>
+        <span class="hero-slider-dot" onclick="setHeroSlide(1)"></span>
+        <span class="hero-slider-dot" onclick="setHeroSlide(2)"></span>
       </div>
     </div>
 
-    <!-- Category Header -->
-    <div class="section-header" id="catalog-section">
-      <div>
-        <h3 class="section-title">Royal Chhab Cake Collection</h3>
-        <p class="section-sub">Baked with pure butter, belgian chocolate, and fresh organic ingredients</p>
-      </div>
-      <div class="category-pills">
-        <button class="pill active" onclick="filterCategory('all', this)">All Cakes</button>
-        <button class="pill" onclick="filterCategory('Birthday', this)">Birthday</button>
-        <button class="pill" onclick="filterCategory('Wedding', this)">Wedding</button>
-        <button class="pill" onclick="filterCategory('Signature', this)">Signature Artisanal</button>
-        <button class="pill" onclick="filterCategory('Cupcakes', this)">Cupcakes</button>
-      </div>
-    </div>
-
-    <!-- Live Product Catalog Grid -->
-    <div class="product-grid" id="product-grid">
-      <!-- Injected via JavaScript -->
+    <!-- Categorized Catalog Section -->
+    <div id="catalog-section" style="margin-top:2.5rem;">
+      <!-- Injected dynamically via JS: 4 horizontal sliders for Signature, Birthday, Wedding, Cupcakes -->
     </div>
 
     <!-- Story of Royal Chhab Custom Cakes -->
@@ -200,8 +225,15 @@
       </div>
 
       <!-- Testimonials grid -->
-      <div id="general-testimonials-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:2rem; margin-bottom:3.5rem;">
+      <div id="general-testimonials-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:2rem; margin-bottom:1.5rem;">
         <!-- Injected via JS -->
+      </div>
+
+      <!-- View All Reviews Button -->
+      <div style="text-align:center; margin-top:1.5rem; margin-bottom:3rem;">
+        <button class="btn btn-outline" onclick="openAllReviewsModal()">
+          <i class="fa-solid fa-comments"></i> View All Customer Reviews & Statistics
+        </button>
       </div>
 
       <!-- Write a feedback form -->
@@ -512,6 +544,26 @@
 
       <div class="modal-body" id="order-tracker-body">
         <!-- Injected via JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ALL CUSTOMER REVIEWS & STATS MODAL -->
+  <div id="all-reviews-modal" class="modal">
+    <div class="modal-overlay" onclick="closeAllReviewsModal()"></div>
+    <div class="modal-content large" style="max-width: 860px;">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-comments" style="color:var(--primary-rose);"></i> Customer Testimonials & Reviews Archive</h3>
+        <button class="close-btn" onclick="closeAllReviewsModal()">&times;</button>
+      </div>
+      <div class="modal-body" style="padding: 1.8rem;">
+        <div id="reviews-modal-stats-container">
+          <!-- Dynamic stats row (average rating, progress bars) -->
+        </div>
+        <hr style="border:0; border-top:1px solid var(--border-subtle); margin:1.5rem 0;">
+        <div style="max-height: 380px; overflow-y: auto; padding-right: 0.5rem;" id="reviews-modal-list">
+          <!-- Injected via JS -->
+        </div>
       </div>
     </div>
   </div>
