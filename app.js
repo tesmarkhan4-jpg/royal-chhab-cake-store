@@ -1687,30 +1687,14 @@ async function handlePaymentSubmit(e) {
   closeCheckoutModal();
 
   playCustomerSuccessSound();
-  if (requiresApproval) {
-    showToast(`âŒ› Receipt submitted! Order #${newOrder.id} pending verification.`, 'info');
-  } else {
-    showToast(`ðŸŽ‰ Order #${newOrder.id} Placed! Kitchen notified.`, 'success');
-  }
-  openOrderTrackerModal();
+  showOrderSuccessPopup(newOrder);
 
-  // AUTOMATED EMAIL RECEIPT DISPATCH VIA GMAIL SMTP
   if (!requiresApproval) {
-    try {
-      const res = await fetch('/api/send-receipt', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newOrder)
-      });
-      const data = await res.json();
-      if (data.success) {
-        showToast(`âœ‰ï¸ Official Receipt emailed to ${email} via Gmail SMTP!`, 'success');
-      }
-    } catch (err) {
-      console.log('Receipt email dispatch info:', err);
-    }
+    sendOrderConfirmationEmail(newOrder);
   }
 }
+
+
 
 function openOrderTrackerModal() {
   document.getElementById('order-tracker-modal').classList.add('active');
@@ -2045,11 +2029,65 @@ function adminAcceptNewOrder(orderId) {
   const order = appState.orders.find(o => o.id === orderId);
   if (order) {
     order.status = 'Baking & Prepping';
+    order.confirmedByAdmin = true;
+    order.confirmedAt = Date.now();
     saveOrdersToStorage();
     checkContinuousAudioAlerts();
     renderAdminOrders();
-    showToast(`Order #${orderId} Accepted! Kitchen baking countdown active.`, 'success');
+    showToast(`✅ Order #${orderId} Approved! Confirmation email sending to customer...`, 'success');
+    // Send confirmation email to customer
+    sendOrderConfirmationEmail(order);
   }
+}
+
+async function sendOrderConfirmationEmail(order) {
+  try {
+    const res = await fetch('/api/send-confirmation', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(order)
+    });
+    const data = await res.json();
+    if (data.success) {
+      showToast(`✉️ Confirmation email sent to ${order.customerEmail}!`, 'success');
+      // Also broadcast to customer screen
+      broadcastStateChange('order_confirmed_by_admin', { orderId: order.id });
+    } else {
+      showToast('⚠️ Order approved but email could not be sent. Check server.', 'info');
+    }
+  } catch (err) {
+    console.log('Confirmation email dispatch info:', err);
+    showToast('⚠️ Order approved. Email server not reachable (run locally for live emails).', 'info');
+  }
+}
+
+function showOrderSuccessPopup(order) {
+  const modal = document.getElementById('order-success-modal');
+  const content = document.getElementById('order-success-content');
+  const emailNotice = document.getElementById('order-success-email-notice');
+  if (!modal || !content) return;
+
+  content.innerHTML = `
+    <div style="text-align:center; margin-bottom:1.2rem;">
+      <div style="font-size:0.85rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px; font-weight:600; margin-bottom:0.3rem;">Order Reference</div>
+      <div style="font-size:1.8rem; font-weight:800; color:var(--primary-rose);">#${order.id}</div>
+    </div>
+    <p style="text-align:center; font-size:0.95rem; color:var(--text-main); line-height:1.5; margin-bottom:1.2rem;">
+      Thank you <strong>${order.customerName}</strong>! 🎂 Your order has been received by the <strong>Royal Chhab</strong> bakery team and is pending their review.
+    </p>
+  `;
+
+  if (emailNotice) {
+    const emailAddr = order.customerEmail || 'your email';
+    emailNotice.innerHTML = `You will receive an official <strong>Order Confirmation Email</strong> at <strong style="color:var(--primary-rose);">${emailAddr}</strong> as soon as our bakery team reviews and approves your order!`;
+  }
+
+  modal.classList.add('active');
+}
+
+function closeOrderSuccessModal() {
+  const modal = document.getElementById('order-success-modal');
+  if (modal) modal.classList.remove('active');
 }
 
 function adminMarkReady(orderId) {

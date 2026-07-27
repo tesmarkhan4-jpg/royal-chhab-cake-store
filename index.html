@@ -597,6 +597,49 @@
     </div>
   </div>
 
-  <script src="app.js?v=12"></script>
+  <!-- ORDER SUCCESS POPUP MODAL -->
+  <div id="order-success-modal" class="modal" style="z-index:10000;">
+    <div class="modal-overlay"></div>
+    <div class="modal-content medium" style="max-width:480px; border-radius:20px; overflow:hidden; border:none;">
+      <!-- Green success header -->
+      <div style="background:linear-gradient(135deg, #a83250, #6b1d31); padding:2rem 1.5rem; text-align:center; color:white;">
+        <div style="width:72px; height:72px; background:rgba(255,255,255,0.2); border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:2.2rem; margin-bottom:0.8rem; border:3px solid rgba(255,255,255,0.5);">
+          <i class="fa-solid fa-circle-check" style="color:#4ade80;"></i>
+        </div>
+        <h2 style="margin:0; font-size:1.5rem; color:#f59e0b; font-weight:800;">Order Placed!</h2>
+        <p style="margin:0.4rem 0 0 0; font-size:0.9rem; color:#f8bbd0; opacity:0.9;">Royal Chhab Custom Cakes</p>
+      </div>
+
+      <!-- Body -->
+      <div style="padding:1.8rem 1.5rem; background:white;">
+        <div id="order-success-content">
+          <!-- Injected by JS with order-specific details -->
+        </div>
+
+        <!-- Email notice box -->
+        <div style="background:#fdf8f5; border:1px solid #f9a8c9; border-radius:12px; padding:1rem 1.2rem; margin-bottom:1.2rem; display:flex; gap:0.75rem; align-items:flex-start;">
+          <i class="fa-solid fa-envelope-open-text" style="color:#a83250; font-size:1.3rem; margin-top:2px;"></i>
+          <div>
+            <div style="font-weight:700; font-size:0.88rem; color:#a83250; margin-bottom:0.25rem;">Confirmation Email Notice</div>
+            <div id="order-success-email-notice" style="font-size:0.83rem; color:#555; line-height:1.5;">
+              You will receive an official <strong>Order Confirmation Email</strong> as soon as our bakery team reviews and approves your order.
+            </div>
+          </div>
+        </div>
+
+        <!-- Action buttons -->
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.6rem;">
+          <button class="btn btn-outline" onclick="closeOrderSuccessModal()" style="font-size:0.88rem; padding:0.65rem;">
+            <i class="fa-solid fa-store"></i> Continue Shopping
+          </button>
+          <button class="btn btn-primary" onclick="closeOrderSuccessModal(); openOrderTrackerModal();" style="font-size:0.88rem; padding:0.65rem;">
+            <i class="fa-solid fa-clock-rotate-left"></i> Track My Order
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js?v=13"></script>
 </body>
 </html>
