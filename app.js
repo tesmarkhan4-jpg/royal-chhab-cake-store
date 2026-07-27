@@ -573,7 +573,7 @@ function handleRiderLogout() {
 function initializeGoogleAuth() {
   if (typeof google !== 'undefined') {
     const page = document.body.dataset.page;
-    const client_id = localStorage.getItem('luxecakes_google_client_id') || '921102927236-u4n88i6q41plu5u5b3i3l9p233f21m25.apps.googleusercontent.com';
+    const client_id = localStorage.getItem('luxecakes_google_client_id') || '58809129371-p9fo8c3u06qqsi8gcan86pqem930lnok.apps.googleusercontent.com';
     
     if (page === 'customer') {
       const container = document.getElementById('google-signin-btn-container');
