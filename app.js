@@ -143,13 +143,14 @@ let appState = {
 // ROYAL CHHAB FULL PRODUCT CATALOG â€” 20 Products (5 per Category) â€” Prices in Rs. GBP
 // ============================================================================
 const DEFAULT_PRODUCTS = [
-
-  // â”€â”€ SIGNATURE ARTISANAL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   {
     id: 'prod-101',
     name: 'Royal Dark Chocolate Truffle',
     category: 'Signature',
+    pricePerLb: 2800,
     price: 2800,
+    layers: 2,
+    floors: 1,
     prepTimeMinutes: 40,
     image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=600&q=80',
     description: 'Triple-layer 70% dark cocoa sponge infused with hazelnut praline and edible gold leaf flakes. A regal indulgence.'
@@ -158,7 +159,10 @@ const DEFAULT_PRODUCTS = [
     id: 'prod-104',
     name: 'Salted Caramel Macaron Torte',
     category: 'Signature',
+    pricePerLb: 3200,
     price: 3200,
+    layers: 2,
+    floors: 1,
     prepTimeMinutes: 30,
     image: 'https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?auto=format&fit=crop&w=600&q=80',
     description: 'Rich salted caramel sponge topped with house-baked French macarons, caramel drizzle and edible pearls.'
@@ -167,7 +171,10 @@ const DEFAULT_PRODUCTS = [
     id: 'prod-107',
     name: 'Lemon Drizzle & Rose Water Cake',
     category: 'Signature',
+    pricePerLb: 2500,
     price: 2500,
+    layers: 2,
+    floors: 1,
     prepTimeMinutes: 35,
     image: 'https://images.unsplash.com/photo-1571506165871-ee72a35bc9d4?auto=format&fit=crop&w=600&q=80',
     description: 'Zesty organic lemon sponge soaked in rose water syrup, finished with candied lemon peel and dried rose petals.'
@@ -176,7 +183,10 @@ const DEFAULT_PRODUCTS = [
     id: 'prod-108',
     name: 'Belgian Chocolate Fondant Cake',
     category: 'Signature',
-    price: 3500,
+    pricePerLb: 3000,
+    price: 3000,
+    layers: 2,
+    floors: 1,
     prepTimeMinutes: 45,
     image: 'https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?auto=format&fit=crop&w=600&q=80',
     description: 'Sinfully rich Belgian dark chocolate fondant cake with a molten centre and bitter cocoa glaze. Served warm.'
@@ -185,18 +195,23 @@ const DEFAULT_PRODUCTS = [
     id: 'prod-109',
     name: 'Pistachio & Cardamom Opera Cake',
     category: 'Signature',
-    price: 4200,
+    pricePerLb: 3000,
+    price: 3000,
+    layers: 3,
+    floors: 1,
     prepTimeMinutes: 50,
     image: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=600&q=80',
     description: 'Elegant layered opera cake with Iranian pistachio cream, cardamom-scented ganache and gold mirror glaze finish.'
   },
 
-  // â”€â”€ BIRTHDAY DELIGHTS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   {
     id: 'prod-102',
     name: 'Strawberry & Pistachio Special Torte',
     category: 'Birthday',
+    pricePerLb: 2400,
     price: 2400,
+    layers: 2,
+    floors: 1,
     prepTimeMinutes: 35,
     image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=600&q=80',
     description: 'Fluffy vanilla bean cake filled with organic strawberry compote and crushed Iranian pistachios. A crowd favourite.'
@@ -205,7 +220,10 @@ const DEFAULT_PRODUCTS = [
     id: 'prod-106',
     name: 'Classic Red Velvet Birthday Cake',
     category: 'Birthday',
+    pricePerLb: 2200,
     price: 2200,
+    layers: 2,
+    floors: 1,
     prepTimeMinutes: 35,
     image: 'https://images.unsplash.com/photo-1614707267537-b85aaf00c4b7?auto=format&fit=crop&w=600&q=80',
     description: 'Moist red velvet sponge with smooth cream cheese frosting, fresh berry garnish and custom message inscription.'
@@ -214,7 +232,10 @@ const DEFAULT_PRODUCTS = [
     id: 'prod-110',
     name: 'Rainbow Confetti Celebration Cake',
     category: 'Birthday',
+    pricePerLb: 2000,
     price: 2000,
+    layers: 2,
+    floors: 1,
     prepTimeMinutes: 30,
     image: 'https://images.unsplash.com/photo-1587668178277-295251f900ce?auto=format&fit=crop&w=600&q=80',
     description: 'Fun-filled rainbow confetti sponge with vanilla buttercream and a vivid sprinkle cascade. Perfect for kids.'
@@ -223,7 +244,10 @@ const DEFAULT_PRODUCTS = [
     id: 'prod-111',
     name: 'Mango & Coconut Tropical Birthday',
     category: 'Birthday',
+    pricePerLb: 2400,
     price: 2400,
+    layers: 2,
+    floors: 1,
     prepTimeMinutes: 35,
     image: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=600&q=80',
     description: 'Light coconut sponge layered with fresh Chaunsa mango cream and toasted coconut flakes. Tropical bliss.'
@@ -232,18 +256,23 @@ const DEFAULT_PRODUCTS = [
     id: 'prod-112',
     name: 'Chocolate Hazelnut Drip Cake',
     category: 'Birthday',
+    pricePerLb: 2600,
     price: 2600,
+    layers: 2,
+    floors: 1,
     prepTimeMinutes: 40,
     image: 'https://images.unsplash.com/photo-1549040855-3d9d93ac1a89?auto=format&fit=crop&w=600&q=80',
     description: 'Decadent chocolate sponge with Nutella filling, hazelnut praline crunch and glossy chocolate drip finish.'
   },
 
-  // â”€â”€ BOUTIQUE WEDDING CAKES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   {
     id: 'prod-103',
     name: 'Royal Chhab Grand Wedding Tier Cake',
     category: 'Wedding',
-    price: 7500,
+    pricePerLb: 2500,
+    price: 5000,
+    layers: 3,
+    floors: 2,
     prepTimeMinutes: 60,
     image: 'https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=600&q=80',
     description: 'Tiered Madagascar vanilla cake with handcrafted buttercream roses, sugar orchids and champagne glaze.'
@@ -252,7 +281,10 @@ const DEFAULT_PRODUCTS = [
     id: 'prod-113',
     name: 'Pearl White Fondant Wedding Cake',
     category: 'Wedding',
-    price: 8500,
+    pricePerLb: 2800,
+    price: 5600,
+    layers: 3,
+    floors: 2,
     prepTimeMinutes: 75,
     image: 'https://images.unsplash.com/photo-1607478900766-efe13248b125?auto=format&fit=crop&w=600&q=80',
     description: 'Immaculate pearl white fondant three-tier cake with hand-piped lace detail and cascading sugar flowers.'
@@ -261,7 +293,10 @@ const DEFAULT_PRODUCTS = [
     id: 'prod-114',
     name: 'Blush Rose Gold Bridal Cake',
     category: 'Wedding',
-    price: 9500,
+    pricePerLb: 3000,
+    price: 9000,
+    layers: 4,
+    floors: 3,
     prepTimeMinutes: 90,
     image: 'https://images.unsplash.com/photo-1599785209707-a456fc1337bb?auto=format&fit=crop&w=600&q=80',
     description: 'Romantic blush pink and rose gold five-tier wedding cake with hand-sugar roses and edible gold leaf.'
@@ -270,7 +305,10 @@ const DEFAULT_PRODUCTS = [
     id: 'prod-115',
     name: 'Minimalist Naked Wedding Cake',
     category: 'Wedding',
-    price: 6500,
+    pricePerLb: 2200,
+    price: 4400,
+    layers: 2,
+    floors: 2,
     prepTimeMinutes: 60,
     image: 'https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?auto=format&fit=crop&w=600&q=80',
     description: 'Rustic semi-naked cake with vanilla cream cheese frosting, fresh botanicals, figs and seasonal berries.'
@@ -279,18 +317,23 @@ const DEFAULT_PRODUCTS = [
     id: 'prod-116',
     name: 'Black Tie Luxury Wedding Cake',
     category: 'Wedding',
-    price: 11000,
+    pricePerLb: 3000,
+    price: 9000,
+    layers: 4,
+    floors: 3,
     prepTimeMinutes: 90,
     image: 'https://images.unsplash.com/photo-1571115177098-24ec42ed204d?auto=format&fit=crop&w=600&q=80',
     description: 'Dramatic black fondant five-tier showstopper with gold geometric patterns, hand-painted details and champagne cake inside.'
   },
 
-  // â”€â”€ GOURMET CUPCAKES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   {
     id: 'prod-105',
     name: 'Fresh Cupcake Box (x6)',
     category: 'Cupcakes',
+    pricePerLb: 1600,
     price: 1600,
+    layers: 1,
+    floors: 1,
     prepTimeMinutes: 20,
     image: 'https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?auto=format&fit=crop&w=600&q=80',
     description: 'Assorted artisan cupcakes: Velvet Rose, Dark Cocoa, Salted Caramel, Mango Passionfruit. Perfect gift boxes.'
@@ -299,7 +342,10 @@ const DEFAULT_PRODUCTS = [
     id: 'prod-117',
     name: 'Red Velvet Cream Cheese Cupcakes (x6)',
     category: 'Cupcakes',
+    pricePerLb: 1400,
     price: 1400,
+    layers: 1,
+    floors: 1,
     prepTimeMinutes: 20,
     image: 'https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=600&q=80',
     description: 'Classic red velvet cupcakes crowned with swirls of tangy cream cheese frosting and edible glitter hearts.'
@@ -308,7 +354,10 @@ const DEFAULT_PRODUCTS = [
     id: 'prod-118',
     name: 'Chocolate Fudge Frosted Cupcakes (x6)',
     category: 'Cupcakes',
+    pricePerLb: 1500,
     price: 1500,
+    layers: 1,
+    floors: 1,
     prepTimeMinutes: 20,
     image: 'https://images.unsplash.com/photo-1571506165871-ee72a35bc9d4?auto=format&fit=crop&w=600&q=80',
     description: 'Triple-chocolate cupcakes with dark fudge ganache frosting, Oreo crumble and chocolate chip topping.'
@@ -317,7 +366,10 @@ const DEFAULT_PRODUCTS = [
     id: 'prod-119',
     name: 'Lemon & Blueberry Swirl Cupcakes (x6)',
     category: 'Cupcakes',
+    pricePerLb: 1400,
     price: 1400,
+    layers: 1,
+    floors: 1,
     prepTimeMinutes: 20,
     image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=600&q=80',
     description: 'Zesty lemon sponge cupcakes with blueberry compote centre and lemon curd buttercream swirl on top.'
@@ -326,7 +378,10 @@ const DEFAULT_PRODUCTS = [
     id: 'prod-120',
     name: 'Unicorn Cupcake Party Box (x12)',
     category: 'Cupcakes',
+    pricePerLb: 2800,
     price: 2800,
+    layers: 1,
+    floors: 1,
     prepTimeMinutes: 25,
     image: 'https://images.unsplash.com/photo-1587668178277-295251f900ce?auto=format&fit=crop&w=600&q=80',
     description: 'Magical rainbow unicorn cupcake party box with multicolour buttercream swirls, edible horns and star sprinkles. Kids love it!'
@@ -427,7 +482,7 @@ function finishSplashOnboarding(openAuth = false) {
 // STORAGE & REAL-TIME BROADCAST ENGINE
 // ============================================================================
 function loadStateFromStorage() {
-  const CATALOG_VERSION = 'v12-pkrprices';
+  const CATALOG_VERSION = 'v13-poundlayers';
   const savedCatalogVersion = localStorage.getItem('luxecakes_catalog_version');
   const savedProducts = localStorage.getItem('luxecakes_products');
   if (savedProducts && savedCatalogVersion === CATALOG_VERSION) {
@@ -1309,7 +1364,10 @@ function updateCartUI() {
         <img src="${item.image}" style="width:56px; height:56px; border-radius:10px; object-fit:cover;">
         <div style="flex-grow:1;">
           <h5 style="font-size:0.95rem; margin-bottom:2px;">${item.name}</h5>
-          <span style="color:var(--primary-rose); font-weight:700; font-size:0.9rem;">Rs.  ${item.price.toLocaleString()}</span>
+          <div style="display:flex; align-items:center; gap:0.4rem;">
+            <span style="color:var(--primary-rose); font-weight:700; font-size:0.9rem;">Rs. ${item.price.toLocaleString()}</span>
+            ${item.pounds ? `<span style="background:var(--primary-rose-light); color:var(--primary-rose); font-size:0.72rem; padding:1px 6px; border-radius:4px; font-weight:700;">${item.pounds} Lb • ${item.layers || 2}L • ${item.floors || 1}F</span>` : ''}
+          </div>
           ${item.customText ? `<div style="font-size:0.78rem; color:var(--text-muted);">Text: "${item.customText}"</div>` : ''}
         </div>
         <div style="display:flex; align-items:center; gap:0.4rem;">
@@ -2218,7 +2276,7 @@ function renderAdminProducts() {
         <img src="${p.image}" style="width:58px; height:58px; border-radius:12px; object-fit:cover;">
         <div>
           <strong style="font-size:1rem; color:var(--text-main);">${p.name}</strong>
-          <div style="font-size:0.82rem; color:var(--text-muted);">${p.category} &bull; <strong style="color:var(--accent-gold);">Rs.  ${p.price.toLocaleString()}</strong> &bull; ${p.prepTimeMinutes || 35}m prep</div>
+          <div style="font-size:0.82rem; color:var(--text-muted);">${p.category} &bull; <strong style="color:var(--accent-gold);">Rs. ${p.pricePerLb || p.price} / Lb</strong> (${p.layers || 2} Layers • ${p.floors || 1} Floors)</div>
           <div style="font-size:0.78rem; color:var(--text-muted);">${p.description.substring(0, 48)}...</div>
         </div>
       </div>
@@ -2243,7 +2301,9 @@ function editProduct(prodId) {
 
   document.getElementById('edit-prod-id').value = p.id;
   document.getElementById('prod-name').value = p.name;
-  document.getElementById('prod-price').value = p.price;
+  document.getElementById('prod-price').value = p.pricePerLb || p.price;
+  if (document.getElementById('prod-layers')) document.getElementById('prod-layers').value = p.layers || 2;
+  if (document.getElementById('prod-floors')) document.getElementById('prod-floors').value = p.floors || 1;
   document.getElementById('prod-category').value = p.category;
   document.getElementById('prod-image').value = p.image;
   document.getElementById('prod-desc').value = p.description;
@@ -2763,78 +2823,154 @@ function openProductDetailsModal(productId) {
   const body = document.getElementById('product-details-modal-body');
   if (!modal || !body) return;
 
+  const ratePerLb = prod.pricePerLb || prod.price || 1500;
+  const defaultLayers = prod.layers || 2;
+  const defaultFloors = prod.floors || 1;
+  const initialTotal = (ratePerLb * 1) + ((defaultLayers - 1) * 200) + ((defaultFloors - 1) * 800);
+
   const productReviews = appState.reviews.filter(r => r.productId === productId);
   const ratingData = getProductAverageRating(productId);
-  const averageStars = ratingData.count > 0 ? 'â˜…'.repeat(Math.round(ratingData.average)) + 'â˜†'.repeat(5 - Math.round(ratingData.average)) : 'â˜†â˜†â˜†â˜†â˜†';
+  const fullStar = '&#9733;';
+  const emptyStar = '&#9734;';
+  const roundedAvg = Math.round(ratingData.average);
+  const averageStars = ratingData.count > 0 ? fullStar.repeat(roundedAvg) + emptyStar.repeat(5 - roundedAvg) : emptyStar.repeat(5);
   const defaultName = appState.currentUser ? appState.currentUser.name : '';
 
   body.innerHTML = `
-    <!-- Left Column: Product Info -->
-    <div style="padding-right: 1.5rem; border-right: 1px solid var(--border-subtle); display:flex; flex-direction:column; justify-content:space-between;">
+    <!-- Left Column: Image & Info -->
+    <div style="padding-right: 1.2rem; border-right: 1px solid var(--border-subtle); display:flex; flex-direction:column; justify-content:space-between;">
       <div>
-        <img src="${prod.image}" style="width:100%; height:260px; object-fit:cover; border-radius:var(--radius-md); box-shadow:var(--shadow-sm); margin-bottom:1rem;">
-        <h4 style="font-size:1.4rem; color:var(--primary-rose); font-weight:700; margin-bottom:0.5rem;">${prod.name}</h4>
-        <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.8rem;">
-          <span style="color:var(--accent-gold); font-size:1.15rem;">${averageStars}</span>
-          <strong style="font-size:0.9rem; color:var(--text-main);">${ratingData.count > 0 ? ratingData.average.toFixed(1) + ' / 5.0' : 'No ratings'}</strong>
-          <span style="font-size:0.85rem; color:var(--text-muted);">(${ratingData.count} reviews)</span>
+        <div style="position:relative; border-radius:var(--radius-md); overflow:hidden; margin-bottom:1rem; border:1px solid var(--border-subtle);">
+          <img src="${prod.image}" style="width:100%; height:240px; object-fit:cover; display:block;">
+          <span class="product-badge" style="position:absolute; top:10px; left:10px; background:var(--primary-rose); color:white; padding:4px 10px; border-radius:99px; font-size:0.75rem; font-weight:700;">${prod.category}</span>
         </div>
-        <p style="color:var(--text-muted); font-size:0.92rem; margin-bottom:1.2rem; line-height:1.5;">${prod.description}</p>
+        <h4 style="font-size:1.35rem; color:var(--primary-rose); font-weight:700; margin-bottom:0.4rem;">${prod.name}</h4>
+        <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.75rem;">
+          <span style="color:var(--accent-gold); font-size:1.1rem;">${averageStars}</span>
+          <strong style="font-size:0.88rem; color:var(--text-main);">${ratingData.count > 0 ? ratingData.average.toFixed(1) + ' / 5.0' : 'No reviews'}</strong>
+          <span style="font-size:0.82rem; color:var(--text-muted);">(${ratingData.count} reviews)</span>
+        </div>
+        <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:1rem; line-height:1.5;">${prod.description}</p>
+        
+        <div style="background:var(--primary-rose-light); padding:0.75rem 1rem; border-radius:var(--radius-md); border:1px solid rgba(168,50,80,0.15);">
+          <div style="font-size:0.78rem; color:var(--primary-rose); font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">Bakery Base Rate</div>
+          <div style="font-size:1.25rem; font-weight:700; color:var(--primary-rose);">Rs. ${ratePerLb.toLocaleString()} <span style="font-size:0.85rem; font-weight:400; color:var(--text-muted);">/ Pound (1 lb)</span></div>
+        </div>
       </div>
-      <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-surface); padding:0.8rem 1.2rem; border-radius:var(--radius-md); border:1px solid var(--border-subtle); margin-top:1rem;">
-        <span style="font-size:1.35rem; font-weight:700; color:var(--primary-rose);">Rs.  ${prod.price.toLocaleString()}</span>
-        <button class="btn btn-primary btn-sm" onclick="addToCart('${prod.id}'); closeProductDetailsModal();">
-          <i class="fa-solid fa-basket-shopping"></i> Add to Basket
-        </button>
+
+      <div style="margin-top:1rem;">
+        <h5 style="font-size:0.92rem; color:var(--text-main); font-weight:700; margin-bottom:0.5rem;"><i class="fa-solid fa-camera" style="color:var(--primary-rose);"></i> Real Customer Photos</h5>
+        <div style="display:flex; gap:0.5rem; overflow-x:auto; padding-bottom:0.4rem;">
+          <img src="customer_reviews_images/faheem-daughter-cake.png" style="width:65px; height:65px; border-radius:8px; object-fit:cover; border:1px solid var(--border-subtle); cursor:pointer;" onclick="window.open(this.src)">
+          <img src="customer_reviews_images/review-2.jpg" style="width:65px; height:65px; border-radius:8px; object-fit:cover; border:1px solid var(--border-subtle); cursor:pointer;" onclick="window.open(this.src)">
+          <img src="customer_reviews_images/review-3.jpg" style="width:65px; height:65px; border-radius:8px; object-fit:cover; border:1px solid var(--border-subtle); cursor:pointer;" onclick="window.open(this.src)">
+          <img src="customer_reviews_images/review-4.jpg" style="width:65px; height:65px; border-radius:8px; object-fit:cover; border:1px solid var(--border-subtle); cursor:pointer;" onclick="window.open(this.src)">
+        </div>
       </div>
     </div>
 
-    <!-- Right Column: Reviews & Form -->
-    <div style="display:flex; flex-direction:column; padding-left: 0.5rem; max-height: 480px; overflow-y: auto;">
-      <h4 style="font-size:1.15rem; color:var(--primary-rose); font-weight:700; margin-bottom:0.8rem;">Customer Review History</h4>
-      
-      <div class="reviews-list-container">
-        ${productReviews.length === 0 ? `
-          <div style="text-align:center; padding:2rem 0; color:var(--text-muted); font-size:0.88rem;">
-            <i class="fa-regular fa-comment-dots fa-2x mb-2" style="display:block;"></i>
-            Be the first to review this cake!
+    <!-- Right Column: Interactive Weight, Layers & Floors Controls -->
+    <div style="display:flex; flex-direction:column; padding-left: 0.8rem; max-height: 520px; overflow-y: auto;">
+      <div style="background:var(--bg-surface); padding:1rem; border-radius:var(--radius-md); border:1px solid var(--border-subtle); margin-bottom:1.2rem;">
+        <h4 style="font-size:1.05rem; color:var(--primary-rose); font-weight:700; margin-bottom:0.85rem; display:flex; align-items:center; gap:0.5rem;">
+          <i class="fa-solid fa-sliders"></i> Adjust Pounds, Layers & Tiers
+        </h4>
+
+        <!-- Weight / Pounds Selector -->
+        <div class="form-group mb-2">
+          <label style="font-weight:700; font-size:0.84rem; color:var(--text-main);">
+            <i class="fa-solid fa-weight-hanging" style="color:var(--primary-rose);"></i> Weight (Pounds):
+          </label>
+          <select id="modal-prod-pounds-${prod.id}" class="form-control" onchange="recalculateProductModalPrice('${prod.id}', ${ratePerLb})" style="font-weight:600;">
+            <option value="1" selected>1 Pound (1 lb) - Rs. ${(ratePerLb * 1).toLocaleString()}</option>
+            <option value="2">2 Pounds (2 lbs) - Rs. ${(ratePerLb * 2).toLocaleString()}</option>
+            <option value="3">3 Pounds (3 lbs) - Rs. ${(ratePerLb * 3).toLocaleString()}</option>
+            <option value="4">4 Pounds (4 lbs) - Rs. ${(ratePerLb * 4).toLocaleString()}</option>
+            <option value="5">5 Pounds (5 lbs) - Rs. ${(ratePerLb * 5).toLocaleString()}</option>
+          </select>
+        </div>
+
+        <!-- Layers Selector -->
+        <div class="form-group mb-2">
+          <label style="font-weight:700; font-size:0.84rem; color:var(--text-main);">
+            <i class="fa-solid fa-layer-group" style="color:var(--accent-gold);"></i> Cake Layers:
+          </label>
+          <select id="modal-prod-layers-${prod.id}" class="form-control" onchange="recalculateProductModalPrice('${prod.id}', ${ratePerLb})">
+            <option value="1" ${defaultLayers === 1 ? 'selected' : ''}>1 Layer (Standard)</option>
+            <option value="2" ${defaultLayers === 2 ? 'selected' : ''}>2 Layers (+Rs. 200)</option>
+            <option value="3" ${defaultLayers === 3 ? 'selected' : ''}>3 Layers (+Rs. 400)</option>
+            <option value="4" ${defaultLayers === 4 ? 'selected' : ''}>4 Layers (+Rs. 600)</option>
+          </select>
+        </div>
+
+        <!-- Floors / Tiers Selector -->
+        <div class="form-group mb-3">
+          <label style="font-weight:700; font-size:0.84rem; color:var(--text-main);">
+            <i class="fa-solid fa-building" style="color:var(--primary-rose);"></i> Structure Tiers (Floors):
+          </label>
+          <select id="modal-prod-floors-${prod.id}" class="form-control" onchange="recalculateProductModalPrice('${prod.id}', ${ratePerLb})">
+            <option value="1" ${defaultFloors === 1 ? 'selected' : ''}>1 Floor (Single Tier)</option>
+            <option value="2" ${defaultFloors === 2 ? 'selected' : ''}>2 Floors (Double Tier +Rs. 800)</option>
+            <option value="3" ${defaultFloors === 3 ? 'selected' : ''}>3 Floors (Triple Tier +Rs. 1,500)</option>
+          </select>
+        </div>
+
+        <!-- Calculated Total Price & Basket Button -->
+        <div style="background:white; padding:0.85rem 1rem; border-radius:var(--radius-md); border:1px solid var(--border-subtle); display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <span style="font-size:0.78rem; color:var(--text-muted); display:block; font-weight:600;">Recalculated Total:</span>
+            <strong id="modal-calculated-total-${prod.id}" style="font-size:1.35rem; color:var(--primary-rose); font-weight:700;">
+              Rs. ${initialTotal.toLocaleString()}
+            </strong>
           </div>
-        ` : productReviews.map(r => `
-          <div class="review-item">
-            <div class="review-header">
-              <span class="review-author" style="font-weight:700;">${r.author}</span>
-              <span class="review-rating" style="color:var(--accent-gold);">${'â˜…'.repeat(r.rating)}${'â˜†'.repeat(5 - r.rating)}</span>
-            </div>
-            <p class="review-comment" style="margin: 0.2rem 0; font-size:0.88rem;">${r.comment}</p>
-            <span class="review-date" style="font-size:0.75rem; color:var(--text-muted);">${new Date(r.date).toLocaleDateString()}</span>
-          </div>
-        `).join('')}
+          <button class="btn btn-primary" onclick="addToCartWithOptions('${prod.id}', ${ratePerLb})">
+            <i class="fa-solid fa-basket-shopping"></i> Add to Basket
+          </button>
+        </div>
       </div>
 
-      <!-- Submit Review Form -->
-      <div style="background:var(--bg-surface); padding:1.2rem; border-radius:var(--radius-md); border:1px solid var(--border-subtle);">
-        <h5 style="font-weight:700; color:var(--text-main); margin-bottom:0.6rem; font-size:0.95rem;">Write Product Review</h5>
-        <form onsubmit="handleProductReviewSubmit(event, '${prod.id}')">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.6rem;">
-            <label style="font-size:0.82rem; font-weight:600; color:var(--text-muted); margin:0;">Your Rating:</label>
-            <div class="star-rating-form">
-              <input type="radio" id="star5-${prod.id}" name="rating" value="5" required><label for="star5-${prod.id}">â˜…</label>
-              <input type="radio" id="star4-${prod.id}" name="rating" value="4"><label for="star4-${prod.id}">â˜…</label>
-              <input type="radio" id="star3-${prod.id}" name="rating" value="3"><label for="star3-${prod.id}">â˜…</label>
-              <input type="radio" id="star2-${prod.id}" name="rating" value="2"><label for="star2-${prod.id}">â˜…</label>
-              <input type="radio" id="star1-${prod.id}" name="rating" value="1"><label for="star1-${prod.id}">â˜…</label>
+      <!-- Customer Reviews History -->
+      <div>
+        <h5 style="font-size:0.98rem; color:var(--text-main); font-weight:700; margin-bottom:0.6rem;">Verified Reviews (${productReviews.length})</h5>
+        <div class="reviews-list-container" style="max-height:160px; overflow-y:auto; margin-bottom:1rem;">
+          ${productReviews.length === 0 ? `
+            <div style="text-align:center; padding:1.5rem 0; color:var(--text-muted); font-size:0.85rem;">
+              Be the first customer to leave a review for this cake!
             </div>
-          </div>
-          <div class="form-group mb-2">
-            <input type="text" id="review-name-${prod.id}" class="form-control" required placeholder="Your Name" value="${defaultName}" style="padding: 0.5rem 0.8rem; font-size: 0.88rem;">
-          </div>
-          <div class="form-group mb-2">
-            <textarea id="review-comment-${prod.id}" class="form-control" rows="2" required placeholder="What did you think of the flavor, sponge, and decor?" style="padding: 0.5rem 0.8rem; font-size: 0.88rem;"></textarea>
-          </div>
-          <button type="submit" class="btn btn-gold btn-sm w-100" style="padding: 0.55rem;">
-            <i class="fa-solid fa-check"></i> Submit Review
-          </button>
-        </form>
+          ` : productReviews.map(r => `
+            <div class="review-item" style="background:var(--bg-surface); padding:0.65rem 0.85rem; border-radius:var(--radius-md); margin-bottom:0.5rem; border:1px solid var(--border-subtle);">
+              <div class="review-header" style="display:flex; justify-content:space-between; align-items:center;">
+                <span class="review-author" style="font-weight:700; font-size:0.88rem;">${r.author}</span>
+                <span class="review-rating" style="color:var(--accent-gold); font-size:0.85rem;">${fullStar.repeat(r.rating) + emptyStar.repeat(5 - r.rating)}</span>
+              </div>
+              <p class="review-comment" style="margin: 0.2rem 0; font-size:0.85rem; color:var(--text-muted);">"${r.comment}"</p>
+            </div>
+          `).join('')}
+        </div>
+
+        <!-- Submit Review Form -->
+        <div style="background:var(--bg-surface); padding:0.85rem; border-radius:var(--radius-md); border:1px solid var(--border-subtle);">
+          <h5 style="font-weight:700; color:var(--text-main); margin-bottom:0.4rem; font-size:0.88rem;">Write Review</h5>
+          <form onsubmit="handleProductReviewSubmit(event, '${prod.id}')">
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.5rem; margin-bottom:0.4rem;">
+              <input type="text" id="review-name-${prod.id}" class="form-control" required placeholder="Your Name" value="${defaultName}" style="padding:0.35rem 0.6rem; font-size:0.82rem;">
+              <div style="display:flex; align-items:center; gap:0.2rem;">
+                <span style="font-size:0.75rem; color:var(--text-muted);">Stars:</span>
+                <select name="rating" class="form-control" style="padding:0.25rem 0.4rem; font-size:0.82rem;" required>
+                  <option value="5" selected>⭐⭐⭐⭐⭐ (5/5)</option>
+                  <option value="4">⭐⭐⭐⭐ (4/5)</option>
+                  <option value="3">⭐⭐⭐ (3/5)</option>
+                  <option value="2">⭐⭐ (2/5)</option>
+                  <option value="1">⭐ (1/5)</option>
+                </select>
+              </div>
+            </div>
+            <textarea id="review-comment-${prod.id}" class="form-control" rows="2" required placeholder="Describe taste & quality..." style="padding:0.35rem 0.6rem; font-size:0.82rem; margin-bottom:0.4rem;"></textarea>
+            <button type="submit" class="btn btn-gold btn-sm w-100" style="padding:0.4rem;">
+              <i class="fa-solid fa-paper-plane"></i> Post Review
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   `;
@@ -2845,6 +2981,60 @@ function openProductDetailsModal(productId) {
 function closeProductDetailsModal() {
   const modal = document.getElementById('product-details-modal');
   if (modal) modal.classList.remove('active');
+}
+
+function recalculateProductModalPrice(productId, ratePerLb) {
+  const poundsSelect = document.getElementById(`modal-prod-pounds-${productId}`);
+  const layersSelect = document.getElementById(`modal-prod-layers-${productId}`);
+  const floorsSelect = document.getElementById(`modal-prod-floors-${productId}`);
+  const totalDisplay = document.getElementById(`modal-calculated-total-${productId}`);
+  if (!poundsSelect || !layersSelect || !floorsSelect || !totalDisplay) return;
+
+  const pounds = parseInt(poundsSelect.value) || 1;
+  const layers = parseInt(layersSelect.value) || 1;
+  const floors = parseInt(floorsSelect.value) || 1;
+
+  const layerAddon = (layers - 1) * 200;
+  const floorAddon = (floors - 1) * 800;
+
+  const total = (ratePerLb * pounds) + layerAddon + floorAddon;
+  totalDisplay.textContent = `Rs. ${total.toLocaleString()}`;
+}
+
+function addToCartWithOptions(productId, ratePerLb) {
+  const prod = appState.products.find(p => p.id === productId);
+  if (!prod) return;
+
+  const poundsSelect = document.getElementById(`modal-prod-pounds-${productId}`);
+  const layersSelect = document.getElementById(`modal-prod-layers-${productId}`);
+  const floorsSelect = document.getElementById(`modal-prod-floors-${productId}`);
+
+  const pounds = poundsSelect ? parseInt(poundsSelect.value) || 1 : 1;
+  const layers = layersSelect ? parseInt(layersSelect.value) || 2 : 2;
+  const floors = floorsSelect ? parseInt(floorsSelect.value) || 1 : 1;
+
+  const layerAddon = (layers - 1) * 200;
+  const floorAddon = (floors - 1) * 800;
+  const itemTotal = (ratePerLb * pounds) + layerAddon + floorAddon;
+
+  appState.cart.push({
+    id: prod.id + '-' + Date.now(),
+    productId: prod.id,
+    name: prod.name,
+    price: itemTotal,
+    ratePerLb: ratePerLb,
+    pounds: pounds,
+    layers: layers,
+    floors: floors,
+    prepTimeMinutes: prod.prepTimeMinutes,
+    image: prod.image,
+    quantity: 1,
+    isCustom: false
+  });
+
+  updateCartUI();
+  closeProductDetailsModal();
+  showToast(`Added "${prod.name}" (${pounds} Lb • ${layers} Layers • ${floors} Floor) to basket!`, 'success');
 }
 
 function handleProductReviewSubmit(e, productId) {
