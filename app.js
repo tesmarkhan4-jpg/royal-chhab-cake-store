@@ -660,56 +660,140 @@ function closeCustomerAuthModal() {
   document.getElementById('customer-auth-modal').classList.remove('active');
 }
 
+function toggleAdminAudioMute() {
+  appState.adminMuted = !appState.adminMuted;
+  localStorage.setItem('luxecakes_admin_muted', String(appState.adminMuted));
+
+  if (appState.adminMuted) {
+    stopAdminContinuousAlert();
+    showToast('🔇 Admin audio alert loop MUTED.', 'info');
+  } else {
+    showToast('🔊 Admin audio alert loop ENABLED.', 'success');
+    checkContinuousAudioAlerts();
+  }
+  updateAdminMuteButton();
+}
+
+function updateAdminMuteButton() {
+  const isMuted = !!appState.adminMuted;
+  const btn1 = document.getElementById('admin-audio-indicator');
+  const btn2 = document.getElementById('btn-admin-mute-toggle');
+
+  if (btn2) {
+    btn2.innerHTML = isMuted 
+      ? `<i class="fa-solid fa-volume-xmark" style="color:#ef4444;"></i> Sound: MUTED` 
+      : `<i class="fa-solid fa-volume-high" style="color:#10b981;"></i> Sound: ON`;
+    btn2.style.borderColor = isMuted ? '#ef4444' : '#10b981';
+    btn2.style.color = isMuted ? '#ef4444' : '#10b981';
+  }
+
+  if (btn1) {
+    if (isMuted) {
+      btn1.innerHTML = `<i class="fa-solid fa-volume-xmark" style="color:#ef4444;"></i> Sound Muted (Click to Unmute)`;
+      btn1.style.display = 'inline-flex';
+    } else {
+      btn1.innerHTML = `<i class="fa-solid fa-bell fa-shake"></i> Stop Alert Audio Loop`;
+    }
+  }
+}
+
 function switchAuthTab(tab) {
-  const signinTab = document.getElementById('auth-tab-signin');
-  const signupTab = document.getElementById('auth-tab-signup');
+  const signinBtn = document.getElementById('auth-tab-signin');
+  const signupBtn = document.getElementById('auth-tab-signup');
   const signinForm = document.getElementById('form-auth-signin');
   const signupForm = document.getElementById('form-auth-signup');
+  const notice = document.getElementById('auth-modal-notice');
+
+  if (notice) notice.style.display = 'none';
 
   if (tab === 'signup') {
-    signinTab.classList.remove('active');
-    signupTab.classList.add('active');
-    signinForm.style.display = 'none';
-    signupForm.style.display = 'block';
+    if (signinBtn) { signinBtn.classList.remove('active'); signinBtn.style.color = 'var(--text-muted)'; signinBtn.style.borderBottom = 'none'; }
+    if (signupBtn) { signupBtn.classList.add('active'); signupBtn.style.color = 'var(--primary-rose)'; signupBtn.style.borderBottom = '3px solid var(--primary-rose)'; }
+    if (signinForm) signinForm.style.display = 'none';
+    if (signupForm) signupForm.style.display = 'block';
   } else {
-    signupTab.classList.remove('active');
-    signinTab.classList.add('active');
-    signupForm.style.display = 'none';
-    signinForm.style.display = 'block';
+    if (signupBtn) { signupBtn.classList.remove('active'); signupBtn.style.color = 'var(--text-muted)'; signupBtn.style.borderBottom = 'none'; }
+    if (signinBtn) { signinBtn.classList.add('active'); signinBtn.style.color = 'var(--primary-rose)'; signinBtn.style.borderBottom = '3px solid var(--primary-rose)'; }
+    if (signupForm) signupForm.style.display = 'none';
+    if (signinForm) signinForm.style.display = 'block';
   }
 }
 
 function handleCustomerLogin(e) {
   e.preventDefault();
-  const identifier = document.getElementById('login-identifier').value;
-  appState.currentUser = {
-    name: identifier.includes('@') ? identifier.split('@')[0] : 'Faheem Ahmed',
-    email: identifier.includes('@') ? identifier : 'faheemkhan101992@gmail.com',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80',
-    provider: 'Email'
-  };
+  const inputEl = document.getElementById('login-identifier');
+  if (!inputEl) return;
+  const typedVal = inputEl.value.trim();
+  const lowerTyped = typedVal.toLowerCase();
+
+  appState.users = appState.users || [];
+  const foundUser = appState.users.find(u => 
+    (u.email && u.email.toLowerCase() === lowerTyped) || 
+    (u.name && u.name.toLowerCase() === lowerTyped)
+  );
+
+  if (!foundUser) {
+    showToast(`⚠️ No registered account found for "${typedVal}". Please SIGN UP first!`, 'danger', 6000);
+    
+    switchAuthTab('signup');
+    const regEmailInput = document.getElementById('reg-email');
+    if (regEmailInput && typedVal.includes('@')) {
+      regEmailInput.value = typedVal;
+    }
+
+    const noticeBox = document.getElementById('auth-modal-notice');
+    if (noticeBox) {
+      noticeBox.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> <strong>Account Not Found!</strong> Please complete the Sign Up form below first before signing in.`;
+      noticeBox.style.display = 'block';
+    }
+    return;
+  }
+
+  appState.currentUser = foundUser;
   localStorage.setItem('luxecakes_current_user', JSON.stringify(appState.currentUser));
   localStorage.setItem('luxecakes_onboarded', 'true');
   closeCustomerAuthModal();
   renderCustomerAuthWidget();
-  showToast(`Welcome back, ${appState.currentUser.name}! You stay signed in.`, 'success');
+  showToast(`🎉 Welcome back, ${foundUser.name}! You are signed in.`, 'success');
 }
 
 function handleCustomerRegister(e) {
   e.preventDefault();
-  const name = document.getElementById('reg-name').value;
-  const email = document.getElementById('reg-email')?.value || 'faheemkhan101992@gmail.com';
-  appState.currentUser = {
+  const name = document.getElementById('reg-name').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const phone = document.getElementById('reg-phone')?.value.trim() || '';
+
+  const lowerEmail = email.toLowerCase();
+  appState.users = appState.users || [];
+
+  const existing = appState.users.find(u => u.email && u.email.toLowerCase() === lowerEmail);
+  if (existing) {
+    showToast(`⚠️ An account already exists for "${email}". Switching to Sign In.`, 'info');
+    switchAuthTab('signin');
+    const loginInput = document.getElementById('login-identifier');
+    if (loginInput) loginInput.value = email;
+    return;
+  }
+
+  const newUser = {
     name: name,
     email: email,
+    phone: phone,
     avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80',
-    provider: 'Direct'
+    provider: 'Direct',
+    joinedAt: Date.now()
   };
-  localStorage.setItem('luxecakes_current_user', JSON.stringify(appState.currentUser));
+
+  appState.users.unshift(newUser);
+  saveUsersToStorage();
+
+  appState.currentUser = newUser;
+  localStorage.setItem('luxecakes_current_user', JSON.stringify(newUser));
   localStorage.setItem('luxecakes_onboarded', 'true');
+
   closeCustomerAuthModal();
   renderCustomerAuthWidget();
-  showToast(`Account created! Welcome to Royal Chhab, ${name}.`, 'success');
+  showToast(`🎉 Registration successful! Welcome to Royal Chhab, ${name}.`, 'success');
 }
 
 function handleSocialAuth(provider) {
@@ -1051,36 +1135,42 @@ function playCustomerSuccessSound() {
 }
 
 function playAdminSoftChime() {
+  if (appState.adminMuted) return;
   try {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     if (!AudioContext) return;
     const ctx = new AudioContext();
     const now = ctx.currentTime;
 
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(523.25, now);
-    osc.frequency.exponentialRampToValueAtTime(659.25, now + 0.2);
-    osc.frequency.exponentialRampToValueAtTime(783.99, now + 0.4);
+    [0, 0.2].forEach((delay, idx) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      
+      const freqs = [659.25, 987.77];
+      osc.frequency.setValueAtTime(freqs[idx], now + delay);
 
-    gain.gain.setValueAtTime(0.12, now);
-    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
+      gain.gain.setValueAtTime(0.08, now + delay);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + delay + 0.55);
 
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    osc.start(now);
-    osc.stop(now + 0.7);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now + delay);
+      osc.stop(now + delay + 0.55);
+    });
   } catch (e) {}
 }
 
 function startAdminContinuousAlert() {
+  updateAdminMuteButton();
+  if (appState.adminMuted) return;
+
   const indicator = document.getElementById('admin-audio-indicator');
   if (indicator) indicator.style.display = 'inline-flex';
 
   if (!adminAudioInterval) {
     playAdminSoftChime();
-    adminAudioInterval = setInterval(playAdminSoftChime, 1600);
+    adminAudioInterval = setInterval(playAdminSoftChime, 2500);
   }
 }
 
@@ -1577,11 +1667,18 @@ async function addCustomCakeToCart() {
 
 // CHECKOUT & AUTOMATED EMAIL RECEIPT DISPATCH VIA GMAIL SMTP
 function openCheckoutModal() {
+  if (!appState.currentUser) {
+    closeCartDrawer();
+    openCustomerAuthModal();
+    showToast('🔒 Please sign up or sign in to place your cake order!', 'danger', 5000);
+    return;
+  }
+
   if (appState.cart.length === 0) {
     showToast('Your basket is empty!', 'danger');
     return;
   }
-  closeCartDrawer();  // Close cart drawer cleanly (not toggle) before opening checkout
+  closeCartDrawer();
   document.getElementById('checkout-modal').classList.add('active');
   toggleFulfillmentType(appState.fulfillmentType);
   renderCheckoutPaymentMethods();
@@ -1680,6 +1777,13 @@ function convertFileToBase64(file) {
 
 async function handlePaymentSubmit(e) {
   e.preventDefault();
+
+  if (!appState.currentUser) {
+    closeCheckoutModal();
+    openCustomerAuthModal();
+    showToast('🔒 Please sign up or sign in to place your cake order!', 'danger', 5000);
+    return;
+  }
 
   const name = document.getElementById('cust-name').value;
   const phone = document.getElementById('cust-phone').value;
