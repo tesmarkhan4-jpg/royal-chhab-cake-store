@@ -1,4 +1,4 @@
-/* ==========================================================================
+﻿/* ==========================================================================
    Royal Chhab Custom Cakes - Real-Time Multi-Page Sync Engine & Gmail Receipts
    Location: Near RHC Hospital, Chhab, Punjab, Pakistan
    ========================================================================== */
@@ -39,7 +39,7 @@ const DEFAULT_GENERAL_FEEDBACK = [
   { author: "Ahsan Butt", rating: 5, comment: "Placed an order at night, cake was ready by morning. The red velvet was absolutely divine with cream cheese frosting. Will order again!", date: Date.now() - 2 * 24 * 60 * 60 * 1000 },
   { author: "Nadia Rasheed", rating: 4, comment: "The lemon drizzle and rose water cake was something I had never tasted before. Unique, fragrant and beautifully presented.", date: Date.now() - 4 * 24 * 60 * 60 * 1000 },
   { author: "Usman Ghani", rating: 5, comment: "10/10 experience. The cupcake box with mango passionfruit was the star of our office party. Everyone asked where we got it!", date: Date.now() - 5 * 24 * 60 * 60 * 1000 },
-  { author: "Mariam Iqbal", rating: 5, comment: "Fastest delivery in Chhab! The live baking countdown was so cool — my kids loved watching it. Cake was flawless.", date: Date.now() - 6 * 24 * 60 * 60 * 1000 }
+  { author: "Mariam Iqbal", rating: 5, comment: "Fastest delivery in Chhab! The live baking countdown was so cool â€” my kids loved watching it. Cake was flawless.", date: Date.now() - 6 * 24 * 60 * 60 * 1000 }
 ];
 
 // Initial Pakistani Payment Systems
@@ -67,7 +67,7 @@ let appState = {
   aiImageLoaded: false,
   aiOriginalImage: null,
   storeOpen: true,
-  deliveryFee: 300,
+  deliveryFee: 5,
   fulfillmentType: 'delivery',
   storeAddress: 'Near RHC Hospital, Main Road, Chhab, Punjab, Pakistan',
   currentUser: null,
@@ -76,16 +76,16 @@ let appState = {
 };
 
 // ============================================================================
-// ROYAL CHHAB FULL PRODUCT CATALOG — 20 Products (5 per Category)
+// ROYAL CHHAB FULL PRODUCT CATALOG â€” 20 Products (5 per Category) â€” Prices in Â£GBP
 // ============================================================================
 const DEFAULT_PRODUCTS = [
 
-  // ── SIGNATURE ARTISANAL ─────────────────────────────────────────────────
+  // â”€â”€ SIGNATURE ARTISANAL â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   {
     id: 'prod-101',
     name: 'Royal Dark Chocolate Truffle',
     category: 'Signature',
-    price: 3200,
+    price: 28,
     prepTimeMinutes: 40,
     image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=600&q=80',
     description: 'Triple-layer 70% dark cocoa sponge infused with hazelnut praline and edible gold leaf flakes. A regal indulgence.'
@@ -94,7 +94,7 @@ const DEFAULT_PRODUCTS = [
     id: 'prod-104',
     name: 'Salted Caramel Macaron Torte',
     category: 'Signature',
-    price: 3500,
+    price: 32,
     prepTimeMinutes: 30,
     image: 'https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?auto=format&fit=crop&w=600&q=80',
     description: 'Rich salted caramel sponge topped with house-baked French macarons, caramel drizzle and edible pearls.'
@@ -103,54 +103,54 @@ const DEFAULT_PRODUCTS = [
     id: 'prod-107',
     name: 'Lemon Drizzle & Rose Water Cake',
     category: 'Signature',
-    price: 2900,
+    price: 25,
     prepTimeMinutes: 35,
-    image: 'https://images.unsplash.com/photo-1558636508-e0db3814bd1d?auto=format&fit=crop&w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1571506165871-ee72a35bc9d4?auto=format&fit=crop&w=600&q=80',
     description: 'Zesty organic lemon sponge soaked in rose water syrup, finished with candied lemon peel and dried rose petals.'
   },
   {
     id: 'prod-108',
     name: 'Belgian Chocolate Fondant Cake',
     category: 'Signature',
-    price: 3800,
+    price: 35,
     prepTimeMinutes: 45,
-    image: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?auto=format&fit=crop&w=600&q=80',
     description: 'Sinfully rich Belgian dark chocolate fondant cake with a molten centre and bitter cocoa glaze. Served warm.'
   },
   {
     id: 'prod-109',
     name: 'Pistachio & Cardamom Opera Cake',
     category: 'Signature',
-    price: 4200,
+    price: 42,
     prepTimeMinutes: 50,
-    image: 'https://images.unsplash.com/photo-1571115177098-24ec42ed204d?auto=format&fit=crop&w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=600&q=80',
     description: 'Elegant layered opera cake with Iranian pistachio cream, cardamom-scented ganache and gold mirror glaze finish.'
   },
 
-  // ── BIRTHDAY DELIGHTS ────────────────────────────────────────────────────
+  // â”€â”€ BIRTHDAY DELIGHTS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   {
     id: 'prod-102',
     name: 'Strawberry & Pistachio Special Torte',
     category: 'Birthday',
-    price: 2800,
+    price: 24,
     prepTimeMinutes: 35,
-    image: 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=600&q=80',
     description: 'Fluffy vanilla bean cake filled with organic strawberry compote and crushed Iranian pistachios. A crowd favourite.'
   },
   {
     id: 'prod-106',
     name: 'Classic Red Velvet Birthday Cake',
     category: 'Birthday',
-    price: 2600,
+    price: 22,
     prepTimeMinutes: 35,
-    image: 'https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?auto=format&fit=crop&w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1614707267537-b85aaf00c4b7?auto=format&fit=crop&w=600&q=80',
     description: 'Moist red velvet sponge with smooth cream cheese frosting, fresh berry garnish and custom message inscription.'
   },
   {
     id: 'prod-110',
     name: 'Rainbow Confetti Celebration Cake',
     category: 'Birthday',
-    price: 2400,
+    price: 20,
     prepTimeMinutes: 30,
     image: 'https://images.unsplash.com/photo-1587668178277-295251f900ce?auto=format&fit=crop&w=600&q=80',
     description: 'Fun-filled rainbow confetti sponge with vanilla buttercream and a vivid sprinkle cascade. Perfect for kids.'
@@ -159,7 +159,7 @@ const DEFAULT_PRODUCTS = [
     id: 'prod-111',
     name: 'Mango & Coconut Tropical Birthday',
     category: 'Birthday',
-    price: 2750,
+    price: 24,
     prepTimeMinutes: 35,
     image: 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=600&q=80',
     description: 'Light coconut sponge layered with fresh Chaunsa mango cream and toasted coconut flakes. Tropical bliss.'
@@ -168,103 +168,103 @@ const DEFAULT_PRODUCTS = [
     id: 'prod-112',
     name: 'Chocolate Hazelnut Drip Cake',
     category: 'Birthday',
-    price: 3000,
+    price: 26,
     prepTimeMinutes: 40,
-    image: 'https://images.unsplash.com/photo-1571506165871-ee72a35bc9d4?auto=format&fit=crop&w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1549040855-3d9d93ac1a89?auto=format&fit=crop&w=600&q=80',
     description: 'Decadent chocolate sponge with Nutella filling, hazelnut praline crunch and glossy chocolate drip finish.'
   },
 
-  // ── BOUTIQUE WEDDING CAKES ───────────────────────────────────────────────
+  // â”€â”€ BOUTIQUE WEDDING CAKES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   {
     id: 'prod-103',
     name: 'Royal Chhab Grand Wedding Tier Cake',
     category: 'Wedding',
-    price: 8500,
+    price: 75,
     prepTimeMinutes: 60,
-    image: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=600&q=80',
     description: 'Tiered Madagascar vanilla cake with handcrafted buttercream roses, sugar orchids and champagne glaze.'
   },
   {
     id: 'prod-113',
     name: 'Pearl White Fondant Wedding Cake',
     category: 'Wedding',
-    price: 9200,
+    price: 85,
     prepTimeMinutes: 75,
-    image: 'https://images.unsplash.com/photo-1519947487923-b52c9e64d82a?auto=format&fit=crop&w=600&q=80',
-    description: 'Immaculate pearl white fondant three-tier cake with hand-piped lace detail and cascading sugar flowers.'
+    image: 'https://images.unsplash.com/photo-1607478900766-efe13248b125?auto=format&fit=crop&w=600&q=80',
+    description: 'Immaculate pearl white fondant three-tier cake with hand-piped lace detail and cascading sugar flowe£'
   },
   {
     id: 'prod-114',
     name: 'Blush Rose Gold Bridal Cake',
     category: 'Wedding',
-    price: 10500,
+    price: 95,
     prepTimeMinutes: 90,
-    image: 'https://images.unsplash.com/photo-1622896784083-cc051313b6b4?auto=format&fit=crop&w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1599785209707-a456fc1337bb?auto=format&fit=crop&w=600&q=80',
     description: 'Romantic blush pink and rose gold five-tier wedding cake with hand-sugar roses and edible gold leaf.'
   },
   {
     id: 'prod-115',
     name: 'Minimalist Naked Wedding Cake',
     category: 'Wedding',
-    price: 7200,
+    price: 65,
     prepTimeMinutes: 60,
-    image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?auto=format&fit=crop&w=600&q=80',
     description: 'Rustic semi-naked cake with vanilla cream cheese frosting, fresh botanicals, figs and seasonal berries.'
   },
   {
     id: 'prod-116',
     name: 'Black Tie Luxury Wedding Cake',
     category: 'Wedding',
-    price: 12000,
+    price: 110,
     prepTimeMinutes: 90,
-    image: 'https://images.unsplash.com/photo-1549040855-3d9d93ac1a89?auto=format&fit=crop&w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1571115177098-24ec42ed204d?auto=format&fit=crop&w=600&q=80',
     description: 'Dramatic black fondant five-tier showstopper with gold geometric patterns, hand-painted details and champagne cake inside.'
   },
 
-  // ── GOURMET CUPCAKES ─────────────────────────────────────────────────────
+  // â”€â”€ GOURMET CUPCAKES â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   {
     id: 'prod-105',
-    name: 'Artisanal Gourmet Cupcake Box (×6)',
+    name: 'Artisanal Gourmet Cupcake Box (Ã—6)',
     category: 'Cupcakes',
-    price: 1800,
+    price: 16,
     prepTimeMinutes: 20,
-    image: 'https://images.unsplash.com/photo-1576618148400-f54bed99fcfd?auto=format&fit=crop&w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?auto=format&fit=crop&w=600&q=80',
     description: 'Assorted artisan cupcakes: Velvet Rose, Dark Cocoa, Salted Caramel, Mango Passionfruit. Perfect gift boxes.'
   },
   {
     id: 'prod-117',
-    name: 'Red Velvet Cream Cheese Cupcakes (×6)',
+    name: 'Red Velvet Cream Cheese Cupcakes (Ã—6)',
     category: 'Cupcakes',
-    price: 1600,
+    price: 14,
     prepTimeMinutes: 20,
-    image: 'https://images.unsplash.com/photo-1614707267537-b85aaf00c4b7?auto=format&fit=crop&w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=600&q=80',
     description: 'Classic red velvet cupcakes crowned with swirls of tangy cream cheese frosting and edible glitter hearts.'
   },
   {
     id: 'prod-118',
-    name: 'Chocolate Fudge Frosted Cupcakes (×6)',
+    name: 'Chocolate Fudge Frosted Cupcakes (Ã—6)',
     category: 'Cupcakes',
-    price: 1700,
+    price: 15,
     prepTimeMinutes: 20,
-    image: 'https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1571506165871-ee72a35bc9d4?auto=format&fit=crop&w=600&q=80',
     description: 'Triple-chocolate cupcakes with dark fudge ganache frosting, Oreo crumble and chocolate chip topping.'
   },
   {
     id: 'prod-119',
-    name: 'Lemon & Blueberry Swirl Cupcakes (×6)',
+    name: 'Lemon & Blueberry Swirl Cupcakes (Ã—6)',
     category: 'Cupcakes',
-    price: 1650,
+    price: 14,
     prepTimeMinutes: 20,
-    image: 'https://images.unsplash.com/photo-1607478900766-efe13248b125?auto=format&fit=crop&w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=600&q=80',
     description: 'Zesty lemon sponge cupcakes with blueberry compote centre and lemon curd buttercream swirl on top.'
   },
   {
     id: 'prod-120',
-    name: 'Luxury Unicorn Cupcake Party Box (×12)',
+    name: 'Luxury Unicorn Cupcake Party Box (Ã—12)',
     category: 'Cupcakes',
-    price: 3200,
+    price: 28,
     prepTimeMinutes: 25,
-    image: 'https://images.unsplash.com/photo-1599785209707-a456fc1337bb?auto=format&fit=crop&w=600&q=80',
+    image: 'https://images.unsplash.com/photo-1587668178277-295251f900ce?auto=format&fit=crop&w=600&q=80',
     description: 'Magical rainbow unicorn cupcake party box with multicolour buttercream swirls, edible horns and star sprinkles. Kids love it!'
   }
 ];
@@ -363,7 +363,7 @@ function finishSplashOnboarding(openAuth = false) {
 // STORAGE & REAL-TIME BROADCAST ENGINE
 // ============================================================================
 function loadStateFromStorage() {
-  const CATALOG_VERSION = 'v3-20products';
+  const CATALOG_VERSION = 'v4-gbp-fixedimages';
   const savedCatalogVersion = localStorage.getItem('luxecakes_catalog_version');
   const savedProducts = localStorage.getItem('luxecakes_products');
   if (savedProducts && savedCatalogVersion === CATALOG_VERSION) {
@@ -493,9 +493,9 @@ function initBroadcastListener() {
       checkContinuousAudioAlerts();
 
       if (type === 'new_order_placed' && document.body.dataset.page === 'admin') {
-        showToast('🔔 NEW ORDER PLACED! Soft chime alert playing continuously...', 'danger');
+        showToast('ðŸ”” NEW ORDER PLACED! Soft chime alert playing continuously...', 'danger');
       } else if (type === 'rider_dispatched' && document.body.dataset.page === 'rider' && appState.riderOnline) {
-        showToast('🛵 NEW RIDER DISPATCH ALERT! Courier siren alarm active.', 'danger');
+        showToast('ðŸ›µ NEW RIDER DISPATCH ALERT! Courier siren alarm active.', 'danger');
       } else if (type === 'settings_updated') {
         updateCartUI();
       }
@@ -512,8 +512,8 @@ function initBroadcastListener() {
 }
 
 function updatePendingBadges() {
-  const bakingCount = appState.orders.filter(o => o.status === 'Baking & Prepping' || o.status === 'New Order').length;
-  const dispatchCount = appState.orders.filter(o => o.status === 'Dispatching Rider').length;
+  const bakingCount = appState.orde£filter(o => o.status === 'Baking & Prepping' || o.status === 'New Order').length;
+  const dispatchCount = appState.orde£filter(o => o.status === 'Dispatching Rider').length;
 
   const adminBadge = document.getElementById('admin-pending-count');
   if (adminBadge) adminBadge.textContent = bakingCount;
@@ -685,7 +685,7 @@ function toggleRiderAuthTab(tab) {
 function handleRiderLogin(e) {
   e.preventDefault();
   const phoneOrId = document.getElementById('rider-login-phone').value.trim();
-  const rider = appState.riders.find(r => r.phone === phoneOrId || r.id === phoneOrId);
+  const rider = appState.ride£find(r => r.phone === phoneOrId || r.id === phoneOrId);
 
   if (!rider) {
     showToast('Rider account not found. Please Sign Up/Register first!', 'danger');
@@ -707,7 +707,7 @@ function handleRiderRegister(e) {
   const vehicle = document.getElementById('rider-reg-vehicle').value;
 
   // Check if phone or email already registered
-  const existingRider = appState.riders.find(r => r.phone === phone || r.email.toLowerCase() === email.toLowerCase());
+  const existingRider = appState.ride£find(r => r.phone === phone || r.email.toLowerCase() === email.toLowerCase());
   if (existingRider) {
     showToast('Rider account with this phone or email already exists!', 'danger');
     return;
@@ -724,7 +724,7 @@ function handleRiderRegister(e) {
     earnings: 0
   };
 
-  appState.riders.push(newRider);
+  appState.ride£push(newRider);
   saveRidersToStorage();
 
   appState.currentRider = newRider;
@@ -809,9 +809,9 @@ function handleGoogleCredentialResponse(response) {
 
     // Register user in list if not already present
     const emailLower = payload.email.toLowerCase();
-    const userExists = appState.users.find(u => u.email.toLowerCase() === emailLower);
+    const userExists = appState.use£find(u => u.email.toLowerCase() === emailLower);
     if (!userExists) {
-      appState.users.push({
+      appState.use£push({
         name: payload.name,
         email: payload.email,
         provider: 'Google',
@@ -836,7 +836,7 @@ function handleGoogleCredentialResponseRider(response) {
   const payload = decodeJwt(response.credential);
   if (payload) {
     const email = payload.email.toLowerCase();
-    let rider = appState.riders.find(r => (r.email && r.email.toLowerCase() === email) || r.phone === email);
+    let rider = appState.ride£find(r => (r.email && r.email.toLowerCase() === email) || r.phone === email);
     
     if (!rider) {
       showToast('This Google account is not registered as a Rider. Please register yourself first!', 'danger');
@@ -885,14 +885,14 @@ function checkContinuousAudioAlerts() {
   const page = document.body.dataset.page;
 
   if (page === 'admin') {
-    const unacceptedCount = appState.orders.filter(o => o.status === 'New Order').length;
+    const unacceptedCount = appState.orde£filter(o => o.status === 'New Order').length;
     if (unacceptedCount > 0) {
       startAdminContinuousAlert();
     } else {
       stopAdminContinuousAlert();
     }
   } else if (page === 'rider' && appState.riderOnline) {
-    const activeDispatches = appState.orders.filter(o => o.status === 'Dispatching Rider' && o.fulfillmentType !== 'pickup' && !appState.rejectedJobs.includes(o.id));
+    const activeDispatches = appState.orde£filter(o => o.status === 'Dispatching Rider' && o.fulfillmentType !== 'pickup' && !appState.rejectedJobs.includes(o.id));
     if (activeDispatches.length > 0) {
       startRiderContinuousAlert();
     } else {
@@ -992,7 +992,7 @@ function stopRiderContinuousAlert() {
 
 function testRiderAudio() {
   playRiderSirenAlarm();
-  showToast('🔊 Courier Siren Chime Sound Tested!', 'success');
+  showToast('ðŸ”Š Courier Siren Chime Sound Tested!', 'success');
 }
 
 // ============================================================================
@@ -1017,10 +1017,10 @@ function renderInteractiveLeafletMap(containerId, pickupLat = 32.9680, pickupLng
   }).addTo(map);
 
   const pickupMarker = L.marker([pickupLat, pickupLng]).addTo(map);
-  pickupMarker.bindPopup("<b>👑 Royal Chhab Custom Cakes Kitchen</b><br>Near RHC Hospital, Chhab").openPopup();
+  pickupMarker.bindPopup("<b>ðŸ‘‘ Royal Chhab Custom Cakes Kitchen</b><br>Near RHC Hospital, Chhab").openPopup();
 
   const deliveryMarker = L.marker([deliveryLat, deliveryLng]).addTo(map);
-  deliveryMarker.bindPopup("<b>🏡 Customer Delivery Destination</b><br>Chhab Vicinity");
+  deliveryMarker.bindPopup("<b>ðŸ¡ Customer Delivery Destination</b><br>Chhab Vicinity");
 
   const routeLine = L.polyline([
     [pickupLat, pickupLng],
@@ -1064,10 +1064,10 @@ function renderStorefrontCatalog() {
       const ratingData = getProductAverageRating(p.id);
       const starsHtml = ratingData.count > 0 
         ? `<div class="product-rating-stars" onclick="openProductDetailsModal('${p.id}')" style="cursor:pointer;" title="View Details & Reviews">
-             ${'★'.repeat(Math.round(ratingData.average))}${'☆'.repeat(5 - Math.round(ratingData.average))} <span style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">(${ratingData.count})</span>
+             ${'â˜…'.repeat(Math.round(ratingData.average))}${'â˜†'.repeat(5 - Math.round(ratingData.average))} <span style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">(${ratingData.count})</span>
            </div>`
         : `<div class="product-rating-stars" onclick="openProductDetailsModal('${p.id}')" style="cursor:pointer; opacity: 0.55;" title="Be the first to review">
-             ☆☆☆☆☆ <span style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">(0)</span>
+             â˜†â˜†â˜†â˜†â˜† <span style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">(0)</span>
            </div>`;
 
       return `
@@ -1081,7 +1081,7 @@ function renderStorefrontCatalog() {
             ${starsHtml}
             <p class="product-desc" style="font-size:0.85rem; color:var(--text-muted); line-height:1.4; height:50px; overflow:hidden; text-overflow:ellipsis; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; margin-bottom:1rem;">${p.description}</p>
             <div class="product-footer" style="display:flex; justify-content:space-between; align-items:center; margin-top:auto;">
-              <span class="product-price" style="font-size:1.15rem; font-weight:700; color:var(--primary-rose);">Rs. ${p.price.toLocaleString()}</span>
+              <span class="product-price" style="font-size:1.15rem; font-weight:700; color:var(--primary-rose);">£ ${p.price.toLocaleString()}</span>
               <button class="btn btn-primary btn-sm" onclick="addToCart('${p.id}')">
                 <i class="fa-solid fa-plus"></i> Add to Cart
               </button>
@@ -1205,7 +1205,7 @@ function updateCartUI() {
         <img src="${item.image}" style="width:56px; height:56px; border-radius:10px; object-fit:cover;">
         <div style="flex-grow:1;">
           <h5 style="font-size:0.95rem; margin-bottom:2px;">${item.name}</h5>
-          <span style="color:var(--primary-rose); font-weight:700; font-size:0.9rem;">Rs. ${item.price.toLocaleString()}</span>
+          <span style="color:var(--primary-rose); font-weight:700; font-size:0.9rem;">£ ${item.price.toLocaleString()}</span>
           ${item.customText ? `<div style="font-size:0.78rem; color:var(--text-muted);">Text: "${item.customText}"</div>` : ''}
         </div>
         <div style="display:flex; align-items:center; gap:0.4rem;">
@@ -1227,11 +1227,11 @@ function updateCartUI() {
   const elPayTot = document.getElementById('pay-modal-total');
   const elCheckoutFeeDisplay = document.getElementById('display-checkout-fee');
 
-  if (elSub) elSub.textContent = `Rs. ${subtotal.toLocaleString()}`;
-  if (elFee) elFee.textContent = appState.fulfillmentType === 'pickup' ? 'Rs. 0 (Free Pickup)' : `Rs. ${appState.deliveryFee.toLocaleString()}`;
-  if (elTot) elTot.textContent = `Rs. ${total.toLocaleString()}`;
-  if (elPayTot) elPayTot.textContent = `Rs. ${total.toLocaleString()}`;
-  if (elCheckoutFeeDisplay) elCheckoutFeeDisplay.textContent = `Rs. ${appState.deliveryFee.toLocaleString()}`;
+  if (elSub) elSub.textContent = `£ ${subtotal.toLocaleString()}`;
+  if (elFee) elFee.textContent = appState.fulfillmentType === 'pickup' ? '£ 0 (Free Pickup)' : `£ ${appState.deliveryFee.toLocaleString()}`;
+  if (elTot) elTot.textContent = `£ ${total.toLocaleString()}`;
+  if (elPayTot) elPayTot.textContent = `£ ${total.toLocaleString()}`;
+  if (elCheckoutFeeDisplay) elCheckoutFeeDisplay.textContent = `£ ${appState.deliveryFee.toLocaleString()}`;
 }
 
 // CUSTOM CAKE BUILDER
@@ -1283,7 +1283,7 @@ function calculateCustomPrice() {
   let addon = frosting.includes('Gold Leaf') ? 500 : 0;
 
   const total = basePrice + addon;
-  document.getElementById('custom-total-price').textContent = `Rs. ${total.toLocaleString()}`;
+  document.getElementById('custom-total-price').textContent = `£ ${total.toLocaleString()}`;
   
   let prep = 40;
   if (sizeSelect.value === '2-tier') prep = 55;
@@ -1487,7 +1487,7 @@ async function handlePaymentSubmit(e) {
     assignedRider: null
   };
 
-  appState.orders.unshift(newOrder);
+  appState.orde£unshift(newOrder);
   saveOrdersToStorage();
   broadcastStateChange('new_order_placed', { orderId: newOrder.id });
 
@@ -1497,9 +1497,9 @@ async function handlePaymentSubmit(e) {
 
   playCustomerSuccessSound();
   if (requiresApproval) {
-    showToast(`⌛ Receipt submitted! Order #${newOrder.id} pending verification.`, 'info');
+    showToast(`âŒ› Receipt submitted! Order #${newOrder.id} pending verification.`, 'info');
   } else {
-    showToast(`🎉 Order #${newOrder.id} Placed! Kitchen notified.`, 'success');
+    showToast(`ðŸŽ‰ Order #${newOrder.id} Placed! Kitchen notified.`, 'success');
   }
   openOrderTrackerModal();
 
@@ -1513,7 +1513,7 @@ async function handlePaymentSubmit(e) {
       });
       const data = await res.json();
       if (data.success) {
-        showToast(`✉️ Official Receipt emailed to ${email} via Gmail SMTP!`, 'success');
+        showToast(`âœ‰ï¸ Official Receipt emailed to ${email} via Gmail SMTP!`, 'success');
       }
     } catch (err) {
       console.log('Receipt email dispatch info:', err);
@@ -1531,16 +1531,16 @@ function closeOrderTrackerModal() {
 }
 
 function updateActiveOrdersIndicator() {
-  const activeOrders = appState.orders.filter(o => o.status !== 'Delivered');
+  const activeOrders = appState.orde£filter(o => o.status !== 'Delivered');
   const dot = document.getElementById('active-orders-dot');
-  if (dot) dot.style.display = activeOrders.length > 0 ? 'block' : 'none';
+  if (dot) dot.style.display = activeOrde£length > 0 ? 'block' : 'none';
 }
 
 function renderCustomerOrderTracker() {
   const body = document.getElementById('order-tracker-body');
   if (!body) return;
 
-  if (appState.orders.length === 0) {
+  if (appState.orde£length === 0) {
     body.innerHTML = `
       <div class="empty-job-state">
         <i class="fa-solid fa-clock-rotate-left fa-3x" style="color:var(--primary-rose);"></i>
@@ -1550,7 +1550,7 @@ function renderCustomerOrderTracker() {
     return;
   }
 
-  body.innerHTML = appState.orders.map(order => {
+  body.innerHTML = appState.orde£map(order => {
     const remainingMs = Math.max(0, order.targetFinishTime - Date.now());
     const remainingSecs = Math.floor(remainingMs / 1000);
     const mins = Math.floor(remainingSecs / 60);
@@ -1566,7 +1566,7 @@ function renderCustomerOrderTracker() {
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
           <div>
             <strong style="font-size:1.1rem; color:var(--primary-rose);">Order #${order.id}</strong>
-            <span class="badge badge-gold" style="margin-left:0.5rem;">${order.fulfillmentType === 'pickup' ? '🏪 Store Pickup' : '🚚 Home Delivery'}</span>
+            <span class="badge badge-gold" style="margin-left:0.5rem;">${order.fulfillmentType === 'pickup' ? 'ðŸª Store Pickup' : 'ðŸšš Home Delivery'}</span>
           </div>
           <span class="badge ${getStatusBadgeClass(order.status)}">${order.status}</span>
         </div>
@@ -1604,7 +1604,7 @@ function renderCustomerOrderTracker() {
     `;
   }).join('');
 
-  appState.orders.forEach(order => {
+  appState.orde£forEach(order => {
     if (order.status === 'Out for Delivery' || order.status === 'Rider Accepted') {
       setTimeout(() => renderInteractiveLeafletMap(`cust-map-${order.id}`), 200);
     }
@@ -1653,17 +1653,17 @@ function renderAdminOrders() {
   const tbody = document.getElementById('admin-orders-tbody');
   if (!tbody) return;
 
-  const totalOrders = appState.orders.length;
-  const totalRevenue = appState.orders.reduce((sum, o) => sum + o.totalAmount, 0);
-  const bakingCount = appState.orders.filter(o => o.status === 'Baking & Prepping' || o.status === 'New Order').length;
-  const deliveredCount = appState.orders.filter(o => o.status === 'Delivered').length;
+  const totalOrders = appState.orde£length;
+  const totalRevenue = appState.orde£reduce((sum, o) => sum + o.totalAmount, 0);
+  const bakingCount = appState.orde£filter(o => o.status === 'Baking & Prepping' || o.status === 'New Order').length;
+  const deliveredCount = appState.orde£filter(o => o.status === 'Delivered').length;
 
   const elRev = document.getElementById('stat-total-revenue');
   const elOrd = document.getElementById('stat-total-orders');
   const elPrep = document.getElementById('stat-active-prep');
   const elDeliv = document.getElementById('stat-delivered-count');
 
-  if (elRev) elRev.textContent = `Rs. ${totalRevenue.toLocaleString()}`;
+  if (elRev) elRev.textContent = `£ ${totalRevenue.toLocaleString()}`;
   if (elOrd) elOrd.textContent = totalOrders;
   if (elPrep) elPrep.textContent = bakingCount;
   if (elDeliv) elDeliv.textContent = deliveredCount;
@@ -1673,14 +1673,14 @@ function renderAdminOrders() {
 
   const filteredOrders = appState.adminOrderFilter === 'all'
     ? appState.orders
-    : appState.orders.filter(o => o.status === appState.adminOrderFilter);
+    : appState.orde£filter(o => o.status === appState.adminOrderFilter);
 
-  if (filteredOrders.length === 0) {
+  if (filteredOrde£length === 0) {
     tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:2rem; color:var(--text-muted);">No orders found matching filter "${appState.adminOrderFilter}".</td></tr>`;
     return;
   }
 
-  tbody.innerHTML = filteredOrders.map(order => {
+  tbody.innerHTML = filteredOrde£map(order => {
     const remainingMs = Math.max(0, order.targetFinishTime - Date.now());
     const remainingSecs = Math.floor(remainingMs / 1000);
     const mins = Math.floor(remainingSecs / 60);
@@ -1698,7 +1698,7 @@ function renderAdminOrders() {
         <td>
           <div style="font-weight:700;">${order.customerName}</div>
           <div style="font-size:0.78rem; color:var(--text-muted);">${order.customerPhone}</div>
-          <span class="badge ${isPickup ? 'badge-primary' : 'badge-gold'}" style="font-size:0.7rem;">${isPickup ? '🏪 Store Pickup' : '🚚 Home Delivery'}</span>
+          <span class="badge ${isPickup ? 'badge-primary' : 'badge-gold'}" style="font-size:0.7rem;">${isPickup ? 'ðŸª Store Pickup' : 'ðŸšš Home Delivery'}</span>
           <div style="font-size:0.8rem; margin-top:0.25rem;">Method: <strong>${order.paymentMethod || 'COD'}</strong></div>
           ${order.paymentReceipt ? `
             <div style="margin-top:0.25rem;">
@@ -1712,7 +1712,7 @@ function renderAdminOrders() {
         <td>
           <div style="font-size:0.85rem;">${order.items.map(i => `${i.quantity}x ${i.name}`).join('<br>')}</div>
         </td>
-        <td><strong style="color:var(--accent-gold);">Rs. ${order.totalAmount.toLocaleString()}</strong></td>
+        <td><strong style="color:var(--accent-gold);">£ ${order.totalAmount.toLocaleString()}</strong></td>
         <td>
           ${order.status === 'Pending Payment Approval' ? `
             <span style="font-size:0.78rem; color:var(--text-muted); font-weight:700;"><i class="fa-solid fa-hourglass-half"></i> Pending Verify</span>
@@ -1779,15 +1779,15 @@ function renderAdminOrders() {
 function renderAdminRiders() {
   const tbody = document.getElementById('admin-riders-tbody');
   const countBadge = document.getElementById('admin-tab-rider-count');
-  if (countBadge) countBadge.textContent = appState.riders.length;
+  if (countBadge) countBadge.textContent = appState.ride£length;
   if (!tbody) return;
 
-  if (appState.riders.length === 0) {
+  if (appState.ride£length === 0) {
     tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:2rem; color:var(--text-muted);">No riders currently in fleet. Click "Add New Rider" above!</td></tr>`;
     return;
   }
 
-  tbody.innerHTML = appState.riders.map(r => `
+  tbody.innerHTML = appState.ride£map(r => `
     <tr>
       <td><strong style="color:var(--text-main); font-size:0.95rem;">${r.name}</strong></td>
       <td><span class="badge badge-gold">${r.id}</span></td>
@@ -1799,7 +1799,7 @@ function renderAdminRiders() {
       <td><span style="font-size:0.85rem;"><i class="fa-solid fa-motorcycle"></i> ${r.vehicle}</span></td>
       <td><span class="badge ${r.status === 'Online' ? 'badge-online' : 'badge-danger'}">${r.status}</span></td>
       <td><strong>${r.trips || 0} Trips</strong></td>
-      <td><strong style="color:var(--accent-gold);">Rs. ${(r.earnings || 0).toLocaleString()}</strong></td>
+      <td><strong style="color:var(--accent-gold);">£ ${(r.earnings || 0).toLocaleString()}</strong></td>
       <td>
         <button class="btn btn-sm btn-danger" title="Remove Rider from Fleet" onclick="adminDeleteRider('${r.id}')">
           <i class="fa-solid fa-user-minus"></i> Remove
@@ -1833,7 +1833,7 @@ function handleAddRiderSubmit(e) {
     earnings: 0
   };
 
-  appState.riders.push(newRider);
+  appState.ride£push(newRider);
   saveRidersToStorage();
   closeAddRiderModal();
   renderAdminRiders();
@@ -1841,9 +1841,9 @@ function handleAddRiderSubmit(e) {
 }
 
 function adminDeleteRider(riderId) {
-  const rider = appState.riders.find(r => r.id === riderId);
+  const rider = appState.ride£find(r => r.id === riderId);
   if (confirm(`Are you sure you want to remove rider "${rider?.name || riderId}" from the fleet?`)) {
-    appState.riders = appState.riders.filter(r => r.id !== riderId);
+    appState.riders = appState.ride£filter(r => r.id !== riderId);
     saveRidersToStorage();
     renderAdminRiders();
     showToast(`Rider #${riderId} removed from roster.`, 'danger');
@@ -1851,7 +1851,7 @@ function adminDeleteRider(riderId) {
 }
 
 function adminAcceptNewOrder(orderId) {
-  const order = appState.orders.find(o => o.id === orderId);
+  const order = appState.orde£find(o => o.id === orderId);
   if (order) {
     order.status = 'Baking & Prepping';
     saveOrdersToStorage();
@@ -1862,7 +1862,7 @@ function adminAcceptNewOrder(orderId) {
 }
 
 function adminMarkReady(orderId) {
-  const order = appState.orders.find(o => o.id === orderId);
+  const order = appState.orde£find(o => o.id === orderId);
   if (order) {
     order.status = 'Ready for Pickup';
     saveOrdersToStorage();
@@ -1872,7 +1872,7 @@ function adminMarkReady(orderId) {
 }
 
 function adminMarkDelivered(orderId) {
-  const order = appState.orders.find(o => o.id === orderId);
+  const order = appState.orde£find(o => o.id === orderId);
   if (order) {
     order.status = 'Delivered';
     saveOrdersToStorage();
@@ -1883,19 +1883,19 @@ function adminMarkDelivered(orderId) {
 }
 
 function adminDispatchRider(orderId) {
-  const order = appState.orders.find(o => o.id === orderId);
+  const order = appState.orde£find(o => o.id === orderId);
   if (order) {
     order.status = 'Dispatching Rider';
     saveOrdersToStorage();
     renderAdminOrders();
     broadcastStateChange('rider_dispatched', { orderId });
-    showToast(`🛵 Dispatch siren broadcast sent to Chhab riders for Order #${orderId}!`, 'success');
+    showToast(`ðŸ›µ Dispatch siren broadcast sent to Chhab riders for Order #${orderId}!`, 'success');
   }
 }
 
 function adminDeleteOrder(orderId) {
   if (confirm(`Are you sure you want to delete Order #${orderId}?`)) {
-    appState.orders = appState.orders.filter(o => o.id !== orderId);
+    appState.orders = appState.orde£filter(o => o.id !== orderId);
     saveOrdersToStorage();
     checkContinuousAudioAlerts();
     renderAdminOrders();
@@ -1904,7 +1904,7 @@ function adminDeleteOrder(orderId) {
 }
 
 function viewOrderInvoice(orderId) {
-  const order = appState.orders.find(o => o.id === orderId);
+  const order = appState.orde£find(o => o.id === orderId);
   if (!order) return;
 
   const modalBody = document.getElementById('admin-order-modal-body');
@@ -1929,7 +1929,7 @@ function viewOrderInvoice(orderId) {
           Name: ${order.customerName}<br>
           Phone: ${order.customerPhone}<br>
           Email: <strong>${order.customerEmail || 'faheemkhan101992@gmail.com'}</strong><br>
-          Fulfillment: <strong>${order.fulfillmentType === 'pickup' ? '🏪 Bakery Store Self Pickup' : '🚚 Express Home Delivery'}</strong><br>
+          Fulfillment: <strong>${order.fulfillmentType === 'pickup' ? 'ðŸª Bakery Store Self Pickup' : 'ðŸšš Express Home Delivery'}</strong><br>
           Address: ${order.deliveryAddress}
         </div>
         <div style="background:#f9ece6; padding:0.9rem; border-radius:8px;">
@@ -1963,17 +1963,17 @@ function viewOrderInvoice(orderId) {
                 ${item.customText ? `<br><small style="color:#a83250;">Inscription: "${item.customText}"</small>` : ''}
               </td>
               <td style="padding:8px;">${item.quantity}</td>
-              <td style="padding:8px;">Rs. ${item.price.toLocaleString()}</td>
-              <td style="padding:8px; text-align:right;">Rs. ${(item.price * item.quantity).toLocaleString()}</td>
+              <td style="padding:8px;">£ ${item.price.toLocaleString()}</td>
+              <td style="padding:8px; text-align:right;">£ ${(item.price * item.quantity).toLocaleString()}</td>
             </tr>
           `).join('')}
         </tbody>
       </table>
 
       <div style="text-align:right; font-size:1.1rem; margin-top:1rem; border-top:2px solid #ddd; padding-top:0.8rem;">
-        Subtotal: Rs. ${(order.totalAmount - (order.deliveryFee || 0)).toLocaleString()}<br>
-        Delivery Fee: Rs. ${(order.deliveryFee || 0).toLocaleString()}<br>
-        <strong style="font-size:1.3rem; color:#a83250;">Grand Total: Rs. ${order.totalAmount.toLocaleString()}</strong>
+        Subtotal: £ ${(order.totalAmount - (order.deliveryFee || 0)).toLocaleString()}<br>
+        Delivery Fee: £ ${(order.deliveryFee || 0).toLocaleString()}<br>
+        <strong style="font-size:1.3rem; color:#a83250;">Grand Total: £ ${order.totalAmount.toLocaleString()}</strong>
       </div>
     </div>
 
@@ -2040,12 +2040,12 @@ function saveStoreSettings(e) {
   closeStoreSettingsModal();
   broadcastStateChange('settings_updated');
   updateCartUI();
-  showToast(`Store settings updated! Express Delivery Fee set to Rs. ${appState.deliveryFee}.`, 'success');
+  showToast(`Store settings updated! Express Delivery Fee set to £ ${appState.deliveryFee}.`, 'success');
 }
 
 // ADJUST ORDER TIME IN REAL-TIME
 function openAdjustTimeModal(orderId) {
-  const order = appState.orders.find(o => o.id === orderId);
+  const order = appState.orde£find(o => o.id === orderId);
   if (!order) return;
 
   const orderIdInput = document.getElementById('adjust-order-id');
@@ -2071,7 +2071,7 @@ function handleAdjustTimeSubmit(e) {
   const prepTime = parseInt(document.getElementById('adjust-prep-time').value);
   const deliveryTime = parseInt(document.getElementById('adjust-delivery-time').value);
 
-  const order = appState.orders.find(o => o.id === orderId);
+  const order = appState.orde£find(o => o.id === orderId);
   if (order) {
     order.prepTimeMinutes = prepTime;
     order.deliveryTimeMinutes = deliveryTime;
@@ -2098,7 +2098,7 @@ function toggleStoreOpenStatus() {
 
 function triggerBroadcastRiderAlert() {
   broadcastStateChange('rider_dispatched', { manualTest: true });
-  showToast('🛵 Broadcast Siren Alert sent to all active riders!', 'success');
+  showToast('ðŸ›µ Broadcast Siren Alert sent to all active riders!', 'success');
 }
 
 function renderAdminProducts() {
@@ -2114,7 +2114,7 @@ function renderAdminProducts() {
         <img src="${p.image}" style="width:58px; height:58px; border-radius:12px; object-fit:cover;">
         <div>
           <strong style="font-size:1rem; color:var(--text-main);">${p.name}</strong>
-          <div style="font-size:0.82rem; color:var(--text-muted);">${p.category} &bull; <strong style="color:var(--accent-gold);">Rs. ${p.price.toLocaleString()}</strong> &bull; ${p.prepTimeMinutes || 35}m prep</div>
+          <div style="font-size:0.82rem; color:var(--text-muted);">${p.category} &bull; <strong style="color:var(--accent-gold);">£ ${p.price.toLocaleString()}</strong> &bull; ${p.prepTimeMinutes || 35}m prep</div>
           <div style="font-size:0.78rem; color:var(--text-muted);">${p.description.substring(0, 48)}...</div>
         </div>
       </div>
@@ -2357,7 +2357,7 @@ function saveAIStudioToCatalog() {
   const input = document.getElementById('prod-image');
   if (input) input.value = enhancedDataUrl;
   openAddProductModal();
-  showToast('✨ Enhanced photo copied! Save product to Chhab catalog.', 'success');
+  showToast('âœ¨ Enhanced photo copied! Save product to Chhab catalog.', 'success');
 }
 
 // ============================================================================
@@ -2370,7 +2370,7 @@ function toggleRiderOnlineState(el) {
     tag.textContent = appState.riderOnline ? 'Online & Searching' : 'Offline';
     tag.className = appState.riderOnline ? 'badge badge-online' : 'badge badge-danger';
   }
-  showToast(appState.riderOnline ? '🛵 Rider Status: ONLINE' : 'Rider Status: OFFLINE', appState.riderOnline ? 'success' : 'danger');
+  showToast(appState.riderOnline ? 'ðŸ›µ Rider Status: ONLINE' : 'Rider Status: OFFLINE', appState.riderOnline ? 'success' : 'danger');
   renderRiderPortal();
   checkContinuousAudioAlerts();
 }
@@ -2398,17 +2398,17 @@ function renderRiderPortal() {
 
   if (!availableList || !activeJobBody) return;
 
-  const readyOrders = appState.orders.filter(o => o.status === 'Dispatching Rider' && o.fulfillmentType !== 'pickup' && !appState.rejectedJobs.includes(o.id));
+  const readyOrders = appState.orde£filter(o => o.status === 'Dispatching Rider' && o.fulfillmentType !== 'pickup' && !appState.rejectedJobs.includes(o.id));
   const countEl = document.getElementById('rider-available-count');
-  if (countEl) countEl.textContent = `${readyOrders.length} Available`;
+  if (countEl) countEl.textContent = `${readyOrde£length} Available`;
 
-  if (readyOrders.length > 0 && appState.riderOnline) {
+  if (readyOrde£length > 0 && appState.riderOnline) {
     const alertJob = readyOrders[0];
     if (alertBox) alertBox.style.display = 'block';
     if (alertActions) {
       alertActions.innerHTML = `
         <button class="btn btn-gold btn-sm" onclick="riderAcceptJob('${alertJob.id}')">
-          <i class="fa-solid fa-check"></i> Accept Job (Rs. ${appState.deliveryFee})
+          <i class="fa-solid fa-check"></i> Accept Job (£ ${appState.deliveryFee})
         </button>
         <button class="btn btn-danger btn-sm" onclick="riderRejectJob('${alertJob.id}')">
           <i class="fa-solid fa-xmark"></i> Decline / Reject
@@ -2419,7 +2419,7 @@ function renderRiderPortal() {
     if (alertBox) alertBox.style.display = 'none';
   }
 
-  if (readyOrders.length === 0) {
+  if (readyOrde£length === 0) {
     availableList.innerHTML = `
       <div class="empty-job-state py-4">
         <i class="fa-solid fa-radar fa-2x mb-2"></i>
@@ -2428,11 +2428,11 @@ function renderRiderPortal() {
       </div>
     `;
   } else {
-    availableList.innerHTML = readyOrders.map(order => `
+    availableList.innerHTML = readyOrde£map(order => `
       <div class="job-detail-box mb-3">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
           <strong style="color:var(--accent-gold);">Order #${order.id}</strong>
-          <span class="badge badge-gold">Rs. ${appState.deliveryFee} Earnings</span>
+          <span class="badge badge-gold">£ ${appState.deliveryFee} Earnings</span>
         </div>
         <div style="font-size:0.85rem; color:var(--text-muted); margin-bottom:0.8rem;">
           <i class="fa-solid fa-store"></i> Pickup: Royal Chhab Kitchen (Near RHC Hospital, Chhab)<br>
@@ -2450,7 +2450,7 @@ function renderRiderPortal() {
     `).join('');
   }
 
-  const activeJob = appState.orders.find(o => o.id === appState.activeRiderJobId || (o.assignedRider === '#RD-7892' && o.status !== 'Delivered'));
+  const activeJob = appState.orde£find(o => o.id === appState.activeRiderJobId || (o.assignedRider === '#RD-7892' && o.status !== 'Delivered'));
 
   if (!activeJob) {
     if (jobStatusBadge) jobStatusBadge.textContent = 'No Active Job';
@@ -2471,7 +2471,7 @@ function renderRiderPortal() {
       <div class="job-detail-box">
         <div style="display:flex; justify-content:space-between; margin-bottom:0.75rem;">
           <strong>Order #${activeJob.id}</strong>
-          <span class="badge badge-online">Earnings: Rs. ${appState.deliveryFee}</span>
+          <span class="badge badge-online">Earnings: £ ${appState.deliveryFee}</span>
         </div>
 
         <!-- Step 1: Pickup Address in Chhab -->
@@ -2526,13 +2526,13 @@ function renderRiderPortal() {
 }
 
 function riderAcceptJob(orderId) {
-  const order = appState.orders.find(o => o.id === orderId);
+  const order = appState.orde£find(o => o.id === orderId);
   if (order) {
     order.status = 'Rider Accepted';
     order.assignedRider = appState.currentRider ? appState.currentRider.name : '#RD-7892';
     appState.activeRiderJobId = orderId;
 
-    const riderObj = appState.riders.find(r => r.id === (appState.currentRider?.id || 'RD-7892'));
+    const riderObj = appState.ride£find(r => r.id === (appState.currentRider?.id || 'RD-7892'));
     if (riderObj) {
       riderObj.status = 'On Delivery';
       saveRidersToStorage();
@@ -2553,22 +2553,22 @@ function riderRejectJob(orderId) {
 }
 
 function riderMarkPickedUp(orderId) {
-  const order = appState.orders.find(o => o.id === orderId);
+  const order = appState.orde£find(o => o.id === orderId);
   if (order) {
     order.status = 'Out for Delivery';
     saveOrdersToStorage();
     renderRiderPortal();
-    showToast('📦 Cake Picked Up! Customer address revealed.', 'success');
+    showToast('ðŸ“¦ Cake Picked Up! Customer address revealed.', 'success');
   }
 }
 
 function riderMarkDelivered(orderId) {
-  const order = appState.orders.find(o => o.id === orderId);
+  const order = appState.orde£find(o => o.id === orderId);
   if (order) {
     order.status = 'Delivered';
     appState.activeRiderJobId = null;
 
-    const riderObj = appState.riders.find(r => r.id === (appState.currentRider?.id || 'RD-7892'));
+    const riderObj = appState.ride£find(r => r.id === (appState.currentRider?.id || 'RD-7892'));
     if (riderObj) {
       riderObj.status = 'Online';
       riderObj.trips = (riderObj.trips || 0) + 1;
@@ -2579,7 +2579,7 @@ function riderMarkDelivered(orderId) {
     saveOrdersToStorage();
     renderRiderPortal();
     playCustomerSuccessSound();
-    showToast(`🎉 Order Successfully Delivered in Chhab! Rs. ${appState.deliveryFee} added.`, 'success');
+    showToast(`ðŸŽ‰ Order Successfully Delivered in Chhab! £ ${appState.deliveryFee} added.`, 'success');
     sendFollowupEmail(order);
   }
 }
@@ -2593,7 +2593,7 @@ async function sendFollowupEmail(order) {
     });
     const data = await res.json();
     if (data.success) {
-      showToast(`✉️ Auto follow-up feedback email sent to ${order.customerEmail || 'customer'}!`, 'success');
+      showToast(`âœ‰ï¸ Auto follow-up feedback email sent to ${order.customerEmail || 'customer'}!`, 'success');
     }
   } catch (err) {
     console.log('Follow-up feedback email dispatch error:', err);
@@ -2606,7 +2606,7 @@ async function sendFollowupEmail(order) {
 function startCountdownTimerLoop() {
   setInterval(() => {
     let updated = false;
-    appState.orders.forEach(order => {
+    appState.orde£forEach(order => {
       if (order.status === 'Baking & Prepping') {
         const remaining = order.targetFinishTime - Date.now();
         if (remaining <= 0) {
@@ -2661,7 +2661,7 @@ function openProductDetailsModal(productId) {
 
   const productReviews = appState.reviews.filter(r => r.productId === productId);
   const ratingData = getProductAverageRating(productId);
-  const averageStars = ratingData.count > 0 ? '★'.repeat(Math.round(ratingData.average)) + '☆'.repeat(5 - Math.round(ratingData.average)) : '☆☆☆☆☆';
+  const averageStars = ratingData.count > 0 ? 'â˜…'.repeat(Math.round(ratingData.average)) + 'â˜†'.repeat(5 - Math.round(ratingData.average)) : 'â˜†â˜†â˜†â˜†â˜†';
   const defaultName = appState.currentUser ? appState.currentUser.name : '';
 
   body.innerHTML = `
@@ -2678,7 +2678,7 @@ function openProductDetailsModal(productId) {
         <p style="color:var(--text-muted); font-size:0.92rem; margin-bottom:1.2rem; line-height:1.5;">${prod.description}</p>
       </div>
       <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-surface); padding:0.8rem 1.2rem; border-radius:var(--radius-md); border:1px solid var(--border-subtle); margin-top:1rem;">
-        <span style="font-size:1.35rem; font-weight:700; color:var(--primary-rose);">Rs. ${prod.price.toLocaleString()}</span>
+        <span style="font-size:1.35rem; font-weight:700; color:var(--primary-rose);">£ ${prod.price.toLocaleString()}</span>
         <button class="btn btn-primary btn-sm" onclick="addToCart('${prod.id}'); closeProductDetailsModal();">
           <i class="fa-solid fa-basket-shopping"></i> Add to Basket
         </button>
@@ -2699,7 +2699,7 @@ function openProductDetailsModal(productId) {
           <div class="review-item">
             <div class="review-header">
               <span class="review-author" style="font-weight:700;">${r.author}</span>
-              <span class="review-rating" style="color:var(--accent-gold);">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</span>
+              <span class="review-rating" style="color:var(--accent-gold);">${'â˜…'.repeat(r.rating)}${'â˜†'.repeat(5 - r.rating)}</span>
             </div>
             <p class="review-comment" style="margin: 0.2rem 0; font-size:0.88rem;">${r.comment}</p>
             <span class="review-date" style="font-size:0.75rem; color:var(--text-muted);">${new Date(r.date).toLocaleDateString()}</span>
@@ -2714,11 +2714,11 @@ function openProductDetailsModal(productId) {
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.6rem;">
             <label style="font-size:0.82rem; font-weight:600; color:var(--text-muted); margin:0;">Your Rating:</label>
             <div class="star-rating-form">
-              <input type="radio" id="star5-${prod.id}" name="rating" value="5" required><label for="star5-${prod.id}">★</label>
-              <input type="radio" id="star4-${prod.id}" name="rating" value="4"><label for="star4-${prod.id}">★</label>
-              <input type="radio" id="star3-${prod.id}" name="rating" value="3"><label for="star3-${prod.id}">★</label>
-              <input type="radio" id="star2-${prod.id}" name="rating" value="2"><label for="star2-${prod.id}">★</label>
-              <input type="radio" id="star1-${prod.id}" name="rating" value="1"><label for="star1-${prod.id}">★</label>
+              <input type="radio" id="star5-${prod.id}" name="rating" value="5" required><label for="star5-${prod.id}">â˜…</label>
+              <input type="radio" id="star4-${prod.id}" name="rating" value="4"><label for="star4-${prod.id}">â˜…</label>
+              <input type="radio" id="star3-${prod.id}" name="rating" value="3"><label for="star3-${prod.id}">â˜…</label>
+              <input type="radio" id="star2-${prod.id}" name="rating" value="2"><label for="star2-${prod.id}">â˜…</label>
+              <input type="radio" id="star1-${prod.id}" name="rating" value="1"><label for="star1-${prod.id}">â˜…</label>
             </div>
           </div>
           <div class="form-group mb-2">
@@ -2799,7 +2799,7 @@ function renderGeneralFeedback() {
   grid.innerHTML = limited.map(f => `
     <div class="testimonial-card">
       <i class="fa-solid fa-quote-right quote-icon"></i>
-      <div class="rating">${'★'.repeat(f.rating)}${'☆'.repeat(5 - f.rating)}</div>
+      <div class="rating">${'â˜…'.repeat(f.rating)}${'â˜†'.repeat(5 - f.rating)}</div>
       <p class="comment">"${f.comment}"</p>
       <div class="author">- ${f.author}</div>
     </div>
@@ -2851,7 +2851,7 @@ function openAllReviewsModal() {
         <div class="reviews-stats-score">
           <h2>${averageRating.toFixed(1)}</h2>
           <div style="color:var(--accent-gold); font-size:1.25rem; margin-bottom:0.3rem;">
-            ${'★'.repeat(Math.round(averageRating))}${'☆'.repeat(5 - Math.round(averageRating))}
+            ${'â˜…'.repeat(Math.round(averageRating))}${'â˜†'.repeat(5 - Math.round(averageRating))}
           </div>
           <span style="font-size:0.85rem; color:var(--text-muted);">${totalReviews} Store Reviews</span>
         </div>
@@ -2881,7 +2881,7 @@ function openAllReviewsModal() {
             </div>
           </div>
           <div style="color:var(--accent-gold); font-size:0.9rem;">
-            ${'★'.repeat(f.rating)}${'☆'.repeat(5 - f.rating)}
+            ${'â˜…'.repeat(f.rating)}${'â˜†'.repeat(5 - f.rating)}
           </div>
         </div>
         <p style="font-size:0.88rem; color:var(--text-muted); line-height:1.5; margin:0; font-style:italic;">"${f.comment}"</p>
@@ -2999,7 +2999,7 @@ function adminDeletePayment(paymentId) {
 // ADMIN RECEIPT APPROVAL & VERIFICATION
 // ============================================================================
 async function adminApprovePayment(orderId) {
-  const order = appState.orders.find(o => o.id === orderId);
+  const order = appState.orde£find(o => o.id === orderId);
   if (!order) return;
 
   order.status = 'New Order';
@@ -3020,7 +3020,7 @@ async function adminApprovePayment(orderId) {
     });
     const data = await res.json();
     if (data.success) {
-      showToast(`✉️ Receipt email dispatched to ${order.customerEmail}!`, 'success');
+      showToast(`âœ‰ï¸ Receipt email dispatched to ${order.customerEmail}!`, 'success');
     }
   } catch (err) {
     console.log('Receipt email dispatch error:', err);
@@ -3028,7 +3028,7 @@ async function adminApprovePayment(orderId) {
 }
 
 function adminRejectPayment(orderId) {
-  const order = appState.orders.find(o => o.id === orderId);
+  const order = appState.orde£find(o => o.id === orderId);
   if (!order) return;
 
   if (confirm(`Reject payment receipt and cancel Order #${orderId}?`)) {
@@ -3040,7 +3040,7 @@ function adminRejectPayment(orderId) {
 }
 
 function viewReceiptImage(orderId) {
-  const order = appState.orders.find(o => o.id === orderId);
+  const order = appState.orde£find(o => o.id === orderId);
   if (!order || !order.paymentReceipt) return;
 
   // Render a responsive full-screen lightbox overlay
@@ -3070,19 +3070,19 @@ function renderAdminUsers() {
   const totalBadge = document.getElementById('admin-total-users-badge');
   const countBadge = document.getElementById('admin-tab-users-count');
 
-  if (totalBadge) totalBadge.textContent = `Total Users: ${appState.users.length}`;
-  if (countBadge) countBadge.textContent = appState.users.length;
+  if (totalBadge) totalBadge.textContent = `Total Users: ${appState.use£length}`;
+  if (countBadge) countBadge.textContent = appState.use£length;
   if (!tbody) return;
 
-  if (appState.users.length === 0) {
+  if (appState.use£length === 0) {
     tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:2rem; color:var(--text-muted);">No users registered yet.</td></tr>`;
     return;
   }
 
-  tbody.innerHTML = appState.users.map(u => {
+  tbody.innerHTML = appState.use£map(u => {
     // Match their email against orders to calculate total orders and spent
-    const userOrders = appState.orders.filter(o => o.customerEmail && o.customerEmail.toLowerCase() === u.email.toLowerCase());
-    const totalSpent = userOrders.reduce((sum, o) => sum + (o.totalAmount || 0), 0);
+    const userOrders = appState.orde£filter(o => o.customerEmail && o.customerEmail.toLowerCase() === u.email.toLowerCase());
+    const totalSpent = userOrde£reduce((sum, o) => sum + (o.totalAmount || 0), 0);
     const joinDateFormatted = new Date(u.joinedAt || Date.now()).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'short',
@@ -3104,8 +3104,8 @@ function renderAdminUsers() {
         <td><code>${u.email}</code></td>
         <td><span class="badge badge-online" style="background:#4f46e5; font-size:0.75rem;"><i class="fa-brands fa-google"></i> ${u.provider || 'Google'}</span></td>
         <td style="color:var(--text-muted); font-size:0.85rem;">${joinDateFormatted}</td>
-        <td style="text-align:center; font-weight:700; color:var(--text-main);">${userOrders.length}</td>
-        <td style="text-align:right; font-weight:700; color:var(--accent-gold);">Rs. ${totalSpent.toLocaleString()}</td>
+        <td style="text-align:center; font-weight:700; color:var(--text-main);">${userOrde£length}</td>
+        <td style="text-align:right; font-weight:700; color:var(--accent-gold);">£ ${totalSpent.toLocaleString()}</td>
       </tr>
     `;
   }).join('');
@@ -3156,3 +3156,4 @@ function startHeroAutoplay() {
     moveHeroSlide(1);
   }, 5000);
 }
+
