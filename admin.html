@@ -123,6 +123,9 @@
       <button class="tab-btn" onclick="switchAdminTab('payment-methods', this)">
         <i class="fa-solid fa-credit-card"></i> Payment Systems Manager (<span id="admin-tab-payment-count">0</span>)
       </button>
+      <button class="tab-btn" onclick="switchAdminTab('users', this)">
+        <i class="fa-solid fa-users"></i> Registered Customers (<span id="admin-tab-users-count">0</span>)
+      </button>
       <button class="tab-btn highlight" onclick="switchAdminTab('ai-studio', this)">
         <i class="fa-solid fa-wand-magic-sparkles"></i> AI Photo Studio & Enhancer
       </button>
@@ -360,6 +363,37 @@
             </thead>
             <tbody id="admin-payments-tbody">
               <!-- Injected via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 6: REGISTERED USERS MANAGER -->
+    <div id="admin-tab-users" class="admin-tab-content">
+      <div class="admin-card">
+        <div class="card-header" style="display:flex; justify-content:space-between; align-items:center;">
+          <div>
+            <h3 style="font-size:1.35rem;"><i class="fa-solid fa-users" style="color:var(--primary-rose);"></i> Registered Store Customers & Users</h3>
+            <span style="font-size:0.85rem; color:var(--text-muted);">View all registered customers who signed in via Google OAuth. Track order statistics, signup provider, and total lifetime expenditure.</span>
+          </div>
+          <span class="badge badge-gold" id="admin-total-users-badge" style="font-size:0.9rem; padding:0.4rem 0.8rem;">Total Users: 0</span>
+        </div>
+
+        <div style="padding:1.5rem;">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Customer Name</th>
+                <th>Email Address</th>
+                <th>Auth Provider</th>
+                <th>Join Date</th>
+                <th style="text-align:center;">Total Orders</th>
+                <th style="text-align:right;">Lifetime Spent</th>
+              </tr>
+            </thead>
+            <tbody id="admin-users-tbody">
+              <!-- Injected dynamically via JS -->
             </tbody>
           </table>
         </div>

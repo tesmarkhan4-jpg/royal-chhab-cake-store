@@ -61,7 +61,8 @@ let appState = {
   fulfillmentType: 'delivery', // 'delivery' or 'pickup'
   storeAddress: 'Near RHC Hospital, Main Road, Chhab, Punjab, Pakistan',
   currentUser: null, // Logged in customer account
-  currentRider: null  // Logged in rider account
+  currentRider: null,  // Logged in rider account
+  users: []
 };
 
 // Initial Sample Products Catalog (Royal Chhab Specialities)
@@ -148,6 +149,7 @@ function renderCurrentPage() {
     renderAdminProducts();
     renderAdminRiders();
     renderAdminPayments();
+    renderAdminUsers();
   } else if (page === 'rider') {
     renderRiderPortal();
     const badge = document.getElementById('rider-dispatch-badge');
@@ -272,6 +274,24 @@ function loadStateFromStorage() {
     appState.paymentMethods = DEFAULT_PAYMENT_METHODS;
     savePaymentMethodsToStorage();
   }
+
+  const savedUsers = localStorage.getItem('luxecakes_users');
+  if (savedUsers) {
+    appState.users = JSON.parse(savedUsers);
+  } else {
+    // Seed initial mock users from testimonials and reviews
+    appState.users = [
+      { name: 'Faheem Ahmed', email: 'faheemkhan101992@gmail.com', provider: 'Google', joinedAt: Date.now() - 5 * 24 * 60 * 60 * 1000 },
+      { name: 'Kamil Shah', email: 'kamilshah@gmail.com', provider: 'Google', joinedAt: Date.now() - 3 * 24 * 60 * 60 * 1000 },
+      { name: 'Sania Malik', email: 'sania@gmail.com', provider: 'Google', joinedAt: Date.now() - 24 * 60 * 60 * 1000 }
+    ];
+    saveUsersToStorage();
+  }
+}
+
+function saveUsersToStorage() {
+  localStorage.setItem('luxecakes_users', JSON.stringify(appState.users));
+  broadcastStateChange('users_updated');
 }
 
 function saveProductsToStorage() {
@@ -632,6 +652,20 @@ function handleGoogleCredentialResponse(response) {
     };
     localStorage.setItem('luxecakes_current_user', JSON.stringify(appState.currentUser));
     localStorage.setItem('luxecakes_onboarded', 'true');
+
+    // Register user in list if not already present
+    const emailLower = payload.email.toLowerCase();
+    const userExists = appState.users.find(u => u.email.toLowerCase() === emailLower);
+    if (!userExists) {
+      appState.users.push({
+        name: payload.name,
+        email: payload.email,
+        provider: 'Google',
+        joinedAt: Date.now()
+      });
+      saveUsersToStorage();
+    }
+
     closeCustomerAuthModal();
     renderCustomerAuthWidget();
     showToast(`Welcome back, ${appState.currentUser.name}! You signed in with Google.`, 'success');
@@ -2747,4 +2781,53 @@ function viewReceiptImage(orderId) {
   overlay.appendChild(label);
   overlay.appendChild(img);
   document.body.appendChild(overlay);
+}
+
+// ============================================================================
+// ADMIN REGISTERED CUSTOMERS / USERS SECTION
+// ============================================================================
+function renderAdminUsers() {
+  const tbody = document.getElementById('admin-users-tbody');
+  const totalBadge = document.getElementById('admin-total-users-badge');
+  const countBadge = document.getElementById('admin-tab-users-count');
+
+  if (totalBadge) totalBadge.textContent = `Total Users: ${appState.users.length}`;
+  if (countBadge) countBadge.textContent = appState.users.length;
+  if (!tbody) return;
+
+  if (appState.users.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:2rem; color:var(--text-muted);">No users registered yet.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = appState.users.map(u => {
+    // Match their email against orders to calculate total orders and spent
+    const userOrders = appState.orders.filter(o => o.customerEmail && o.customerEmail.toLowerCase() === u.email.toLowerCase());
+    const totalSpent = userOrders.reduce((sum, o) => sum + (o.totalAmount || 0), 0);
+    const joinDateFormatted = new Date(u.joinedAt || Date.now()).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+
+    return `
+      <tr>
+        <td>
+          <div style="display:flex; align-items:center; gap:0.6rem;">
+            <div style="width:34px; height:34px; border-radius:50%; background:var(--primary-rose); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.9rem; font-family:sans-serif;">
+              ${u.name.charAt(0).toUpperCase()}
+            </div>
+            <div>
+              <strong style="color:var(--text-main); font-size:0.95rem;">${u.name}</strong>
+            </div>
+          </div>
+        </td>
+        <td><code>${u.email}</code></td>
+        <td><span class="badge badge-online" style="background:#4f46e5; font-size:0.75rem;"><i class="fa-brands fa-google"></i> ${u.provider || 'Google'}</span></td>
+        <td style="color:var(--text-muted); font-size:0.85rem;">${joinDateFormatted}</td>
+        <td style="text-align:center; font-weight:700; color:var(--text-main);">${userOrders.length}</td>
+        <td style="text-align:right; font-weight:700; color:var(--accent-gold);">Rs. ${totalSpent.toLocaleString()}</td>
+      </tr>
+    `;
+  }).join('');
 }
