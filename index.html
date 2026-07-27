@@ -25,7 +25,7 @@
 
   <link rel="stylesheet" href="styles.css?v=7">
   <!-- Google Identity Services for Real Gmail Authentication -->
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="https://accounts.google.com/gsi/client" async defer onload="initGoogleSignIn()"></script>
 </head>
 <body data-page="customer">
 
@@ -430,20 +430,31 @@
           </div>
         </form>
 
-        <!-- Google Sign In / Sign Up -->
+        <!-- Real Google Sign-In Button (Google Identity Services) -->
         <div style="margin-top:1.4rem; padding-top:1.2rem; border-top:1px dashed var(--border-subtle);">
-          <span style="font-size:0.82rem; color:var(--text-muted); display:block; margin-bottom:0.6rem; text-align:center;">Or continue with:</span>
-          <button class="btn btn-outline w-100" id="btn-google-auth" onclick="initiateGoogleAuth()" style="font-size:0.9rem; padding:0.7rem; font-weight:700; display:flex; align-items:center; justify-content:center; gap:0.6rem;">
-            <i class="fa-brands fa-google" style="color:#ea4335; font-size:1.1rem;"></i> Continue with Google
-          </button>
+          <span style="font-size:0.82rem; color:var(--text-muted); display:block; margin-bottom:0.7rem; text-align:center;">Or continue with:</span>
+          <!-- Google renders its own official button here -->
+          <div id="g_id_onload"
+               data-client_id="REPLACE_WITH_YOUR_GOOGLE_CLIENT_ID"
+               data-callback="handleGoogleCredentialResponse"
+               data-auto_prompt="false">
+          </div>
+          <div class="g_id_signin"
+               data-type="standard"
+               data-size="large"
+               data-theme="outline"
+               data-text="continue_with"
+               data-shape="rectangular"
+               data-logo_alignment="left"
+               data-width="420">
+          </div>
           <p style="font-size:0.76rem; color:var(--text-muted); margin-top:0.5rem; text-align:center; line-height:1.5;">
-            <i class="fa-solid fa-shield-halved" style="color:#10b981;"></i> Your data stays private. No spam, no sharing.
+            <i class="fa-solid fa-shield-halved" style="color:#10b981;"></i> Secure Google sign-in. No password needed.
           </p>
         </div>
       </div>
     </div>
   </div>
-
   <!-- CUSTOM CAKE BUILDER MODAL -->
   <div id="custom-cake-modal" class="modal">
     <div class="modal-overlay" onclick="closeCustomCakeModal()"></div>

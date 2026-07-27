@@ -846,92 +846,89 @@ async function handleCustomerRegister(e) {
   showToast(`🎉 Welcome to Royal Chhab, ${name}! Your account has been created.`, 'success');
 }
 
+// ============================================================
+// GOOGLE CLIENT ID — Replace with your real Google Cloud Client ID
+// Get it from: https://console.cloud.google.com/ → APIs & Services → Credentials
+// Authorized JS Origins: https://royal-chhab-cake-store.vercel.app
+// ============================================================
+const GOOGLE_CLIENT_ID = 'REPLACE_WITH_YOUR_GOOGLE_CLIENT_ID';
+
 function initiateGoogleAuth() {
-  // Real Google OAuth sign-in via popup window
-  // Uses Google Identity Services if available, otherwise gracefully prompt email registration
-  const googleClientId = ''; // Google OAuth Client ID can be added here if configured
-
-  if (window.google && window.google.accounts && googleClientId) {
-    window.google.accounts.id.initialize({
-      client_id: googleClientId,
-      callback: handleGoogleCredentialResponse
-    });
-    window.google.accounts.id.prompt();
+  if (!window.google || !window.google.accounts) {
+    showToast('⚠️ Google Sign-In library not loaded. Please refresh and try again.', 'danger', 5000);
     return;
   }
 
-  // Fallback: Open a prompt asking them to enter their Gmail to register via Google
-  const gmailEntry = window.prompt('Enter your Gmail address to continue with Google:\n(You will need to complete your profile after)');
-  if (!gmailEntry || !gmailEntry.includes('@')) {
-    showToast('⚠️ Invalid email. Please try again.', 'danger');
+  if (!GOOGLE_CLIENT_ID || GOOGLE_CLIENT_ID === 'REPLACE_WITH_YOUR_GOOGLE_CLIENT_ID') {
+    showToast('⚠️ Google Sign-In is not yet configured by the admin. Please sign up with email instead.', 'info', 6000);
     return;
   }
 
-  const lowerGmail = gmailEntry.trim().toLowerCase();
-  appState.users = appState.users || [];
-  const existing = appState.users.find(u => u.email && u.email.toLowerCase() === lowerGmail);
+  // Initialize GIS and trigger the popup sign-in flow
+  window.google.accounts.id.initialize({
+    client_id: GOOGLE_CLIENT_ID,
+    callback: handleGoogleCredentialResponse,
+    auto_select: false,
+    cancel_on_tap_outside: true
+  });
 
-  if (existing) {
-    // Already registered — let them in
-    appState.currentUser = existing;
-    localStorage.setItem('luxecakes_current_user', JSON.stringify(existing));
-    localStorage.setItem('luxecakes_onboarded', 'true');
-    closeCustomerAuthModal();
-    renderCustomerAuthWidget();
-    showToast(`🎉 Welcome back, ${existing.name}! Signed in via Google.`, 'success');
-    return;
-  }
-
-  // New Google user — need their name and phone before registering
-  const displayName = window.prompt(`Hello! Please enter your full name for your Royal Chhab account:`);
-  if (!displayName || displayName.trim().length < 2) {
-    showToast('⚠️ Name is required to create your account.', 'danger');
-    return;
-  }
-  const userPhone = window.prompt(`Please enter your WhatsApp / mobile number (required for order delivery):`);
-  if (!userPhone || userPhone.trim().length < 7) {
-    showToast('⚠️ A valid phone number is required.', 'danger');
-    return;
-  }
-
-  const nameStr = displayName.trim();
-  const newUser = {
-    name: nameStr,
-    email: gmailEntry.trim(),
-    phone: userPhone.trim(),
-    passwordHash: null, // Google users don't use password
-    avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(nameStr)}&background=a83250&color=fff&size=80`,
-    provider: 'Google',
-    joinedAt: Date.now()
-  };
-
-  appState.users.unshift(newUser);
-  saveUsersToStorage();
-
-  appState.currentUser = newUser;
-  localStorage.setItem('luxecakes_current_user', JSON.stringify(newUser));
-  localStorage.setItem('luxecakes_onboarded', 'true');
-
-  closeCustomerAuthModal();
-  renderCustomerAuthWidget();
-  showToast(`🎉 Welcome to Royal Chhab, ${nameStr}! Account created via Google.`, 'success');
+  // Try One-Tap first; fall back to explicit popup
+  window.google.accounts.id.prompt((notification) => {
+    if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+      // Fallback: render popup sign-in
+      window.google.accounts.id.renderButton(
+        document.querySelector('.g_id_signin'),
+        { theme: 'outline', size: 'large', text: 'continue_with', width: 420 }
+      );
+    }
+  });
 }
 
 function handleGoogleCredentialResponse(response) {
-  // Decode the JWT credential from Google Identity Services
+  // Called by Google Identity Services with a signed JWT credential
   try {
-    const payload = JSON.parse(atob(response.credential.split('.')[1]));
-    const name    = payload.name || payload.given_name || 'Google User';
-    const email   = payload.email;
-    const avatar  = payload.picture || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=a83250&color=fff&size=80`;
+    if (!response || !response.credential) {
+      showToast('❌ Google sign-in failed — no credential received.', 'danger');
+      return;
+    }
+
+    // Decode the JWT (base64url decode the payload)
+    const parts   = response.credential.split('.');
+    const payload = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')));
+
+    const name   = payload.name   || payload.given_name || 'Google User';
+    const email  = payload.email;
+    const avatar = payload.picture || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=a83250&color=fff&size=80`;
+
+    if (!email) {
+      showToast('❌ Could not retrieve your email from Google. Please try again.', 'danger');
+      return;
+    }
 
     appState.users = appState.users || [];
     let user = appState.users.find(u => u.email && u.email.toLowerCase() === email.toLowerCase());
 
     if (!user) {
-      user = { name, email, passwordHash: null, avatar, provider: 'Google', joinedAt: Date.now(), phone: '' };
+      // New Google user — create account automatically (no password needed)
+      user = {
+        name: name,
+        email: email,
+        phone: payload.phone_number || '',
+        passwordHash: null,
+        avatar: avatar,
+        provider: 'Google',
+        googleSub: payload.sub,
+        joinedAt: Date.now()
+      };
       appState.users.unshift(user);
       saveUsersToStorage();
+      showToast(`🎉 New account created for ${name}! Welcome to Royal Chhab.`, 'success');
+    } else {
+      // Existing user — update avatar from Google if changed
+      user.avatar  = avatar;
+      user.provider = 'Google';
+      saveUsersToStorage();
+      showToast(`🎉 Welcome back, ${name}! Signed in with Google.`, 'success');
     }
 
     appState.currentUser = user;
@@ -939,11 +936,39 @@ function handleGoogleCredentialResponse(response) {
     localStorage.setItem('luxecakes_onboarded', 'true');
     closeCustomerAuthModal();
     renderCustomerAuthWidget();
-    showToast(`🎉 Welcome, ${name}! Signed in with Google.`, 'success');
+
   } catch (err) {
-    showToast('Google sign-in failed. Please try again.', 'danger');
+    console.error('Google auth error:', err);
+    showToast('❌ Google sign-in failed. Please try again or use email signup.', 'danger', 6000);
   }
 }
+
+function initGoogleSignIn() {
+  if (!window.google || !window.google.accounts) return;
+  if (!GOOGLE_CLIENT_ID || GOOGLE_CLIENT_ID === 'REPLACE_WITH_YOUR_GOOGLE_CLIENT_ID') return;
+
+  window.google.accounts.id.initialize({
+    client_id: GOOGLE_CLIENT_ID,
+    callback: handleGoogleCredentialResponse,
+    auto_select: false,
+    cancel_on_tap_outside: true
+  });
+
+  // Render the official Google button in the modal
+  const signInDiv = document.querySelector('.g_id_signin');
+  if (signInDiv) {
+    window.google.accounts.id.renderButton(signInDiv, {
+      type: 'standard',
+      theme: 'outline',
+      size: 'large',
+      text: 'continue_with',
+      shape: 'rectangular',
+      logo_alignment: 'left',
+      width: 420
+    });
+  }
+}
+
 
 function handleCustomerLogout() {
   appState.currentUser = null;
